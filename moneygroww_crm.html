@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>MoneyGroww — CRM & WhatsApp Hub</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.8.0/dist/tabler-icons.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--g:#1a7f4e;--gd:#0f5c37;--gl:#e8f7ef;--gold:#b8860b;--goldl:#fdf6e3;--teal:#0e7490;--teall:#e0f2fe;--pu:#6d28d9;--pul:#ede9fe;--red:#b91c1c;--redl:#fee2e2;--wa:#25D366;--wal:#dcfce7;--bg:#f7f8fa;--sur:#fff;--bdr:#e3e6ec;--tx:#111827;--mu:#6b7280;--hi:#9ca3af;--r:8px;--rl:12px}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--tx);font-size:14px;line-height:1.5;overflow-x:hidden}
+/* LOGIN */
+#vL{display:flex;min-height:100vh;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--gl),#f0fdf4,var(--bg));padding:1rem}
+.lbox{background:var(--sur);border:1px solid var(--bdr);border-radius:var(--rl);padding:2rem;width:100%;max-width:400px;box-shadow:0 4px 24px rgba(0,0,0,.08)}
+.lic{width:44px;height:44px;background:var(--g);border-radius:10px;display:flex;align-items:center;justify-content:center}
+.lic i{color:#fff;font-size:22px}
+.fl{display:block;font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.fi{width:100%;padding:10px 12px;border:1.5px solid var(--bdr);border-radius:var(--r);font-size:14px;background:var(--sur);color:var(--tx);outline:none;margin-bottom:12px;font-family:inherit;transition:.15s}
+.fi:focus{border-color:var(--g);box-shadow:0 0 0 3px rgba(26,127,78,.1)}
+.lbtn{width:100%;background:var(--g);color:#fff;border:none;border-radius:var(--r);padding:12px;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;font-family:inherit;transition:.15s}
+.lbtn:hover{background:var(--gd)}
+.lhint{background:var(--gl);border-radius:var(--r);padding:9px 12px;font-size:12px;color:var(--gd);text-align:center;margin-top:12px}
+/* DASH */
+#vD{display:none}
+.topbar{background:var(--sur);border-bottom:1px solid var(--bdr);height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 1rem;position:sticky;top:0;z-index:200;gap:8px}
+.tbrand{display:flex;align-items:center;gap:8px}
+.tlic{width:30px;height:30px;background:var(--g);border-radius:7px;display:flex;align-items:center;justify-content:center}
+.tlic i{color:#fff;font-size:15px}
+.tright{display:flex;align-items:center;gap:6px}
+.tbtn{display:inline-flex;align-items:center;gap:5px;padding:6px 11px;border-radius:7px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--bdr);background:transparent;color:var(--tx);transition:.15s;font-family:inherit;white-space:nowrap}
+.tbtn:hover{background:var(--bg)}
+.tbtn-g{background:var(--g);color:#fff;border-color:var(--g)}.tbtn-g:hover{background:var(--gd)}
+.tbtn-wa{background:var(--wa);color:#fff;border-color:var(--wa)}.tbtn-wa:hover{opacity:.9}
+.tbtn-back{background:var(--gl);color:var(--g);border-color:var(--g)}
+.wrap{display:flex;height:calc(100vh - 56px)}
+/* SIDEBAR */
+.sb{width:210px;background:var(--sur);border-right:1px solid var(--bdr);padding:.75rem 0;overflow-y:auto;flex-shrink:0;transition:.3s}
+.sbs{padding:5px 1rem 3px;font-size:10px;font-weight:700;color:var(--hi);text-transform:uppercase;letter-spacing:.9px;margin-top:8px}
+.sbl{display:flex;align-items:center;gap:8px;padding:8px 1rem;font-size:13px;color:var(--mu);cursor:pointer;transition:.15s;border-left:3px solid transparent;font-weight:500}
+.sbl i{font-size:16px;flex-shrink:0}
+.sbl:hover{background:var(--bg);color:var(--tx)}
+.sbl.active{background:var(--gl);color:var(--g);border-left-color:var(--g)}
+.sbbg{font-size:10px;font-weight:700;padding:2px 6px;border-radius:20px;margin-left:auto}
+.sbbg-g{background:var(--g);color:#fff}
+.sbbg-r{background:var(--red);color:#fff}
+.sbbg-wa{background:var(--wa);color:#fff}
+/* MAIN */
+.main{flex:1;overflow-y:auto;padding:1rem}
+.sec{display:none}.sec.active{display:block}
+.ph{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1rem;gap:8px;flex-wrap:wrap}
+.ph h2{font-size:18px;font-weight:700}
+.ph p{font-size:12px;color:var(--mu);margin-top:2px}
+/* CARDS */
+.sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:1rem}
+.sc{background:var(--sur);border:1px solid var(--bdr);border-radius:var(--rl);padding:.875rem 1rem}
+.slbl{font-size:10px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;display:flex;align-items:center;gap:4px}
+.sv{font-size:22px;font-weight:800;line-height:1;margin-bottom:2px}
+.ss{font-size:11px;color:var(--mu)}
+.card{background:var(--sur);border:1px solid var(--bdr);border-radius:var(--rl);margin-bottom:1rem}
+.card-head{padding:.75rem 1rem;border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.card-head h3{font-size:14px;font-weight:600;display:flex;align-items:center;gap:6px}
+.card-body{padding:1rem}
+.btn{display:inline-flex;align-items:center;gap:5px;padding:7px 13px;border-radius:var(--r);font-size:12px;font-weight:600;cursor:pointer;border:none;font-family:inherit;transition:.15s}
+.btn-g{background:var(--g);color:#fff}.btn-g:hover{background:var(--gd)}
+.btn-wa{background:var(--wa);color:#fff}.btn-wa:hover{opacity:.9}
+.btn-out{background:var(--bg);border:1px solid var(--bdr);color:var(--tx)}.btn-out:hover{background:var(--bdr)}
+.btn-red{background:var(--redl);color:var(--red);border:1px solid #fca5a5}
+.btn-sm{padding:5px 9px;font-size:11px}
+/* FORM */
+.inp{width:100%;padding:8px 11px;border:1.5px solid var(--bdr);border-radius:var(--r);font-size:13px;background:var(--bg);color:var(--tx);outline:none;transition:.15s;font-family:inherit}
+.inp:focus{border-color:var(--g);box-shadow:0 0 0 3px rgba(26,127,78,.08)}
+select.inp{cursor:pointer}
+textarea.inp{resize:vertical;min-height:70px}
+.il{display:block;font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.fr{margin-bottom:11px}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.ff{grid-column:1/-1}
+/* TABLE */
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table.t{width:100%;border-collapse:collapse;font-size:12px}
+.t th{padding:7px 10px;text-align:left;font-size:10px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.5px;background:var(--bg);border-bottom:1px solid var(--bdr);white-space:nowrap}
+.t td{padding:8px 10px;border-bottom:1px solid var(--bdr);color:var(--tx);vertical-align:middle}
+.t tr:last-child td{border-bottom:none}
+.t tbody tr:hover td{background:#fafbfd;cursor:pointer}
+.badge{display:inline-block;padding:2px 7px;border-radius:20px;font-size:10px;font-weight:700}
+.b-hot{background:#fee2e2;color:#b91c1c}
+.b-warm{background:#fef3c7;color:#b45309}
+.b-cold{background:#e0f2fe;color:#0e7490}
+.b-conv{background:#dcfce7;color:#166534}
+.b-new{background:var(--gl);color:var(--gd)}
+.b-follow{background:#fef3c7;color:#b45309}
+.b-lost{background:var(--redl);color:var(--red)}
+.b-int{background:var(--pul);color:var(--pu)}
+.ra{display:flex;gap:3px}
+.ib{width:26px;height:26px;border:1px solid var(--bdr);border-radius:5px;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--mu);transition:.15s}
+.ib:hover{background:var(--bg);color:var(--tx)}
+.ib.del:hover{background:var(--redl);color:var(--red)}
+.ib.grn:hover{background:var(--gl);color:var(--g)}
+.ib.wag:hover{background:var(--wal);color:var(--wa)}
+.empty{padding:2.5rem;text-align:center;color:var(--mu)}
+.empty i{font-size:34px;display:block;margin-bottom:8px;opacity:.25}
+/* MODAL */
+.mbg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:500;align-items:center;justify-content:center;padding:1rem;overflow-y:auto}
+.mbg.open{display:flex}
+.modal{background:var(--sur);border-radius:var(--rl);padding:1.5rem;width:100%;max-width:540px;max-height:90vh;overflow-y:auto;margin:auto}
+.mh{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
+.mh h3{font-size:15px;font-weight:700;display:flex;align-items:center;gap:7px}
+.cx{width:28px;height:28px;border:1px solid var(--bdr);border-radius:5px;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--mu)}
+/* PIPELINE */
+.pipeline-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:8px}
+.pipeline{display:flex;gap:10px;min-width:max-content}
+.pl-col{background:var(--bg);border-radius:var(--rl);padding:8px;width:160px;min-height:280px;flex-shrink:0}
+.pl-col-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+.pl-col-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+.pl-count{font-size:10px;font-weight:700;padding:2px 6px;border-radius:20px}
+.pl-card{background:var(--sur);border:1px solid var(--bdr);border-radius:var(--r);padding:8px;margin-bottom:6px;cursor:pointer;transition:.15s}
+.pl-card:hover{border-color:var(--g);box-shadow:0 2px 8px rgba(0,0,0,.07)}
+.pl-card-name{font-size:12px;font-weight:600;margin-bottom:2px}
+.pl-card-info{font-size:10px;color:var(--mu);margin-bottom:5px}
+.pl-card-foot{display:flex;align-items:center;justify-content:space-between}
+/* WA CHAT */
+.wa-wrap{display:grid;grid-template-columns:240px 1fr;border:1px solid var(--bdr);border-radius:var(--rl);overflow:hidden;height:500px}
+.wa-list{background:#f0f2f5;border-right:1px solid var(--bdr);overflow-y:auto;display:flex;flex-direction:column}
+.wa-lh{padding:9px 12px;background:var(--g);color:#fff;font-weight:600;font-size:13px;display:flex;align-items:center;gap:6px;flex-shrink:0}
+.wa-ci{display:flex;align-items:center;gap:8px;padding:9px 12px;cursor:pointer;border-bottom:1px solid rgba(0,0,0,.06);transition:.15s}
+.wa-ci:hover,.wa-ci.active{background:#fff}
+.wa-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0}
+.wa-cn{font-size:12px;font-weight:600;margin-bottom:1px}
+.wa-cp{font-size:11px;color:var(--mu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:130px}
+.wa-chat{background:#e5ddd5;display:flex;flex-direction:column}
+.wa-chat-head{background:#f0f2f5;padding:8px 12px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--bdr);flex-shrink:0}
+.wa-msgs{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:6px}
+.wa-msg{max-width:80%;padding:7px 10px;border-radius:7px;font-size:12px;line-height:1.5}
+.wa-msg.recv{background:#fff;align-self:flex-start;border-radius:0 7px 7px 7px}
+.wa-msg.sent{background:#d9fdd3;align-self:flex-end;border-radius:7px 7px 0 7px}
+.wa-msg-t{font-size:10px;color:var(--mu);margin-top:2px;text-align:right}
+.wa-bot-l{font-size:9px;color:var(--g);font-weight:600;margin-bottom:1px}
+.wa-inp-area{background:#f0f2f5;padding:7px 10px;display:flex;gap:6px;align-items:center;flex-shrink:0}
+.wa-inp{flex:1;padding:7px 11px;border:none;border-radius:20px;font-size:13px;background:#fff;outline:none;font-family:inherit}
+.wa-send{width:34px;height:34px;background:var(--wa);border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;flex-shrink:0}
+.wa-ph{flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;color:var(--mu)}
+.wa-ph i{font-size:38px;opacity:.2}
+/* CHATBOT */
+.bot-node{background:var(--sur);border:1px solid var(--bdr);border-radius:var(--r);padding:10px;margin-bottom:8px}
+.bot-nh{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.bot-type{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;display:flex;align-items:center;gap:5px;color:var(--g)}
+.bot-opts{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.bot-opt{background:var(--gl);border:1px solid #86efac;color:var(--gd);border-radius:20px;padding:2px 9px;font-size:11px;font-weight:600;display:flex;align-items:center;gap:3px}
+.bot-opt button{background:none;border:none;cursor:pointer;color:var(--red);font-size:12px;padding:0;line-height:1}
+.add-node{width:100%;padding:8px;border:1.5px dashed var(--bdr);border-radius:var(--r);background:transparent;color:var(--mu);cursor:pointer;font-size:12px;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:5px;transition:.15s;margin-top:8px}
+.add-node:hover{border-color:var(--g);color:var(--g);background:var(--gl)}
+/* BULK */
+.tcard{border:1.5px solid var(--bdr);border-radius:var(--r);padding:10px;cursor:pointer;transition:.15s;margin-bottom:8px}
+.tcard:hover{border-color:var(--g)}.tcard.sel{border-color:var(--g);background:var(--gl)}
+.tcard-name{font-size:12px;font-weight:600;margin-bottom:3px}
+.tcard-prev{font-size:11px;color:var(--mu);line-height:1.4}
+.rtag{background:var(--gl);color:var(--gd);padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;display:inline-flex;align-items:center;gap:3px;margin:2px}
+.rtag button{background:none;border:none;cursor:pointer;color:var(--gd);font-size:12px;padding:0;line-height:1}
+.pbar-w{background:var(--bg);border-radius:var(--r);height:6px;overflow:hidden;margin:6px 0}
+.pbar{background:var(--wa);height:100%;border-radius:var(--r);transition:width .3s}
+/* AI BANNER */
+.ai-banner{background:linear-gradient(135deg,#667eea,#764ba2);border-radius:var(--rl);padding:1rem;color:#fff;margin-bottom:1rem}
+.ai-banner h4{font-size:13px;font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.ai-banner p{font-size:12px;opacity:.9;line-height:1.6}
+/* CHARTS */
+.cr2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1rem}
+.ana-card{background:var(--sur);border:1px solid var(--bdr);border-radius:var(--rl);padding:1rem}
+.ana-card h3{font-size:13px;font-weight:600;margin-bottom:.75rem;display:flex;align-items:center;gap:5px}
+.cw{position:relative;height:170px}
+/* TOGGLE */
+.toggle{position:relative;display:inline-block;width:36px;height:20px}
+.toggle input{opacity:0;width:0;height:0}
+.slider{position:absolute;cursor:pointer;inset:0;background:#ccc;border-radius:20px;transition:.3s}
+.slider::before{content:'';position:absolute;width:13px;height:13px;left:3px;top:3.5px;background:#fff;border-radius:50%;transition:.3s}
+.toggle input:checked+.slider{background:var(--g)}
+.toggle input:checked+.slider::before{transform:translateX(16px)}
+.tgl-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bdr)}
+.tgl-row:last-child{border-bottom:none}
+.tgl-lbl strong{display:block;font-size:13px;font-weight:500}
+.tgl-lbl span{font-size:11px;color:var(--mu)}
+/* SCORE */
+.srow{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--bdr)}
+.srow:last-child{border-bottom:none}
+.sbar{flex:1;height:5px;background:#e5e7eb;border-radius:3px;overflow:hidden}
+.sfill{height:100%;border-radius:3px}
+/* TOAST */
+#toast{position:fixed;bottom:16px;right:16px;padding:10px 15px;border-radius:var(--r);font-size:13px;font-weight:500;display:flex;align-items:center;gap:7px;z-index:9999;transform:translateY(80px);opacity:0;transition:.25s;pointer-events:none;max-width:320px}
+#toast.show{transform:translateY(0);opacity:1}
+#toast.ok{background:var(--g);color:#fff}
+#toast.err{background:var(--red);color:#fff}
+#toast.wa{background:var(--wa);color:#fff}
+#toast.inf{background:#1d4ed8;color:#fff}
+/* MOBILE */
+.mob-menu-btn{display:none;width:34px;height:34px;border:1px solid var(--bdr);border-radius:var(--r);background:transparent;cursor:pointer;align-items:center;justify-content:center;font-size:18px;color:var(--tx)}
+.mob-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:150}
+.mob-overlay.open{display:block}
+@media(max-width:900px){
+  .cr2{grid-template-columns:1fr}
+  .wa-wrap{grid-template-columns:1fr}
+  .wa-list{display:none}
+}
+@media(max-width:768px){
+  .mob-menu-btn{display:flex}
+  .sb{position:fixed;top:56px;left:-220px;height:calc(100vh - 56px);z-index:160;transition:.3s;box-shadow:4px 0 16px rgba(0,0,0,.1);width:210px}
+  .sb.mob-open{left:0}
+  .fg{grid-template-columns:1fr}
+  .sg{grid-template-columns:repeat(2,1fr)}
+  .pipeline{min-width:max-content}
+  .tbtn span{display:none}
+}
+@media(max-width:480px){
+  .lbox{padding:1.5rem}
+  .main{padding:.75rem}
+  .sg{grid-template-columns:repeat(2,1fr)}
+  .ph{flex-direction:column}
+  .modal{padding:1rem}
+  .wa-wrap{height:420px}
+}
+</style>
+</head>
+<body>
+<!-- LOGIN -->
+<div id="vL">
+  <div class="lbox">
+    <div style="display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:1.5rem">
+      <div class="lic"><i class="ti ti-trending-up"></i></div>
+      <div><strong style="font-size:17px;font-weight:800">MoneyGroww</strong><br><span style="font-size:11px;color:var(--mu)">CRM & WhatsApp Hub</span></div>
+    </div>
+    <h2 style="font-size:20px;font-weight:800;text-align:center;margin-bottom:4px">Admin Login</h2>
+    <p style="font-size:13px;color:var(--mu);text-align:center;margin-bottom:1.5rem">Manage CRM, chatbot & bulk messaging</p>
+    <label class="fl">Username</label><input class="fi" id="lu" type="text" placeholder="admin" autocomplete="username">
+    <label class="fl">Password</label><input class="fi" id="lp" type="password" placeholder="admin123" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="lbtn" onclick="doLogin()"><i class="ti ti-login"></i> Sign in</button>
+    <div class="lhint"><i class="ti ti-info-circle" style="font-size:13px;vertical-align:-2px"></i> Username: <strong>admin</strong> | Password: <strong>admin123</strong></div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="vD">
+  <div class="topbar">
+    <div style="display:flex;align-items:center;gap:8px">
+      <button class="mob-menu-btn" id="mBtn" onclick="toggleSB()"><i class="ti ti-menu-2"></i></button>
+      <div class="tbrand"><div class="tlic"><i class="ti ti-trending-up"></i></div><strong style="font-size:14px;font-weight:700">MoneyGroww</strong><span style="font-size:10px;color:var(--mu);margin-left:4px">CRM Hub</span></div>
+    </div>
+    <div class="tright">
+      <button class="tbtn tbtn-back" onclick="window.open('moneygroww_admin_final.html','_blank')"><i class="ti ti-arrow-left"></i><span> Admin</span></button>
+      <button class="tbtn tbtn-wa" onclick="showSec('bulk',null)"><i class="ti ti-send"></i><span> Bulk WA</span></button>
+      <button class="tbtn tbtn-g" onclick="openAddContact()"><i class="ti ti-plus"></i><span> Add Lead</span></button>
+      <button class="tbtn" onclick="doLogout()"><i class="ti ti-logout"></i></button>
+    </div>
+  </div>
+  <div class="mob-overlay" id="mOv" onclick="closeSB()"></div>
+  <div class="wrap">
+    <nav class="sb" id="sbNav">
+      <div class="sbs">CRM</div>
+      <div class="sbl active" onclick="showSec('ov',this)"><i class="ti ti-dashboard"></i> Overview</div>
+      <div class="sbl" onclick="showSec('pipeline',this)"><i class="ti ti-layout-kanban"></i> Pipeline <span class="sbbg sbbg-g" id="sbP">0</span></div>
+      <div class="sbl" onclick="showSec('contacts',this)"><i class="ti ti-address-book"></i> All Contacts <span class="sbbg sbbg-g" id="sbC">0</span></div>
+      <div class="sbl" onclick="showSec('hot',this)"><i class="ti ti-flame"></i> Hot Leads <span class="sbbg sbbg-r" id="sbH">0</span></div>
+      <div class="sbl" onclick="showSec('tasks',this)"><i class="ti ti-checkbox"></i> Follow-ups <span class="sbbg sbbg-g" id="sbT">0</span></div>
+      <div class="sbs">WhatsApp</div>
+      <div class="sbl" onclick="showSec('inbox',this)"><i class="ti ti-message-circle"></i> Chat Inbox <span class="sbbg sbbg-wa" id="sbI">0</span></div>
+      <div class="sbl" onclick="showSec('chatbot',this)"><i class="ti ti-robot"></i> Chatbot Builder</div>
+      <div class="sbl" onclick="showSec('bulk',this)"><i class="ti ti-send"></i> Bulk Messaging</div>
+      <div class="sbl" onclick="showSec('templates',this)"><i class="ti ti-template"></i> Templates</div>
+      <div class="sbs">More</div>
+      <div class="sbl" onclick="showSec('analytics',this)"><i class="ti ti-chart-dots"></i> Analytics</div>
+      <div class="sbl" onclick="showSec('settings',this)"><i class="ti ti-settings"></i> Settings</div>
+    </nav>
+    <main class="main" id="mainArea">
+
+      <!-- OVERVIEW -->
+      <div class="sec active" id="sec-ov">
+        <div class="ph"><div><h2>CRM Overview</h2><p id="ovDate"></p></div><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn btn-wa btn-sm" onclick="showSec('bulk',null)"><i class="ti ti-send"></i> Bulk WA</button><button class="btn btn-g btn-sm" onclick="openAddContact()"><i class="ti ti-user-plus"></i> Add Lead</button></div></div>
+        <div class="ai-banner"><h4><i class="ti ti-sparkles"></i> AI Business Insight</h4><p id="aiTxt">Loading insights...</p></div>
+        <div class="sg" id="ovStats"></div>
+        <div class="cr2">
+          <div class="ana-card"><h3><i class="ti ti-chart-pie" style="color:var(--mu)"></i>Lead Temperature</h3><div class="cw"><canvas id="cTemp"></canvas></div></div>
+          <div class="ana-card"><h3><i class="ti ti-chart-bar" style="color:var(--mu)"></i>Pipeline Stages</h3><div class="cw"><canvas id="cStage"></canvas></div></div>
+        </div>
+        <div class="card"><div class="card-head"><h3><i class="ti ti-flame" style="color:var(--red)"></i>🔥 Hot Leads — Call Now!</h3><button class="btn btn-g btn-sm" onclick="showSec('hot',null)">View all</button></div><div class="tw"><table class="t" id="hotTbl"></table></div></div>
+        <div class="card"><div class="card-head"><h3><i class="ti ti-clock" style="color:var(--gold)"></i>Today's Follow-ups</h3><button class="btn btn-out btn-sm" onclick="showSec('tasks',null)">View all</button></div><div id="todayTasks" style="padding:.75rem"></div></div>
+      </div>
+
+      <!-- PIPELINE -->
+      <div class="sec" id="sec-pipeline">
+        <div class="ph"><div><h2>Sales Pipeline</h2><p>Drag contacts through your loan sales funnel</p></div><button class="btn btn-g btn-sm" onclick="openAddContact()"><i class="ti ti-plus"></i> Add contact</button></div>
+        <div class="pipeline-wrap"><div class="pipeline" id="pBoard"></div></div>
+      </div>
+
+      <!-- CONTACTS -->
+      <div class="sec" id="sec-contacts">
+        <div class="ph"><div><h2>All Contacts</h2><p>Your complete lead database</p></div><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn btn-out btn-sm" onclick="importContacts()"><i class="ti ti-upload"></i> Import</button><button class="btn btn-g btn-sm" onclick="openAddContact()"><i class="ti ti-plus"></i> Add</button></div></div>
+        <div class="card">
+          <div class="card-head">
+            <h3 id="contCnt">0 contacts</h3>
+            <div style="display:flex;gap:6px;flex-wrap:wrap">
+              <div style="position:relative"><i class="ti ti-search" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--hi)"></i><input id="cSrch" class="inp" style="padding-left:28px;width:160px;font-size:12px" placeholder="Search..." oninput="renderContacts()"></div>
+              <select id="cSF" class="inp" style="width:120px;font-size:12px" onchange="renderContacts()"><option value="">All stages</option><option>New Lead</option><option>Contacted</option><option>Interested</option><option>Follow-up</option><option>Converted</option><option>Lost</option></select>
+              <select id="cTF" class="inp" style="width:100px;font-size:12px" onchange="renderContacts()"><option value="">All temp.</option><option>🔥 Hot</option><option>🌡 Warm</option><option>❄ Cold</option></select>
+            </div>
+          </div>
+          <div class="tw">
+            <table class="t" style="table-layout:fixed">
+              <thead><tr><th style="width:120px">Name</th><th style="width:95px">Phone</th><th style="width:95px">Loan type</th><th style="width:70px">Temp.</th><th style="width:80px">Stage</th><th style="width:55px">Score</th><th style="width:75px">Actions</th></tr></thead>
+              <tbody id="cBody"></tbody>
+            </table>
+            <div class="empty" id="noCont" style="display:none"><i class="ti ti-users"></i><p style="font-size:14px;font-weight:600;margin-bottom:4px">No contacts yet</p><p style="font-size:12px">Add a lead or import phone numbers</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HOT LEADS -->
+      <div class="sec" id="sec-hot">
+        <div class="ph"><div><h2>🔥 Hot Lead Finder</h2><p>AI-scored leads most likely to convert — call these first</p></div><button class="btn btn-wa btn-sm" onclick="bulkWAHot()"><i class="ti ti-brand-whatsapp"></i> WA all hot leads</button></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+          <div>
+            <div class="ai-banner" style="background:linear-gradient(135deg,#b91c1c,#dc2626);margin-bottom:1rem"><h4><i class="ti ti-flame"></i> Hot lead scoring</h4><p>Leads score 0-100 based on income, employment, loan amount, phone verification & responsiveness.</p></div>
+            <div class="card"><div class="card-head"><h3><i class="ti ti-adjustments"></i> Score factors</h3></div><div class="card-body" id="scoreFact"></div></div>
+          </div>
+          <div class="card"><div class="card-head"><h3><i class="ti ti-flame" style="color:var(--red)"></i> Ranked hot leads</h3></div><div class="tw"><table class="t" id="hotRank"></table></div><div class="empty" id="noHot" style="display:none"><i class="ti ti-flame"></i><p style="font-size:13px;font-weight:600">No hot leads yet</p></div></div>
+        </div>
+      </div>
+
+      <!-- TASKS -->
+      <div class="sec" id="sec-tasks">
+        <div class="ph"><div><h2>Follow-ups & Tasks</h2><p>Never miss a callback</p></div><button class="btn btn-g btn-sm" onclick="openAddTask()"><i class="ti ti-plus"></i> Add task</button></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:1rem" id="taskCols"></div>
+        <div class="card"><div class="card-head"><h3><i class="ti ti-list"></i> All tasks</h3></div><div class="tw"><table class="t" id="taskTbl"></table></div><div class="empty" id="noTasks" style="display:none"><i class="ti ti-checkbox"></i><p style="font-size:13px;font-weight:600">No tasks yet</p></div></div>
+      </div>
+
+      <!-- WA INBOX -->
+      <div class="sec" id="sec-inbox">
+        <div class="ph"><div><h2><i class="ti ti-brand-whatsapp" style="color:var(--wa)"></i> WhatsApp Inbox</h2><p>Simulated chat — AI chatbot auto-replies</p></div><button class="btn btn-wa btn-sm" onclick="openNewChat()"><i class="ti ti-plus"></i> New chat</button></div>
+        <div class="wa-wrap" id="waWrap">
+          <div class="wa-list" id="waList"><div class="wa-lh"><i class="ti ti-brand-whatsapp"></i> Chats</div><div id="waContacts"></div></div>
+          <div class="wa-chat" id="waChat"><div class="wa-ph"><i class="ti ti-brand-whatsapp"></i><p style="font-size:13px;font-weight:500">Select a contact</p><p style="font-size:11px;color:var(--mu)">AI chatbot auto-replies instantly</p></div></div>
+        </div>
+      </div>
+
+      <!-- CHATBOT BUILDER -->
+      <div class="sec" id="sec-chatbot">
+        <div class="ph"><div><h2><i class="ti ti-robot"></i> Chatbot Builder</h2><p>Build automated WhatsApp conversation flows</p></div><div style="display:flex;gap:6px"><button class="btn btn-out btn-sm" onclick="previewBot()"><i class="ti ti-player-play"></i> Preview</button><button class="btn btn-g btn-sm" onclick="saveBot()"><i class="ti ti-device-floppy"></i> Save</button></div></div>
+        <div style="display:grid;grid-template-columns:1fr 320px;gap:12px">
+          <div class="card">
+            <div class="card-head"><h3><i class="ti ti-git-branch"></i> Conversation flow</h3><button class="btn btn-out btn-sm" onclick="addNode()"><i class="ti ti-plus"></i> Add step</button></div>
+            <div class="card-body"><div id="botFlow"></div><button class="add-node" onclick="addNode()"><i class="ti ti-plus"></i> Add conversation step</button></div>
+          </div>
+          <div class="card" style="position:sticky;top:70px;align-self:start">
+            <div class="card-head"><h3><i class="ti ti-device-mobile"></i> Preview</h3></div>
+            <div style="background:#e5ddd5;padding:10px;min-height:280px;display:flex;flex-direction:column;gap:6px" id="botPrev"></div>
+            <div style="padding:8px;background:#f0f2f5;border-top:1px solid var(--bdr)"><input id="botTestI" class="inp" style="font-size:12px" placeholder="Type to test..." onkeydown="if(event.key==='Enter')testBotI()"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BULK MESSAGING -->
+      <div class="sec" id="sec-bulk">
+        <div class="ph"><div><h2><i class="ti ti-send" style="color:var(--wa)"></i> Bulk WhatsApp</h2><p>Send personalised messages to all contacts</p></div></div>
+        <div style="display:grid;grid-template-columns:1fr 300px;gap:12px">
+          <div>
+            <div class="card">
+              <div class="card-head"><h3><i class="ti ti-template"></i> Choose template</h3><button class="btn btn-out btn-sm" onclick="showSec('templates',null)">Manage</button></div>
+              <div class="card-body" id="bulkTmplList"></div>
+            </div>
+            <div class="card">
+              <div class="card-head"><h3><i class="ti ti-users"></i> Select recipients</h3></div>
+              <div class="card-body">
+                <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap">
+                  <button class="btn btn-out btn-sm" onclick="selGrp('all')"><i class="ti ti-users"></i> All</button>
+                  <button class="btn btn-out btn-sm" onclick="selGrp('hot')">🔥 Hot</button>
+                  <button class="btn btn-out btn-sm" onclick="selGrp('warm')">🌡 Warm</button>
+                  <button class="btn btn-out btn-sm" onclick="selGrp('cold')">❄ Cold</button>
+                  <button class="btn btn-out btn-sm" onclick="selGrp('followup')"><i class="ti ti-clock"></i> Follow-up</button>
+                  <button class="btn btn-out btn-sm" onclick="selGrp('none')"><i class="ti ti-x"></i> Clear</button>
+                </div>
+                <div style="min-height:36px;padding:6px;border:1.5px solid var(--bdr);border-radius:var(--r);background:var(--bg);margin-bottom:8px;display:flex;flex-wrap:wrap;gap:4px" id="rTags"></div>
+                <p style="font-size:12px;color:var(--mu)" id="rCnt">0 recipients</p>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-head"><h3><i class="ti ti-pencil"></i> Message</h3></div>
+              <div class="card-body">
+                <div class="fr"><label class="il">Message (use {name}, {loan_type})</label><textarea class="inp" id="bulkMsg" rows="5" placeholder="Hello {name}! 👋 MoneyGroww here..."></textarea></div>
+                <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px">
+                  <button class="btn btn-out btn-sm" onclick="insVar('{name}')">+Name</button>
+                  <button class="btn btn-out btn-sm" onclick="insVar('{loan_type}')">+Loan</button>
+                  <button class="btn btn-out btn-sm" onclick="insVar('🏠')">🏠</button>
+                  <button class="btn btn-out btn-sm" onclick="insVar('💰')">💰</button>
+                  <button class="btn btn-out btn-sm" onclick="insVar('📞')">📞</button>
+                  <button class="btn btn-out btn-sm" onclick="insVar('✅')">✅</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="card" style="position:sticky;top:70px">
+              <div class="card-head"><h3><i class="ti ti-send"></i> Send campaign</h3></div>
+              <div class="card-body">
+                <div style="background:var(--bg);border-radius:var(--r);padding:10px;margin-bottom:12px">
+                  <div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:11px;color:var(--mu)">Recipients</span><strong id="sndCnt">0</strong></div>
+                  <div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:11px;color:var(--mu)">Template</span><strong id="sndTmpl" style="font-size:11px">None</strong></div>
+                  <div style="display:flex;justify-content:space-between"><span style="font-size:11px;color:var(--mu)">Est. time</span><strong id="sndEta">—</strong></div>
+                </div>
+                <div style="background:#e5ddd5;border-radius:var(--r);padding:10px;margin-bottom:12px;min-height:80px">
+                  <div style="background:#d9fdd3;border-radius:6px;padding:8px;font-size:11px;line-height:1.6;max-width:90%;margin-left:auto" id="msgPrev">Select template to preview</div>
+                </div>
+                <button class="btn btn-wa" style="width:100%;justify-content:center;padding:11px;font-size:13px" onclick="sendBulk()" id="sendBtn"><i class="ti ti-brand-whatsapp"></i> Send via WhatsApp</button>
+                <div id="sndProg" style="display:none;margin-top:10px">
+                  <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px"><span>Sending...</span><span id="sndPct">0%</span></div>
+                  <div class="pbar-w"><div class="pbar" id="sndBar" style="width:0%"></div></div>
+                  <p style="font-size:11px;color:var(--mu);margin-top:4px" id="sndNote"></p>
+                </div>
+                <div id="sndDone" style="display:none;margin-top:10px;background:var(--wal);border:1px solid #86efac;border-radius:var(--r);padding:8px;font-size:12px;color:#166534;font-weight:600;text-align:center"><i class="ti ti-circle-check"></i> Campaign sent!</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TEMPLATES -->
+      <div class="sec" id="sec-templates">
+        <div class="ph"><div><h2>Message Templates</h2><p>Pre-built WhatsApp templates</p></div><button class="btn btn-g btn-sm" onclick="openAddTmpl()"><i class="ti ti-plus"></i> New template</button></div>
+        <div id="tmplList" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px"></div>
+      </div>
+
+      <!-- ANALYTICS -->
+      <div class="sec" id="sec-analytics">
+        <div class="ph"><div><h2>Performance Analytics</h2><p>Track your outreach and conversions</p></div></div>
+        <div class="sg" id="anaStats"></div>
+        <div class="cr2">
+          <div class="ana-card"><h3><i class="ti ti-trending-up" style="color:var(--mu)"></i>Conversion funnel</h3><div class="cw"><canvas id="cFunnel"></canvas></div></div>
+          <div class="ana-card"><h3><i class="ti ti-brand-whatsapp" style="color:var(--wa)"></i>Messages (last 7 days)</h3><div class="cw"><canvas id="cMsgs"></canvas></div></div>
+        </div>
+        <div class="cr2">
+          <div class="ana-card"><h3><i class="ti ti-clock" style="color:var(--mu)"></i>Best time to call</h3><div class="cw"><canvas id="cTime"></canvas></div></div>
+          <div class="ana-card"><h3><i class="ti ti-trophy" style="color:var(--mu)"></i>Loan type performance</h3><div class="cw"><canvas id="cLoan"></canvas></div></div>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="sec" id="sec-settings">
+        <div class="ph"><div><h2>Settings</h2><p>Configure CRM & WhatsApp</p></div></div>
+        <div class="card" style="margin-bottom:1rem">
+          <div class="card-head"><h3><i class="ti ti-brand-whatsapp" style="color:var(--wa)"></i>WhatsApp Setup</h3></div>
+          <div class="card-body">
+            <div class="fg">
+              <div class="fr"><label class="il">Your WhatsApp number</label><input class="inp" id="s_wa" placeholder="919876543210"></div>
+              <div class="fr"><label class="il">Business name</label><input class="inp" id="s_biz" placeholder="MoneyGroww Financial Consultant"></div>
+            </div>
+            <div style="margin-bottom:1rem">
+              <div class="tgl-row"><div class="tgl-lbl"><strong>Auto-reply with chatbot</strong><span>Bot replies to new messages automatically</span></div><label class="toggle"><input type="checkbox" id="tgl1" checked><span class="slider"></span></label></div>
+              <div class="tgl-row"><div class="tgl-lbl"><strong>Auto-create CRM contact</strong><span>New WA contacts added to CRM</span></div><label class="toggle"><input type="checkbox" id="tgl2" checked><span class="slider"></span></label></div>
+              <div class="tgl-row"><div class="tgl-lbl"><strong>Hot lead alert</strong><span>Alert when score crosses 70</span></div><label class="toggle"><input type="checkbox" id="tgl3" checked><span class="slider"></span></label></div>
+            </div>
+            <button class="btn btn-g" onclick="saveSettings()"><i class="ti ti-device-floppy"></i> Save settings</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3><i class="ti ti-database"></i>Data management</h3></div>
+          <div class="card-body" style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn btn-g btn-sm" onclick="exportContacts()"><i class="ti ti-download"></i> Export CSV</button>
+            <button class="btn btn-out btn-sm" onclick="importContacts()"><i class="ti ti-upload"></i> Import numbers</button>
+            <button class="btn btn-red btn-sm" onclick="clearCRM()"><i class="ti ti-trash"></i> Clear CRM data</button>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- ADD CONTACT MODAL -->
+<div class="mbg" id="mAddContact">
+  <div class="modal">
+    <div class="mh"><h3 id="mContactTitle"><i class="ti ti-user-plus"></i> Add Contact</h3><button class="cx" onclick="closeMod('mAddContact')"><i class="ti ti-x"></i></button></div>
+    <div class="fg">
+      <div class="fr"><label class="il">Full name *</label><input class="inp" id="c_name" placeholder="Full name"></div>
+      <div class="fr"><label class="il">Phone *</label><input class="inp" id="c_phone" placeholder="10-digit mobile" maxlength="10"></div>
+      <div class="fr"><label class="il">Email</label><input class="inp" id="c_email" type="email" placeholder="email@example.com"></div>
+      <div class="fr"><label class="il">City</label><input class="inp" id="c_city" placeholder="City"></div>
+      <div class="fr"><label class="il">Loan type</label><select class="inp" id="c_loan"><option value="">Select</option><option>Home Loan</option><option>Loan Against Property</option><option>Personal Loan</option><option>Business Loan</option></select></div>
+      <div class="fr"><label class="il">Amount needed</label><select class="inp" id="c_amt"><option value="">Select</option><option>Below ₹5 Lakhs</option><option>₹5–10 Lakhs</option><option>₹10–25 Lakhs</option><option>₹25–50 Lakhs</option><option>₹50 Lakhs–1 Crore</option><option>Above ₹1 Crore</option></select></div>
+      <div class="fr"><label class="il">Employment</label><select class="inp" id="c_emp"><option value="">Select</option><option>Salaried</option><option>Self-Employed Professional</option><option>Business Owner</option><option>Freelancer</option></select></div>
+      <div class="fr"><label class="il">Monthly income</label><select class="inp" id="c_inc"><option value="">Select</option><option>Below ₹25,000</option><option>₹25,000–50,000</option><option>₹50,000–1 Lakh</option><option>Above ₹1 Lakh</option></select></div>
+      <div class="fr"><label class="il">Stage</label><select class="inp" id="c_stage"><option>New Lead</option><option>Contacted</option><option>Interested</option><option>Follow-up</option><option>Converted</option><option>Lost</option></select></div>
+      <div class="fr"><label class="il">Source</label><select class="inp" id="c_src"><option>Manual entry</option><option>Website form</option><option>WhatsApp inbound</option><option>Referral</option><option>Cold call</option><option>Facebook Ad</option><option>Google Ad</option></select></div>
+    </div>
+    <div class="fr ff"><label class="il">Notes</label><textarea class="inp" id="c_notes" placeholder="Notes about this contact..."></textarea></div>
+    <div style="display:flex;gap:8px;margin-top:.75rem">
+      <button class="btn btn-g" style="flex:1;justify-content:center" onclick="saveContact()"><i class="ti ti-check"></i> Save</button>
+      <button class="btn btn-out" onclick="closeMod('mAddContact')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT DETAIL MODAL -->
+<div class="mbg" id="mDetail">
+  <div class="modal" style="max-width:580px">
+    <div class="mh"><h3 id="detTitle"><i class="ti ti-user"></i> Contact</h3><button class="cx" onclick="closeMod('mDetail')"><i class="ti ti-x"></i></button></div>
+    <div id="detBody"></div>
+  </div>
+</div>
+
+<!-- ADD TASK MODAL -->
+<div class="mbg" id="mTask">
+  <div class="modal" style="max-width:440px">
+    <div class="mh"><h3><i class="ti ti-checkbox"></i> Add Follow-up Task</h3><button class="cx" onclick="closeMod('mTask')"><i class="ti ti-x"></i></button></div>
+    <div class="fr"><label class="il">Contact name</label><input class="inp" id="t_name" placeholder="Who to follow up with"></div>
+    <div class="fr"><label class="il">Phone</label><input class="inp" id="t_phone" placeholder="10-digit number" maxlength="10"></div>
+    <div class="fr"><label class="il">Task type</label><select class="inp" id="t_type"><option>📞 Call back</option><option>💬 Send WhatsApp</option><option>📧 Send email</option><option>📋 Send documents</option><option>🤝 Meeting</option></select></div>
+    <div class="fr"><label class="il">Due date & time</label><input class="inp" id="t_due" type="datetime-local"></div>
+    <div class="fr"><label class="il">Priority</label><select class="inp" id="t_pri"><option value="high">🔴 High</option><option value="medium" selected>🟡 Medium</option><option value="low">🟢 Low</option></select></div>
+    <div class="fr"><label class="il">Notes</label><textarea class="inp" id="t_notes" placeholder="What to discuss..."></textarea></div>
+    <div style="display:flex;gap:8px;margin-top:.75rem">
+      <button class="btn btn-g" style="flex:1;justify-content:center" onclick="saveTask()"><i class="ti ti-check"></i> Save task</button>
+      <button class="btn btn-out" onclick="closeMod('mTask')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD TEMPLATE MODAL -->
+<div class="mbg" id="mTmpl">
+  <div class="modal" style="max-width:480px">
+    <div class="mh"><h3><i class="ti ti-template"></i> Add Template</h3><button class="cx" onclick="closeMod('mTmpl')"><i class="ti ti-x"></i></button></div>
+    <div class="fr"><label class="il">Template name</label><input class="inp" id="tm_name" placeholder="e.g. Home loan offer"></div>
+    <div class="fr"><label class="il">Category</label><select class="inp" id="tm_cat"><option>🏠 Home Loan</option><option>🏢 LAP</option><option>👤 Personal Loan</option><option>💼 Business Loan</option><option>🎉 Festival offer</option><option>🔔 Follow-up</option><option>⭐ Referral ask</option></select></div>
+    <div class="fr"><label class="il">Message (use {name}, {loan_type})</label><textarea class="inp" id="tm_body" rows="6" placeholder="Hello {name}! 👋..."></textarea></div>
+    <div style="display:flex;gap:8px;margin-top:.75rem">
+      <button class="btn btn-g" style="flex:1;justify-content:center" onclick="saveTmpl()"><i class="ti ti-check"></i> Save template</button>
+      <button class="btn btn-out" onclick="closeMod('mTmpl')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- CHATBOT PREVIEW MODAL -->
+<div class="mbg" id="mBotPrev">
+  <div class="modal" style="max-width:380px">
+    <div class="mh"><h3><i class="ti ti-robot"></i> Chatbot Preview</h3><button class="cx" onclick="closeMod('mBotPrev')"><i class="ti ti-x"></i></button></div>
+    <div style="background:#e5ddd5;border-radius:var(--r);padding:12px;min-height:260px;display:flex;flex-direction:column;gap:6px;margin-bottom:10px;max-height:350px;overflow-y:auto" id="botModalMsgs"></div>
+    <input class="inp" id="botModalI" style="font-size:12px" placeholder="Type to test chatbot..." onkeydown="if(event.key==='Enter')testBotModal()">
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ─── STORES ───
+const SK={cont:'mg_crm_contacts',tasks:'mg_crm_tasks',tmpl:'mg_crm_templates',bot:'mg_crm_bot',wa:'mg_crm_wa',cfg:'mg_site_v1',pass:'mg_pass_v1'};
+function ld(k){try{return JSON.parse(localStorage.getItem(k)||'[]')}catch{return[]}}
+function ldO(k){try{return JSON.parse(localStorage.getItem(k)||'{}')}catch{return{}}}
+function sv(k,v){localStorage.setItem(k,JSON.stringify(v))}
+function getP(){return localStorage.getItem(SK.pass)||'admin123'}
+
+// ─── AUTH ───
+function doLogin(){
+  if(document.getElementById('lu').value.trim()==='admin'&&document.getElementById('lp').value===getP()){
+    document.getElementById('vL').style.display='none';
+    document.getElementById('vD').style.display='block';
+    initDash();
+  } else toast('Incorrect credentials','err');
+}
+function doLogout(){document.getElementById('vD').style.display='none';document.getElementById('vL').style.display='flex';document.getElementById('lp').value=''}
+
+// ─── TOAST ───
+function toast(m,t='ok'){
+  const el=document.getElementById('toast');
+  el.innerHTML='<i class="ti ti-'+(t==='ok'?'check':t==='wa'?'brand-whatsapp':t==='err'?'x':'info-circle')+'"></i>'+m;
+  el.className=t;el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'),3200);
+}
+
+// ─── MOBILE SIDEBAR ───
+function toggleSB(){document.getElementById('sbNav').classList.toggle('mob-open');document.getElementById('mOv').classList.toggle('open')}
+function closeSB(){document.getElementById('sbNav').classList.remove('mob-open');document.getElementById('mOv').classList.remove('open')}
+
+// ─── ROUTING ───
+function showSec(id,el){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  if(el){document.querySelectorAll('.sbl').forEach(l=>l.classList.remove('active'));el.classList.add('active')}
+  closeSB();
+  const map={'ov':rfOv,'pipeline':renderPipeline,'contacts':renderContacts,'hot':renderHot,'tasks':renderTasks,'inbox':renderInbox,'chatbot':renderChatbot,'bulk':renderBulk,'templates':renderTmpls,'analytics':renderAnalytics,'settings':loadSettings};
+  if(map[id])map[id]();
+}
+
+// ─── INIT ───
+let charts={};
+function dc(k){if(charts[k]){charts[k].destroy();delete charts[k]}}
+function initDash(){
+  document.getElementById('ovDate').textContent=new Date().toLocaleDateString('en-IN',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  if(!ld(SK.cont).length)seedData();
+  if(!ld(SK.tmpl).length)seedTmpls();
+  if(!ld(SK.bot).length)seedBot();
+  rfOv();updateSB();
+}
+
+function seedData(){
+  sv(SK.cont,[
+    {id:1001,name:'Rajesh Kumar',phone:'9876543210',email:'rk@email.com',city:'Jaipur',loanType:'Home Loan',amount:'₹25–50 Lakhs',emp:'Salaried',income:'₹50,000–1 Lakh',stage:'Follow-up',source:'Website form',score:85,temp:'🔥 Hot',notes:'Very interested, called twice',created:new Date(Date.now()-2*86400000).toISOString(),lastContact:new Date(Date.now()-86400000).toISOString()},
+    {id:1002,name:'Priya Mehra',phone:'9988776655',email:'pm@email.com',city:'Udaipur',loanType:'Business Loan',amount:'₹25–50 Lakhs',emp:'Business Owner',income:'Above ₹1 Lakh',stage:'Interested',source:'Facebook Ad',score:78,temp:'🔥 Hot',notes:'Wants to expand restaurant',created:new Date(Date.now()-3*86400000).toISOString(),lastContact:new Date(Date.now()-3600000).toISOString()},
+    {id:1003,name:'Amit Sharma',phone:'9765432109',email:'as@email.com',city:'Jodhpur',loanType:'Loan Against Property',amount:'₹50 Lakhs–1 Crore',emp:'Self-Employed Professional',income:'Above ₹1 Lakh',stage:'New Lead',source:'Referral',score:90,temp:'🔥 Hot',notes:'Has property worth 2Cr',created:new Date(Date.now()-86400000).toISOString(),lastContact:new Date().toISOString()},
+    {id:1004,name:'Sunita Verma',phone:'9654321098',email:'sv@email.com',city:'Kota',loanType:'Personal Loan',amount:'₹5–10 Lakhs',emp:'Salaried',income:'₹25,000–50,000',stage:'Contacted',source:'Cold call',score:45,temp:'🌡 Warm',notes:'Call next week',created:new Date(Date.now()-5*86400000).toISOString(),lastContact:new Date(Date.now()-2*86400000).toISOString()},
+    {id:1005,name:'Vikram Singh',phone:'9543210987',email:'vs@email.com',city:'Bikaner',loanType:'Home Loan',amount:'₹10–25 Lakhs',emp:'Salaried',income:'₹25,000–50,000',stage:'Converted',source:'Website form',score:95,temp:'🔥 Hot',notes:'Loan sanctioned ₹18L',created:new Date(Date.now()-10*86400000).toISOString(),lastContact:new Date(Date.now()-4*86400000).toISOString()},
+    {id:1006,name:'Rohit Agarwal',phone:'9321098765',email:'ra@email.com',city:'Udaipur',loanType:'Business Loan',amount:'Above ₹1 Crore',emp:'Business Owner',income:'Above ₹1 Lakh',stage:'Follow-up',source:'Referral',score:88,temp:'🔥 Hot',notes:'Large expansion — very serious',created:new Date(Date.now()-4*86400000).toISOString(),lastContact:new Date(Date.now()-86400000).toISOString()}
+  ]);
+  sv(SK.tasks,[
+    {id:2001,name:'Rajesh Kumar',phone:'9876543210',type:'📞 Call back',due:new Date(Date.now()+3600000).toISOString(),priority:'high',notes:'Discuss home loan EMI',done:false},
+    {id:2002,name:'Priya Mehra',phone:'9988776655',type:'💬 Send WhatsApp',due:new Date(Date.now()+7200000).toISOString(),priority:'high',notes:'Send rate comparison',done:false},
+    {id:2003,name:'Rohit Agarwal',phone:'9321098765',type:'🤝 Meeting',due:new Date(Date.now()+86400000).toISOString(),priority:'medium',notes:'In-person for large loan',done:false}
+  ]);
+}
+function seedTmpls(){
+  sv(SK.tmpl,[
+    {id:3001,name:'Home loan offer',cat:'🏠 Home Loan',body:'Hello {name}! 👋\n\nGreat news from MoneyGroww! 🏠\n\nSpecial home loan rates from just *8.40% p.a.*!\n\n✅ Loan up to ₹5 Crore\n✅ Tenure up to 30 years\n✅ Approval in 3 days\n✅ Zero hidden charges\n\nReply *YES* for a free consultation! 📞\n\n_MoneyGroww Financial Consultant_ 💚'},
+    {id:3002,name:'Follow-up reminder',cat:'🔔 Follow-up',body:'Hello {name}! 👋\n\nFollowing up on your {loan_type} inquiry from MoneyGroww. 😊\n\nHave you made a decision? We have *unbeatable rates* right now!\n\nReply *CALL* and we\'ll connect within the hour.\n\n_MoneyGroww Financial Consultant_ 💚'},
+    {id:3003,name:'Business loan',cat:'💼 Business Loan',body:'Hello {name}! 🚀\n\nGrow your business with MoneyGroww! 💼\n\n*Business Loan Special:*\n💰 Up to ₹5 Crore\n📈 Flexible repayment\n⚡ Quick disbursal\n🤝 No collateral options\n\nReply *LOAN* for FREE consultation!\n\n_MoneyGroww Financial Consultant_'},
+    {id:3004,name:'Referral request',cat:'⭐ Referral ask',body:'Hello {name}! 😊\n\nThank you for trusting MoneyGroww! 🎉\n\nKnow anyone needing a loan?\n\n🎁 *Refer them & earn ₹2,000 cash* for every successful loan!\n\nJust share their number — we\'ll do the rest.\n\n_MoneyGroww Financial Consultant_ 💚'}
+  ]);
+}
+function seedBot(){
+  sv(SK.bot,[
+    {id:'n1',type:'greeting',message:'Hello! 👋 Welcome to MoneyGroww Financial Consultant!\n\nI\'m your AI loan assistant. How can I help you today?',options:['🏠 Home Loan','💼 Business Loan','👤 Personal Loan','🏢 LAP','📞 Talk to expert']},
+    {id:'n2',type:'qualify',message:'Great choice! What is your approximate monthly income?',options:['Below ₹25,000','₹25,000–50,000','₹50,000–1 Lakh','Above ₹1 Lakh']},
+    {id:'n3',type:'capture',message:'Perfect! 🎉 You qualify for excellent rates!\n\nShare your name & number — our expert calls you within 2 hours!',options:[]},
+    {id:'n4',type:'close',message:'Thank you! ✅ Our expert calls you within 2 hours.\n\n📞 +91 98765 43210\n\n_MoneyGroww — Your loan, your way!_ 💚',options:[]}
+  ]);
+}
+
+// ─── SCORE ───
+function scoreContact(c){
+  let s=0;
+  if(c.income==='Above ₹1 Lakh')s+=30;else if(c.income==='₹50,000–1 Lakh')s+=20;else if(c.income==='₹25,000–50,000')s+=10;
+  if(c.emp==='Business Owner')s+=25;else if(c.emp==='Self-Employed Professional')s+=20;else if(c.emp==='Salaried')s+=15;
+  if(c.amount==='Above ₹1 Crore')s+=20;else if(c.amount==='₹50 Lakhs–1 Crore')s+=17;else if(c.amount==='₹25–50 Lakhs')s+=14;else if(c.amount==='₹10–25 Lakhs')s+=10;else if(c.amount==='₹5–10 Lakhs')s+=6;
+  if(c.stage==='Interested')s+=5;else if(c.stage==='Follow-up')s+=8;
+  return Math.min(100,s);
+}
+function getTemp(s){return s>=70?'🔥 Hot':s>=40?'🌡 Warm':'❄ Cold'}
+function getTB(t){return t==='🔥 Hot'?'b-hot':t==='🌡 Warm'?'b-warm':'b-cold'}
+function getSB(s){return{New:'b-new','New Lead':'b-new',Contacted:'b-follow',Interested:'b-int','Follow-up':'b-follow',Converted:'b-conv',Lost:'b-lost'}[s]||'b-new'}
+
+// ─── SIDEBAR BADGES ───
+function updateSB(){
+  const c=ld(SK.cont),t=ld(SK.tasks),w=ld(SK.wa);
+  document.getElementById('sbP').textContent=c.filter(x=>x.stage!=='Converted'&&x.stage!=='Lost').length;
+  document.getElementById('sbC').textContent=c.length;
+  document.getElementById('sbH').textContent=c.filter(x=>x.temp==='🔥 Hot').length;
+  document.getElementById('sbT').textContent=t.filter(x=>!x.done).length;
+  document.getElementById('sbI').textContent=w.length;
+}
+
+// ─── OVERVIEW ───
+function rfOv(){
+  const c=ld(SK.cont),t=ld(SK.tasks);
+  const hot=c.filter(x=>x.temp==='🔥 Hot'),warm=c.filter(x=>x.temp==='🌡 Warm'),conv=c.filter(x=>x.stage==='Converted');
+  const over=t.filter(x=>!x.done&&new Date(x.due)<new Date());
+  updateSB();
+  const ins=['You have '+hot.length+' hot leads — call them NOW! Focus on '+c.filter(x=>x.stage==='Follow-up').length+' pending follow-ups to close more deals this week.',
+    'Quick tip: Send a WhatsApp to all warm leads in 2 minutes. Conversion rate increases 3x with same-day follow-up!',
+    hot.length+' hot leads ready to convert. '+over.length+' tasks overdue — attend to them immediately to avoid losing deals.'];
+  document.getElementById('aiTxt').textContent=ins[Math.floor(Date.now()/60000)%ins.length];
+  document.getElementById('ovStats').innerHTML=`
+    <div class="sc"><div class="slbl" style="color:var(--g)"><i class="ti ti-users"></i>Total</div><div class="sv" style="color:var(--g)">${c.length}</div><div class="ss">Contacts</div></div>
+    <div class="sc"><div class="slbl" style="color:var(--red)"><i class="ti ti-flame"></i>Hot</div><div class="sv" style="color:var(--red)">${hot.length}</div><div class="ss">Call now</div></div>
+    <div class="sc"><div class="slbl" style="color:var(--gold)"><i class="ti ti-thermometer"></i>Warm</div><div class="sv" style="color:var(--gold)">${warm.length}</div><div class="ss">Nurture</div></div>
+    <div class="sc"><div class="slbl" style="color:var(--g)"><i class="ti ti-circle-check"></i>Converted</div><div class="sv" style="color:var(--g)">${conv.length}</div><div class="ss">Closed</div></div>
+    <div class="sc"><div class="slbl" style="color:var(--red)"><i class="ti ti-alert-circle"></i>Overdue</div><div class="sv" style="color:var(--red)">${over.length}</div><div class="ss">Tasks</div></div>`;
+  const bo={responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:10,padding:8}}}};
+  dc('temp');charts.temp=new Chart(document.getElementById('cTemp'),{type:'doughnut',data:{labels:['🔥 Hot','🌡 Warm','❄ Cold'],datasets:[{data:[hot.length,warm.length,c.filter(x=>x.temp==='❄ Cold').length],backgroundColor:['#fee2e2','#fef3c7','#e0f2fe'],borderColor:['#b91c1c','#b45309','#0e7490'],borderWidth:2}]},options:{...bo,cutout:'62%'}});
+  const stages=['New Lead','Contacted','Interested','Follow-up','Converted','Lost'];
+  dc('stage');charts.stage=new Chart(document.getElementById('cStage'),{type:'bar',data:{labels:stages.map(s=>s.replace(' Lead','').replace('-up','')),datasets:[{data:stages.map(s=>c.filter(x=>x.stage===s).length),backgroundColor:['#e8f7ef','#fdf6e3','#e0f2fe','#ede9fe','#dcfce7','#fee2e2'],borderColor:['#1a7f4e','#b8860b','#0e7490','#6d28d9','#16a34a','#b91c1c'],borderWidth:1.5,borderRadius:4}]},options:{...bo,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{stepSize:1,font:{size:9}}},x:{grid:{display:false},ticks:{font:{size:9}}}}}});
+  const hotTop=c.filter(x=>x.temp==='🔥 Hot'&&x.stage!=='Converted').sort((a,b)=>b.score-a.score).slice(0,5);
+  const ht=document.getElementById('hotTbl');
+  ht.innerHTML=hotTop.length?`<thead><tr><th>Name</th><th>Phone</th><th>Loan</th><th>Score</th><th>Actions</th></tr></thead><tbody>${hotTop.map(x=>`<tr onclick="openDetail(${x.id})"><td style="font-weight:600">${x.name}</td><td>${x.phone}</td><td style="font-size:11px">${(x.loanType||'—').replace(' Loan','')}</td><td><span class="badge b-hot">🔥${x.score}</span></td><td class="ra"><a href="tel:${x.phone}" class="ib grn" onclick="event.stopPropagation()"><i class="ti ti-phone"></i></a><button class="ib wag" onclick="event.stopPropagation();waMsg(${x.id})"><i class="ti ti-brand-whatsapp"></i></button></td></tr>`).join('')}</tbody>`:'<tr><td colspan="5" style="padding:1rem;text-align:center;color:var(--mu);font-size:12px">No hot leads yet</td></tr>';
+  const now2=new Date(),todayStr=now2.toDateString();
+  const td=t.filter(x=>!x.done&&(new Date(x.due).toDateString()===todayStr||new Date(x.due)<now2));
+  document.getElementById('todayTasks').innerHTML=td.length?td.map(x=>`<div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--bdr)"><span style="font-size:15px">${x.type.split(' ')[0]}</span><div style="flex:1"><strong style="font-size:12px">${x.name}</strong><br><span style="font-size:11px;color:var(--mu)">${x.type} • ${new Date(x.due)<now2?'<span style="color:var(--red)">Overdue</span>':new Date(x.due).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})}</span></div><div class="ra"><a href="tel:${x.phone}" class="ib grn"><i class="ti ti-phone"></i></a><button class="ib wag" onclick="waMsgP('${x.phone}','${x.name}')"><i class="ti ti-brand-whatsapp"></i></button><button class="ib" onclick="doneTask(${x.id})"><i class="ti ti-check"></i></button></div></div>`).join(''):'<p style="color:var(--mu);font-size:12px;text-align:center">🎉 All caught up!</p>';
+}
+
+// ─── PIPELINE ───
+const STAGES=['New Lead','Contacted','Interested','Follow-up','Converted','Lost'];
+const SCOLS={'New Lead':'var(--g)','Contacted':'var(--gold)','Interested':'var(--teal)','Follow-up':'var(--pu)','Converted':'#16a34a','Lost':'var(--mu)'};
+function renderPipeline(){
+  const c=ld(SK.cont);
+  document.getElementById('pBoard').innerHTML=STAGES.map(st=>`<div class="pl-col" ondragover="event.preventDefault()" ondrop="dropC(event,'${st}')"><div class="pl-col-head"><span class="pl-col-title" style="color:${SCOLS[st]}">${st}</span><span class="pl-count" style="background:${SCOLS[st]}20;color:${SCOLS[st]}">${c.filter(x=>x.stage===st).length}</span></div>${c.filter(x=>x.stage===st).map(x=>`<div class="pl-card" draggable="true" ondragstart="dragC(event,${x.id})" onclick="openDetail(${x.id})"><div class="pl-card-name">${x.name}</div><div class="pl-card-info">${x.loanType||'No type'} • ${x.amount||'—'}</div><div class="pl-card-foot"><span class="badge ${getTB(x.temp)}" style="font-size:10px">${x.temp}</span><span style="font-size:10px;color:var(--mu)">${x.phone}</span></div></div>`).join('')}</div>`).join('');
+}
+let dragId=null;
+function dragC(e,id){dragId=id}
+function dropC(e,stage){if(!dragId)return;const c=ld(SK.cont),x=c.find(i=>i.id===dragId);if(x){x.stage=stage;x.lastContact=new Date().toISOString();x.score=scoreContact(x);x.temp=getTemp(x.score);sv(SK.cont,c);renderPipeline();updateSB();toast('Moved to '+stage);}dragId=null;}
+
+// ─── CONTACTS ───
+let editCId=null;
+function renderContacts(){
+  const c=ld(SK.cont),q=(document.getElementById('cSrch')?.value||'').toLowerCase(),sf=document.getElementById('cSF')?.value||'',tf=document.getElementById('cTF')?.value||'';
+  const f=c.filter(x=>(!sf||x.stage===sf)&&(!tf||x.temp===tf)&&(!q||x.name.toLowerCase().includes(q)||x.phone.includes(q)||(x.city||'').toLowerCase().includes(q)));
+  document.getElementById('contCnt').textContent=f.length+' contact'+(f.length!==1?'s':'');
+  const b=document.getElementById('cBody');const ne=document.getElementById('noCont');
+  if(!f.length){b.innerHTML='';ne.style.display='block';return}
+  ne.style.display='none';
+  b.innerHTML=f.map(x=>`<tr onclick="openDetail(${x.id})"><td style="font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px">${x.name}</td><td><a href="tel:${x.phone}" onclick="event.stopPropagation()" style="color:var(--g)">${x.phone}</a></td><td style="font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:95px">${x.loanType||'—'}</td><td><span class="badge ${getTB(x.temp)}">${x.temp}</span></td><td><span class="badge ${getSB(x.stage)}" style="font-size:10px">${x.stage}</span></td><td><span style="font-size:11px;font-weight:700;color:${x.score>=70?'var(--red)':x.score>=40?'var(--gold)':'var(--teal)'}">${x.score||0}</span></td><td><div class="ra" onclick="event.stopPropagation()"><a href="tel:${x.phone}" class="ib grn"><i class="ti ti-phone"></i></a><button class="ib wag" onclick="waMsg(${x.id})"><i class="ti ti-brand-whatsapp"></i></button><button class="ib" onclick="editContact(${x.id})"><i class="ti ti-edit"></i></button><button class="ib del" onclick="delCont(${x.id})"><i class="ti ti-trash"></i></button></div></td></tr>`).join('');
+}
+function openAddContact(){editCId=null;['c_name','c_phone','c_email','c_city','c_notes'].forEach(i=>document.getElementById(i).value='');['c_loan','c_amt','c_emp','c_inc','c_stage','c_src'].forEach(i=>document.getElementById(i).selectedIndex=0);document.getElementById('mContactTitle').innerHTML='<i class="ti ti-user-plus"></i> Add Contact';openMod('mAddContact')}
+function editContact(id){const x=ld(SK.cont).find(c=>c.id===id);if(!x)return;editCId=id;document.getElementById('c_name').value=x.name||'';document.getElementById('c_phone').value=x.phone||'';document.getElementById('c_email').value=x.email||'';document.getElementById('c_city').value=x.city||'';document.getElementById('c_notes').value=x.notes||'';[['c_loan','loanType'],['c_amt','amount'],['c_emp','emp'],['c_inc','income'],['c_stage','stage'],['c_src','source']].forEach(([el,key])=>{const e=document.getElementById(el);if(e&&x[key])e.value=x[key]});document.getElementById('mContactTitle').innerHTML='<i class="ti ti-edit"></i> Edit Contact';openMod('mAddContact')}
+function saveContact(){
+  const name=document.getElementById('c_name').value.trim(),phone=document.getElementById('c_phone').value.trim();
+  if(!name){toast('Enter a name','err');return}if(!/^\d{10}$/.test(phone)){toast('Valid 10-digit phone required','err');return}
+  const c=ld(SK.cont);
+  const x={id:editCId||Date.now(),name,phone,email:document.getElementById('c_email').value.trim(),city:document.getElementById('c_city').value.trim(),loanType:document.getElementById('c_loan').value,amount:document.getElementById('c_amt').value,emp:document.getElementById('c_emp').value,income:document.getElementById('c_inc').value,stage:document.getElementById('c_stage').value,source:document.getElementById('c_src').value,notes:document.getElementById('c_notes').value.trim(),created:editCId?c.find(i=>i.id===editCId)?.created||new Date().toISOString():new Date().toISOString(),lastContact:new Date().toISOString()};
+  x.score=scoreContact(x);x.temp=getTemp(x.score);
+  if(editCId){const idx=c.findIndex(i=>i.id===editCId);if(idx>-1)c[idx]={...c[idx],...x};}else c.unshift(x);
+  sv(SK.cont,c);closeMod('mAddContact');updateSB();renderContacts();rfOv();toast(editCId?'Contact updated!':'Contact added!');editCId=null;
+}
+function delCont(id){if(!confirm('Delete?'))return;sv(SK.cont,ld(SK.cont).filter(c=>c.id!==id));renderContacts();updateSB();rfOv();toast('Deleted')}
+function openDetail(id){
+  const x=ld(SK.cont).find(c=>c.id===id);if(!x)return;
+  const cfg=ldO(SK.cfg),waN=(cfg.waNumber||'919876543210').replace(/[^0-9]/g,'');
+  const waM=`Hello ${x.name}! 👋 MoneyGroww here.\n\nFollowing up on your ${x.loanType||'loan'} inquiry. Great rates available! Interested?\n\n_MoneyGroww Financial Consultant_ 💚`;
+  document.getElementById('detTitle').innerHTML=`<i class="ti ti-user"></i> ${x.name} <span class="badge ${getTB(x.temp)}" style="font-size:10px;vertical-align:middle">${x.temp}</span>`;
+  document.getElementById('detBody').innerHTML=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1rem">
+    <div><label style="font-size:10px;font-weight:700;color:var(--mu);text-transform:uppercase;display:block;margin-bottom:2px">Phone</label><a href="tel:${x.phone}" style="color:var(--g);font-size:13px">${x.phone}</a></div>
+    <div><label style="font-size:10px;font-weight:700;color:var(--mu);text-transform:uppercase;display:block;margin-bottom:2px">Email</label><span style="font-size:13px">${x.email||'—'}</span></div>
+    <div><label style="font-size:10px;font-weight:700;color:var(--mu);text-transform:uppercase;display:block;margin-bottom:2px">City</label><span style="font-size:13px">${x.city||'—'}</span></div>
+    <div><label style="font-size:10px;font-weight:700;color:var(--mu);text-transform:uppercase;display:block;margin-bottom:2px">Source</label><span style="font-size:13px">${x.source||'—'}</span></div>
+    <div><label style="font-size:10px;font-weight:700;color:var(--mu);text-transform:uppercase;display:block;margin-bottom:2px">Loan type</label><span style="font-size:13px">${x.loanType||'—'}</span></div>
+    <div><label style="font-size:10px;font-weight:700;color:var(--mu);text-transform:uppercase;display:block;margin-bottom:2px">Amount</label><span style="font-size:13px">${x.amount||'—'}</span></div>
+    <div><label style="font-size:10px;font-weight:700;color:var(--mu);text-transform:uppercase;display:block;margin-bottom:2px">Employment</label><span style="font-size:13px">${x.emp||'—'}</span></div>
+    <div><label style="font-size:10px;font-weight:700;color:var(--mu);text-transform:uppercase;display:block;margin-bottom:2px">Lead score</label><span style="font-size:13px;font-weight:700;color:${x.score>=70?'var(--red)':x.score>=40?'var(--gold)':'var(--teal)'}">${x.score}/100</span></div>
+  </div>${x.notes?`<div style="background:var(--bg);border-radius:var(--r);padding:8px 10px;margin-bottom:1rem;font-size:12px"><strong style="font-size:10px;color:var(--mu);text-transform:uppercase">Notes</strong><p style="margin-top:3px">${x.notes}</p></div>`:''}
+  <label class="il">Update stage</label>
+  <select class="inp" style="margin-top:4px;margin-bottom:1rem" onchange="updStage(${x.id},this.value)">${STAGES.map(s=>`<option${x.stage===s?' selected':''}>${s}</option>`).join('')}</select>
+  <div style="display:flex;gap:7px;flex-wrap:wrap">
+    <a href="tel:${x.phone}" class="btn btn-g" style="flex:1;justify-content:center"><i class="ti ti-phone"></i> Call</a>
+    <a href="https://wa.me/${waN.replace(waN,'91'+x.phone)}?text=${encodeURIComponent(waM)}" target="_blank" class="btn btn-wa" style="flex:1;justify-content:center"><i class="ti ti-brand-whatsapp"></i> WhatsApp</a>
+    <button class="btn btn-out btn-sm" onclick="closeMod('mDetail');editContact(${x.id})"><i class="ti ti-edit"></i></button>
+    <button class="btn btn-red btn-sm" onclick="delCont(${x.id});closeMod('mDetail')"><i class="ti ti-trash"></i></button>
+  </div>`;
+  openMod('mDetail');
+}
+function updStage(id,v){const c=ld(SK.cont),x=c.find(i=>i.id===id);if(x){x.stage=v;x.lastContact=new Date().toISOString();sv(SK.cont,c);toast('Stage → '+v);updateSB()}}
+
+// ─── HOT LEADS ───
+function renderHot(){
+  const c=ld(SK.cont),hot=c.filter(x=>x.temp==='🔥 Hot').sort((a,b)=>b.score-a.score);
+  document.getElementById('scoreFact').innerHTML=`
+    <div class="srow"><span style="font-size:11px;font-weight:600;width:110px">High income</span><div class="sbar"><div class="sfill" style="width:90%;background:#22c55e"></div></div><span style="font-size:11px;font-weight:700;color:#22c55e">+30</span></div>
+    <div class="srow"><span style="font-size:11px;font-weight:600;width:110px">Business owner</span><div class="sbar"><div class="sfill" style="width:75%;background:#f59e0b"></div></div><span style="font-size:11px;font-weight:700;color:#f59e0b">+25</span></div>
+    <div class="srow"><span style="font-size:11px;font-weight:600;width:110px">Large loan amt</span><div class="sbar"><div class="sfill" style="width:60%;background:#3b82f6"></div></div><span style="font-size:11px;font-weight:700;color:#3b82f6">+20</span></div>
+    <div class="srow"><span style="font-size:11px;font-weight:600;width:110px">Self-employed</span><div class="sbar"><div class="sfill" style="width:50%;background:#8b5cf6"></div></div><span style="font-size:11px;font-weight:700;color:#8b5cf6">+20</span></div>
+    <div class="srow"><span style="font-size:11px;font-weight:600;width:110px">Follow-up stage</span><div class="sbar"><div class="sfill" style="width:30%;background:#ec4899"></div></div><span style="font-size:11px;font-weight:700;color:#ec4899">+8</span></div>`;
+  const tbl=document.getElementById('hotRank'),nH=document.getElementById('noHot');
+  if(!hot.length){tbl.innerHTML='';nH.style.display='block';return}
+  nH.style.display='none';
+  tbl.innerHTML=`<thead><tr><th>#</th><th>Name</th><th>Phone</th><th>Score</th><th>Stage</th><th>Actions</th></tr></thead><tbody>${hot.map((x,i)=>`<tr onclick="openDetail(${x.id})"><td style="font-weight:700;color:var(--red)">#${i+1}</td><td style="font-weight:600">${x.name}</td><td>${x.phone}</td><td><span class="badge b-hot">🔥${x.score}</span></td><td><span class="badge ${getSB(x.stage)}" style="font-size:10px">${x.stage}</span></td><td class="ra"><a href="tel:${x.phone}" class="ib grn" onclick="event.stopPropagation()"><i class="ti ti-phone"></i></a><button class="ib wag" onclick="event.stopPropagation();waMsg(${x.id})"><i class="ti ti-brand-whatsapp"></i></button></td></tr>`).join('')}</tbody>`;
+}
+function bulkWAHot(){const hot=ld(SK.cont).filter(c=>c.temp==='🔥 Hot');if(!hot.length){toast('No hot leads','err');return}toast('Opening WA for '+hot.length+' hot leads...','wa');hot.forEach((c,i)=>setTimeout(()=>window.open('https://wa.me/91'+c.phone+'?text='+encodeURIComponent('Hello '+c.name+'! 👋 MoneyGroww here. We have a special offer on '+c.loanType+'! Interested? 💚'),'_blank'),i*600))}
+
+// ─── TASKS ───
+function renderTasks(){
+  const t=ld(SK.tasks),now=new Date();
+  const over=t.filter(x=>!x.done&&new Date(x.due)<now&&new Date(x.due).toDateString()!==now.toDateString());
+  const today=t.filter(x=>!x.done&&new Date(x.due).toDateString()===now.toDateString());
+  const up=t.filter(x=>!x.done&&new Date(x.due)>now&&new Date(x.due).toDateString()!==now.toDateString());
+  function tCards(arr){return arr.length?arr.map(x=>`<div style="background:var(--bg);border-radius:var(--r);padding:7px 9px;margin-bottom:6px"><div style="font-size:12px;font-weight:600;margin-bottom:2px">${x.type} — ${x.name}</div><div style="font-size:10px;color:var(--mu);margin-bottom:5px">${new Date(x.due).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})}</div><div class="ra"><a href="tel:${x.phone}" class="ib grn" style="width:24px;height:24px;font-size:12px"><i class="ti ti-phone"></i></a><button class="ib wag" style="width:24px;height:24px;font-size:12px" onclick="waMsgP('${x.phone}','${x.name}')"><i class="ti ti-brand-whatsapp"></i></button><button class="ib" style="width:24px;height:24px;font-size:12px" onclick="doneTask(${x.id})"><i class="ti ti-check"></i></button></div></div>`).join(''):'<p style="font-size:11px;color:var(--mu);text-align:center;padding:6px">None</p>'}
+  document.getElementById('taskCols').innerHTML=`<div class="card"><div class="card-head" style="background:#fee2e2;padding:.5rem .75rem"><h3 style="color:var(--red);font-size:12px"><i class="ti ti-alert-circle"></i> Overdue (${over.length})</h3></div><div class="card-body" style="padding:8px">${tCards(over)}</div></div><div class="card"><div class="card-head" style="background:#fef3c7;padding:.5rem .75rem"><h3 style="color:var(--gold);font-size:12px"><i class="ti ti-clock"></i> Today (${today.length})</h3></div><div class="card-body" style="padding:8px">${tCards(today)}</div></div><div class="card"><div class="card-head" style="background:var(--gl);padding:.5rem .75rem"><h3 style="color:var(--g);font-size:12px"><i class="ti ti-calendar"></i> Upcoming (${up.length})</h3></div><div class="card-body" style="padding:8px">${tCards(up)}</div></div>`;
+  const tbl=document.getElementById('taskTbl'),nT=document.getElementById('noTasks');
+  if(!t.length){tbl.innerHTML='';nT.style.display='block';return}
+  nT.style.display='none';
+  tbl.innerHTML=`<thead><tr><th>Type</th><th>Name</th><th>Phone</th><th>Due</th><th>Priority</th><th>Status</th><th>Actions</th></tr></thead><tbody>${t.map(x=>`<tr style="${x.done?'opacity:.5':''}"><td style="font-size:12px">${x.type}</td><td style="font-weight:600">${x.name}</td><td>${x.phone}</td><td style="${!x.done&&new Date(x.due)<new Date()?'color:var(--red);font-weight:600':''}font-size:11px">${new Date(x.due).toLocaleString('en-IN',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'})}</td><td><span class="badge" style="background:${x.priority==='high'?'#fee2e2':x.priority==='medium'?'#fef3c7':'#dcfce7'};color:${x.priority==='high'?'#b91c1c':x.priority==='medium'?'#b45309':'#166534'}">${x.priority}</span></td><td><span class="badge ${x.done?'b-conv':'b-new'}">${x.done?'Done':'Pending'}</span></td><td class="ra"><a href="tel:${x.phone}" class="ib grn"><i class="ti ti-phone"></i></a><button class="ib wag" onclick="waMsgP('${x.phone}','${x.name}')"><i class="ti ti-brand-whatsapp"></i></button><button class="ib" onclick="doneTask(${x.id})" title="${x.done?'Reopen':'Done'}"><i class="ti ti-${x.done?'refresh':'check'}"></i></button><button class="ib del" onclick="delTask(${x.id})"><i class="ti ti-trash"></i></button></td></tr>`).join('')}</tbody>`;
+}
+function openAddTask(){const n=new Date();n.setHours(n.getHours()+2);document.getElementById('t_due').value=n.toISOString().slice(0,16);openMod('mTask')}
+function saveTask(){const name=document.getElementById('t_name').value.trim(),phone=document.getElementById('t_phone').value.trim();if(!name||!phone){toast('Name & phone required','err');return}const t=ld(SK.tasks);t.unshift({id:Date.now(),name,phone,type:document.getElementById('t_type').value,due:document.getElementById('t_due').value,priority:document.getElementById('t_pri').value,notes:document.getElementById('t_notes').value,done:false});sv(SK.tasks,t);closeMod('mTask');renderTasks();updateSB();toast('Task added!')}
+function doneTask(id){const t=ld(SK.tasks),x=t.find(i=>i.id===id);if(x)x.done=!x.done;sv(SK.tasks,t);renderTasks();updateSB()}
+function delTask(id){if(!confirm('Delete?'))return;sv(SK.tasks,ld(SK.tasks).filter(t=>t.id!==id));renderTasks();updateSB()}
+
+// ─── WA INBOX ───
+let activeChatPhone='',activeChatName='',chatMsgs=[];
+const AVCOLORS=['#1a7f4e','#b8860b','#0e7490','#6d28d9','#b91c1c','#0f5c37'];
+function renderInbox(){
+  const c=ld(SK.cont),w=ld(SK.wa);
+  const all=[...w,...c.filter(x=>!w.find(y=>y.phone===x.phone)).map(x=>({name:x.name,phone:x.phone,msgs:[{from:'bot',text:'Hello '+x.name+'! 👋 Welcome to MoneyGroww! How can I help you today?',time:new Date(x.created||Date.now()).toISOString()}],unread:0}))];
+  document.getElementById('waContacts').innerHTML=all.slice(0,20).map((x,i)=>`<div class="wa-ci${activeChatPhone===x.phone?' active':''}" onclick="openChat('${x.phone}','${x.name.replace(/'/g,"\\'")}')"><div class="wa-av" style="background:${AVCOLORS[i%AVCOLORS.length]}">${x.name.charAt(0).toUpperCase()}</div><div style="flex:1;min-width:0"><div class="wa-cn">${x.name}</div><div class="wa-cp">${(x.msgs?.length?x.msgs[x.msgs.length-1].text:'Start chatting').substring(0,35)}</div></div><div>${x.msgs?.length?`<div style="font-size:10px;color:var(--mu)">${new Date(x.msgs[x.msgs.length-1].time).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})}</div>`:''}</div></div>`).join('');
+}
+function openChat(phone,name){
+  activeChatPhone=phone;activeChatName=name;
+  const w=ld(SK.wa),c=ld(SK.cont);
+  const existing=w.find(x=>x.phone===phone)||c.find(x=>x.phone===phone);
+  chatMsgs=existing?.msgs||[{from:'bot',text:'Hello '+name+'! 👋 Welcome to MoneyGroww Financial Consultant!\n\nI\'m your AI loan assistant. How can I help you today?',time:new Date().toISOString()}];
+  const cfg=ldO(SK.cfg),waNum=(cfg.waNumber||'919876543210').replace(/[^0-9]/g,'');
+  document.getElementById('waChat').innerHTML=`<div class="wa-chat-head"><div class="wa-av" style="background:var(--g);width:32px;height:32px;font-size:12px">${name.charAt(0).toUpperCase()}</div><div><div class="wa-chat-name">${name}</div><div class="wa-chat-status">● Online — AI auto-reply active</div></div><div style="margin-left:auto;display:flex;gap:5px"><a href="tel:${phone}" class="tbtn" style="font-size:11px;padding:4px 8px"><i class="ti ti-phone"></i></a><a href="https://wa.me/91${phone}" target="_blank" class="tbtn tbtn-wa" style="font-size:11px;padding:4px 8px"><i class="ti ti-brand-whatsapp"></i></a></div></div><div class="wa-msgs" id="waMsgs"></div><div class="wa-inp-area"><input class="wa-inp" id="waInp" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendWA()"><button class="wa-send" onclick="sendWA()"><i class="ti ti-send"></i></button></div>`;
+  renderWAMsgs();renderInbox();
+}
+function renderWAMsgs(){const el=document.getElementById('waMsgs');if(!el)return;el.innerHTML=chatMsgs.map(m=>`<div class="wa-msg ${m.from==='me'?'sent':'recv'}">${m.from==='bot'?'<div class="wa-bot-l">🤖 AI Assistant</div>':''}<div style="white-space:pre-wrap">${m.text}</div><div class="wa-msg-t">${new Date(m.time).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})}${m.from==='me'?' ✓✓':''}</div></div>`).join('');el.scrollTop=el.scrollHeight}
+function sendWA(){const inp=document.getElementById('waInp');if(!inp?.value.trim())return;const txt=inp.value.trim();inp.value='';chatMsgs.push({from:'me',text:txt,time:new Date().toISOString()});renderWAMsgs();setTimeout(()=>{const r=getBotR(txt);chatMsgs.push({from:'bot',text:r,time:new Date().toISOString()});renderWAMsgs();const w=ld(SK.wa),idx=w.findIndex(x=>x.phone===activeChatPhone);const obj={name:activeChatName,phone:activeChatPhone,msgs:chatMsgs,unread:0};if(idx>-1)w[idx]=obj;else w.unshift(obj);sv(SK.wa,w);updateSB()},1200)}
+function getBotR(m){const ml=m.toLowerCase();if(ml.includes('home')||ml.includes('house'))return'🏠 *Home Loan from MoneyGroww:*\n\n✅ Rate from 8.40% p.a.\n✅ Loan up to ₹5 Crore\n✅ 30-year tenure\n✅ 3-day approval\n\nReply *YES* for a FREE consultation! 📞';if(ml.includes('business'))return'💼 *Business Loan from MoneyGroww:*\n\n✅ Rate from 11.00% p.a.\n✅ Up to ₹5 Crore\n✅ No collateral options\n✅ Quick disbursal\n\nReply *YES* for a FREE consultation! 🚀';if(ml.includes('personal'))return'👤 *Personal Loan from MoneyGroww:*\n\n✅ Rate from 10.50% p.a.\n✅ Same-day disbursal\n✅ No collateral\n✅ Minimal documentation\n\nReply *YES* for a callback! ⚡';if(ml.includes('lap')||ml.includes('property'))return'🏢 *Loan Against Property:*\n\n✅ Rate from 9.25% p.a.\n✅ Up to 70% of property value\n✅ Keep using your property\n\nReply *YES* to know how much you can get! 💰';if(ml.includes('yes')||ml.includes('call')||ml.includes('interested'))return`✅ *You are on our priority list!*\n\nOur expert will call ${activeChatName} at ${activeChatPhone} within 2 hours.\n\n📞 Direct: +91 98765 43210\n\n_MoneyGroww — Your loan, your way!_ 💚`;if(ml.includes('rate')||ml.includes('interest'))return'📊 *Current best rates:*\n\n🏠 Home Loan: 8.40%+\n🏢 LAP: 9.25%+\n👤 Personal: 10.50%+\n💼 Business: 11.00%+\n\nWant a personalised rate? Reply *RATE* 😊';if(ml.includes('doc')||ml.includes('document'))return'📋 *Documents needed:*\n\n*Salaried:*\n• Aadhaar + PAN\n• 3 months salary slips\n• 6 months bank statement\n\n*Self-employed:*\n• Aadhaar + PAN\n• ITR last 2 years\n• Business proof\n\nWe guide you through everything! 😊';return'Thank you! 😊 Ask about:\n🏠 Home Loan | 💼 Business\n👤 Personal | 🏢 LAP\n📊 Rates | 📋 Documents\n\nOr reply *CALL* — expert reaches you in 2 hours! 📞'}
+function openNewChat(){const p=prompt('Enter 10-digit phone number:');if(!p||!/^\d{10}$/.test(p)){toast('Invalid number','err');return}const n=prompt('Contact name:');if(!n)return;openChat(p,n)}
+
+// ─── CHATBOT BUILDER ───
+function renderChatbot(){
+  const f=ld(SK.bot);
+  document.getElementById('botFlow').innerHTML=f.map((n,i)=>`<div class="bot-node" style="margin-bottom:8px"><div class="bot-nh"><span class="bot-type"><i class="ti ti-${n.type==='greeting'?'hand-stop':n.type==='qualify'?'help-circle':n.type==='capture'?'user-check':'circle-check'}"></i>${n.type.charAt(0).toUpperCase()+n.type.slice(1)}</span><div class="ra"><button class="ib" onclick="mvNode(${i},-1)" ${i===0?'disabled':''}><i class="ti ti-chevron-up"></i></button><button class="ib" onclick="mvNode(${i},1)" ${i===f.length-1?'disabled':''}><i class="ti ti-chevron-down"></i></button><button class="ib del" onclick="delNode(${i})"><i class="ti ti-trash"></i></button></div></div><div class="fr"><label class="il">Bot message</label><textarea class="inp" style="font-size:12px" rows="3" onchange="updNode(${i},'message',this.value)">${n.message}</textarea></div>${n.options?.length?`<div class="fr"><label class="il">Quick reply options</label><div class="bot-opts">${n.options.map((o,j)=>`<span class="bot-opt">${o}<button onclick="rmOpt(${i},${j})">×</button></span>`).join('')}</div><input class="inp" style="font-size:11px;margin-top:5px" placeholder="Add option, press Enter..." onkeydown="if(event.key==='Enter'){addOpt(${i},this.value);this.value=''}"></div>`:''}</div>${i<f.length-1?'<div style="text-align:center;color:var(--mu);font-size:16px;margin:4px 0">↓</div>':''}`).join('');
+  renderBotPrev();
+}
+function updNode(i,k,v){const f=ld(SK.bot);f[i][k]=v;sv(SK.bot,f)}
+function addNode(){const f=ld(SK.bot);f.push({id:'n'+Date.now(),type:'message',message:'Type your message here...',options:['Yes','No','Tell me more']});sv(SK.bot,f);renderChatbot()}
+function delNode(i){if(!confirm('Delete step?'))return;const f=ld(SK.bot);f.splice(i,1);sv(SK.bot,f);renderChatbot()}
+function mvNode(i,d){const f=ld(SK.bot);[f[i],f[i+d]]=[f[i+d],f[i]];sv(SK.bot,f);renderChatbot()}
+function addOpt(i,v){if(!v.trim())return;const f=ld(SK.bot);f[i].options=f[i].options||[];f[i].options.push(v.trim());sv(SK.bot,f);renderChatbot()}
+function rmOpt(i,j){const f=ld(SK.bot);f[i].options.splice(j,1);sv(SK.bot,f);renderChatbot()}
+function saveBot(){toast('Chatbot saved!')}
+function renderBotPrev(){const f=ld(SK.bot),el=document.getElementById('botPrev');if(!el)return;el.innerHTML=f.slice(0,2).map(n=>`<div class="wa-msg recv" style="font-size:11px"><div class="wa-bot-l">🤖</div><div style="white-space:pre-wrap">${n.message.substring(0,100)}${n.message.length>100?'...':''}</div>${n.options?.length?`<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px">${n.options.map(o=>`<span style="background:var(--gl);border:1px solid var(--g);color:var(--g);border-radius:20px;padding:2px 9px;font-size:10px;cursor:pointer" onclick="selBotOpt('${o}')">${o}</span>`).join('')}</div>`:''}</div>`).join('')}
+function selBotOpt(opt){const el=document.getElementById('botPrev');if(!el)return;const r=getBotR(opt);el.innerHTML+=`<div class="wa-msg sent" style="font-size:11px">${opt}</div><div class="wa-msg recv" style="font-size:11px"><div class="wa-bot-l">🤖</div><div style="white-space:pre-wrap">${r.substring(0,150)}</div></div>`;el.scrollTop=el.scrollHeight}
+function testBotI(){const el=document.getElementById('botTestI');if(!el?.value.trim())return;const t=el.value;el.value='';const r=getBotR(t);const prev=document.getElementById('botPrev');prev.innerHTML+=`<div class="wa-msg sent" style="font-size:11px">${t}</div><div class="wa-msg recv" style="font-size:11px"><div class="wa-bot-l">🤖</div><div style="white-space:pre-wrap">${r.substring(0,150)}</div></div>`;prev.scrollTop=prev.scrollHeight}
+function previewBot(){openMod('mBotPrev');const f=ld(SK.bot);document.getElementById('botModalMsgs').innerHTML=f.slice(0,1).map(n=>`<div class="wa-msg recv" style="font-size:12px"><div class="wa-bot-l">🤖</div><div style="white-space:pre-wrap">${n.message}</div>${n.options?.length?`<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:7px">${n.options.map(o=>`<button onclick="selBotModal('${o}')" style="background:var(--gl);border:1px solid var(--g);color:var(--g);border-radius:20px;padding:3px 10px;font-size:11px;cursor:pointer;font-family:inherit">${o}</button>`).join('')}</div>`:''}</div>`).join('')}
+function selBotModal(opt){const r=getBotR(opt);const el=document.getElementById('botModalMsgs');el.innerHTML+=`<div class="wa-msg sent" style="font-size:12px">${opt}</div><div class="wa-msg recv" style="font-size:12px"><div class="wa-bot-l">🤖</div><div style="white-space:pre-wrap">${r}</div></div>`;el.scrollTop=el.scrollHeight}
+function testBotModal(){const inp=document.getElementById('botModalI');if(!inp?.value.trim())return;const t=inp.value;inp.value='';const r=getBotR(t);const el=document.getElementById('botModalMsgs');el.innerHTML+=`<div class="wa-msg sent" style="font-size:12px">${t}</div><div class="wa-msg recv" style="font-size:12px"><div class="wa-bot-l">🤖</div><div style="white-space:pre-wrap">${r}</div></div>`;el.scrollTop=el.scrollHeight}
+
+// ─── BULK ───
+let bulkR=[],selTmpl=null;
+function renderBulk(){
+  const t=ld(SK.tmpl);
+  document.getElementById('bulkTmplList').innerHTML=t.map(x=>`<div class="tcard${selTmpl===x.id?' sel':''}" onclick="selT(${x.id})"><div class="tcard-name"><i class="ti ti-template" style="color:var(--g)"></i>${x.name} <small style="color:var(--mu)">${x.cat}</small></div><div class="tcard-prev">${x.body.substring(0,80)}...</div></div>`).join('')||'<p style="color:var(--mu);font-size:12px">No templates yet. Go to Templates to create one.</p>';
+  renderBulkPrev();
+}
+function selT(id){selTmpl=id;const t=ld(SK.tmpl).find(x=>x.id===id);if(t)document.getElementById('bulkMsg').value=t.body;document.getElementById('sndTmpl').textContent=t?t.name.substring(0,15):'None';renderBulk();renderBulkPrev()}
+function selGrp(g){const c=ld(SK.cont);if(g==='none')bulkR=[];else if(g==='all')bulkR=c.map(x=>({name:x.name,phone:x.phone,loanType:x.loanType}));else if(g==='hot')bulkR=c.filter(x=>x.temp==='🔥 Hot').map(x=>({name:x.name,phone:x.phone,loanType:x.loanType}));else if(g==='warm')bulkR=c.filter(x=>x.temp==='🌡 Warm').map(x=>({name:x.name,phone:x.phone,loanType:x.loanType}));else if(g==='cold')bulkR=c.filter(x=>x.temp==='❄ Cold').map(x=>({name:x.name,phone:x.phone,loanType:x.loanType}));else if(g==='followup')bulkR=c.filter(x=>x.stage==='Follow-up').map(x=>({name:x.name,phone:x.phone,loanType:x.loanType}));renderRTags();renderBulkPrev()}
+function renderRTags(){const el=document.getElementById('rTags');el.innerHTML=bulkR.map((r,i)=>`<span class="rtag">${r.name}<button onclick="rmR(${i})">×</button></span>`).join('');document.getElementById('rCnt').textContent=bulkR.length+' recipients selected';document.getElementById('sndCnt').textContent=bulkR.length;document.getElementById('sndEta').textContent=bulkR.length?Math.ceil(bulkR.length*3/60)+' min':'—'}
+function rmR(i){bulkR.splice(i,1);renderRTags()}
+function insVar(v){const el=document.getElementById('bulkMsg');const p=el.selectionStart;el.value=el.value.slice(0,p)+v+el.value.slice(el.selectionEnd);renderBulkPrev()}
+function renderBulkPrev(){const msg=document.getElementById('bulkMsg')?.value||'';const s=bulkR[0]||{name:'Customer',loanType:'Home Loan',phone:'XXXXXXXXXX'};document.getElementById('msgPrev').textContent=(msg.replace(/{name}/g,s.name).replace(/{loan_type}/g,s.loanType||'loan'))||'Select template to preview'}
+document.addEventListener('input',e=>{if(e.target.id==='bulkMsg')renderBulkPrev()});
+function sendBulk(){if(!bulkR.length){toast('Select recipients first','err');return}const msg=document.getElementById('bulkMsg').value.trim();if(!msg){toast('Write a message first','err');return}if(!confirm('Send WhatsApp to '+bulkR.length+' contacts?'))return;const btn=document.getElementById('sendBtn');btn.style.display='none';document.getElementById('sndProg').style.display='block';document.getElementById('sndDone').style.display='none';let sent=0;function nxt(){if(sent>=bulkR.length){document.getElementById('sndProg').style.display='none';document.getElementById('sndDone').style.display='block';toast('Sent to '+sent+' contacts!','wa');btn.style.display='';return}const r=bulkR[sent],pm=msg.replace(/{name}/g,r.name).replace(/{loan_type}/g,r.loanType||'loan');window.open('https://wa.me/91'+r.phone+'?text='+encodeURIComponent(pm),'_blank');sent++;const pct=Math.round(sent/bulkR.length*100);document.getElementById('sndBar').style.width=pct+'%';document.getElementById('sndPct').textContent=pct+'%';document.getElementById('sndNote').textContent='Sent to '+r.name+' ('+sent+'/'+bulkR.length+')';setTimeout(nxt,1500)}nxt()}
+
+// ─── TEMPLATES ───
+function renderTmpls(){const t=ld(SK.tmpl);document.getElementById('tmplList').innerHTML=t.length?t.map(x=>`<div class="card"><div class="card-head"><h3 style="font-size:13px">${x.cat} — ${x.name}</h3><div class="ra"><button class="ib grn" onclick="useTmpl(${x.id})" title="Use in bulk"><i class="ti ti-send"></i></button><button class="ib del" onclick="delTmpl(${x.id})"><i class="ti ti-trash"></i></button></div></div><div class="card-body" style="font-size:12px;line-height:1.7;white-space:pre-wrap;color:var(--mu)">${x.body}</div></div>`).join(''):'<div class="empty"><i class="ti ti-template"></i><p style="font-size:13px;font-weight:600">No templates yet</p></div>'}
+function openAddTmpl(){openMod('mTmpl')}
+function saveTmpl(){const n=document.getElementById('tm_name').value.trim(),b=document.getElementById('tm_body').value.trim();if(!n||!b){toast('Name & body required','err');return}const t=ld(SK.tmpl);t.unshift({id:Date.now(),name:n,cat:document.getElementById('tm_cat').value,body:b});sv(SK.tmpl,t);closeMod('mTmpl');renderTmpls();toast('Template saved!')}
+function delTmpl(id){if(!confirm('Delete?'))return;sv(SK.tmpl,ld(SK.tmpl).filter(t=>t.id!==id));renderTmpls();toast('Deleted')}
+function useTmpl(id){selTmpl=id;showSec('bulk',document.querySelectorAll('.sbl')[7]);selT(id)}
+
+// ─── ANALYTICS ───
+function renderAnalytics(){
+  const c=ld(SK.cont),conv=c.filter(x=>x.stage==='Converted').length,w=ld(SK.wa);
+  document.getElementById('anaStats').innerHTML=`<div class="sc"><div class="slbl" style="color:var(--g)"><i class="ti ti-users"></i>Contacts</div><div class="sv" style="color:var(--g)">${c.length}</div><div class="ss">Total in CRM</div></div><div class="sc"><div class="slbl" style="color:var(--g)"><i class="ti ti-percentage"></i>Conv. rate</div><div class="sv" style="color:var(--g)">${c.length?Math.round(conv/c.length*100):0}%</div><div class="ss">Converted</div></div><div class="sc"><div class="slbl" style="color:var(--wa)"><i class="ti ti-brand-whatsapp"></i>WA Chats</div><div class="sv" style="color:var(--wa)">${w.length}</div><div class="ss">Active chats</div></div><div class="sc"><div class="slbl" style="color:var(--red)"><i class="ti ti-flame"></i>Hot leads</div><div class="sv" style="color:var(--red)">${c.filter(x=>x.temp==='🔥 Hot').length}</div><div class="ss">Ready to close</div></div>`;
+  const bo={responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:10,padding:7}}}};
+  const stages=['New Lead','Contacted','Interested','Follow-up','Converted'];
+  dc('f');charts.f=new Chart(document.getElementById('cFunnel'),{type:'bar',data:{labels:stages.map(s=>s.replace(' Lead','').replace('-up','')),datasets:[{data:stages.map(s=>c.filter(x=>x.stage===s).length),backgroundColor:['#e8f7ef','#fdf6e3','#e0f2fe','#ede9fe','#dcfce7'],borderColor:['#1a7f4e','#b8860b','#0e7490','#6d28d9','#16a34a'],borderWidth:1.5,borderRadius:4}]},options:{...bo,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{stepSize:1,font:{size:9}}},x:{grid:{display:false},ticks:{font:{size:9}}}}}});
+  const days=[],msgs=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);days.push(d.toLocaleDateString('en-IN',{weekday:'short'}));msgs.push(Math.floor(Math.random()*12)+1)}
+  dc('m');charts.m=new Chart(document.getElementById('cMsgs'),{type:'line',data:{labels:days,datasets:[{data:msgs,borderColor:'#25D366',backgroundColor:'rgba(37,211,102,.1)',fill:true,tension:.4,pointBackgroundColor:'#25D366',pointRadius:3}]},options:{...bo,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{stepSize:2,font:{size:9}}},x:{grid:{display:false},ticks:{font:{size:9}}}}}});
+  const hrs=['9am','10am','11am','12pm','2pm','3pm','4pm','5pm'],conv2=[2,5,8,6,3,9,7,4];
+  dc('t');charts.t=new Chart(document.getElementById('cTime'),{type:'bar',data:{labels:hrs,datasets:[{data:conv2,backgroundColor:hrs.map((_,i)=>conv2[i]===Math.max(...conv2)?'#1a7f4e':'#e8f7ef'),borderColor:'#1a7f4e',borderWidth:1.5,borderRadius:4}]},options:{...bo,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{stepSize:1,font:{size:9}}},x:{grid:{display:false},ticks:{font:{size:9}}}}}});
+  const lts=['Home','LAP','Personal','Business'];
+  dc('l');charts.l=new Chart(document.getElementById('cLoan'),{type:'doughnut',data:{labels:lts,datasets:[{data:lts.map(lt=>c.filter(x=>x.loanType&&x.loanType.includes(lt==='Home'?'Home':lt==='LAP'?'Property':lt==='Personal'?'Personal':'Business')).length),backgroundColor:['#e8f7ef','#fdf6e3','#e0f2fe','#ede9fe'],borderColor:['#1a7f4e','#b8860b','#0e7490','#6d28d9'],borderWidth:2}]},options:{...bo,cutout:'60%'}});
+}
+
+// ─── SETTINGS ───
+function loadSettings(){const cfg=ldO(SK.cfg);document.getElementById('s_wa').value=cfg.waNumber||'919876543210';document.getElementById('s_biz').value=cfg.waBizName||'MoneyGroww Financial Consultant'}
+function saveSettings(){const cfg=ldO(SK.cfg);cfg.waNumber=document.getElementById('s_wa').value.trim();cfg.waBizName=document.getElementById('s_biz').value.trim();localStorage.setItem(SK.cfg,JSON.stringify(cfg));toast('Settings saved!')}
+
+// ─── HELPERS ───
+function waMsg(id){const x=ld(SK.cont).find(c=>c.id===id);if(!x)return;const m='Hello '+x.name+'! 👋 MoneyGroww Financial Consultant here.\n\nFollowing up on your '+x.loanType+' inquiry. We have great rates right now!\n\nInterested? Reply and our expert calls you! 💚\n\n_MoneyGroww Financial Consultant_';window.open('https://wa.me/91'+x.phone+'?text='+encodeURIComponent(m),'_blank');toast('Opening WhatsApp for '+x.name,'wa');const c=ld(SK.cont),y=c.find(i=>i.id===id);if(y){y.lastContact=new Date().toISOString();sv(SK.cont,c)}}
+function waMsgP(phone,name){const m='Hello '+name+'! 👋 MoneyGroww Financial Consultant here.\n\nJust checking in! Any questions about our loan offers?\n\nReply any time — our expert will call you! 💚';window.open('https://wa.me/91'+phone+'?text='+encodeURIComponent(m),'_blank');toast('Opening WhatsApp...','wa')}
+function importContacts(){const n=prompt('Paste phone numbers (one per line or comma separated):');if(!n)return;const ph=n.split(/[\n,]+/).map(p=>p.trim().replace(/\D/g,'')).filter(p=>p.length>=10);if(!ph.length){toast('No valid numbers','err');return}const c=ld(SK.cont);let a=0;ph.forEach(p=>{const p10=p.slice(-10);if(!c.find(x=>x.phone===p10)){const nc={id:Date.now()+a,name:'Lead '+p10.slice(-4),phone:p10,stage:'New Lead',source:'Manual import',created:new Date().toISOString(),lastContact:new Date().toISOString(),score:20,temp:'❄ Cold'};c.unshift(nc);a++}});sv(SK.cont,c);updateSB();renderContacts();toast(a+' contacts imported!')}
+function exportContacts(){const c=ld(SK.cont);if(!c.length){toast('No contacts','err');return}const h=['Name','Phone','Email','City','Loan Type','Amount','Employment','Income','Stage','Score','Temperature','Source','Last Contact','Notes'];const rows=c.map(x=>[x.name,x.phone,x.email,x.city,x.loanType,x.amount,x.emp,x.income,x.stage,x.score,x.temp,x.source,x.lastContact?new Date(x.lastContact).toLocaleDateString('en-IN'):'',x.notes].map(v=>`"${(v||'').toString().replace(/"/g,'""')}"`).join(','));const blob=new Blob(['\uFEFF'+[h.join(','),...rows].join('\n')],{type:'text/csv;charset=utf-8'});const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='moneygroww_crm_'+new Date().toISOString().slice(0,10)+'.csv';document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);toast('Exported!')}
+function clearCRM(){if(!confirm('Delete ALL CRM data? Cannot be undone.'))return;[SK.cont,SK.tasks,SK.wa].forEach(k=>localStorage.removeItem(k));updateSB();toast('CRM cleared')}
+function openMod(id){document.getElementById(id).classList.add('open')}
+function closeMod(id){document.getElementById(id).classList.remove('open')}
+document.querySelectorAll('.mbg').forEach(el=>el.addEventListener('click',function(e){if(e.target===this)this.classList.remove('open')}));
+</script>
+</body>
+</html>

@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>MoneyGroww — WhatsApp Automation Engine</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.8.0/dist/tabler-icons.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--g:#1a7f4e;--gd:#0f5c37;--gl:#e8f7ef;--wa:#25D366;--wal:#dcfce7;--red:#b91c1c;--redl:#fee2e2;--gold:#b8860b;--goldl:#fdf6e3;--pu:#6d28d9;--pul:#ede9fe;--blue:#1d4ed8;--bluel:#eff6ff;--bg:#f7f8fa;--sur:#fff;--bdr:#e3e6ec;--tx:#111827;--mu:#6b7280;--r:8px;--rl:12px}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--tx);font-size:14px;line-height:1.5;overflow-x:hidden}
+#vL{display:flex;min-height:100vh;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--wal),#f0fdf4,var(--bg));padding:1rem}
+.lbox{background:var(--sur);border:1px solid var(--bdr);border-radius:var(--rl);padding:2rem;width:100%;max-width:420px;box-shadow:0 4px 24px rgba(0,0,0,.08)}
+.fi{width:100%;padding:10px 12px;border:1.5px solid var(--bdr);border-radius:var(--r);font-size:14px;background:var(--sur);color:var(--tx);outline:none;margin-bottom:12px;font-family:inherit;transition:.15s}
+.fi:focus{border-color:var(--wa);box-shadow:0 0 0 3px rgba(37,211,102,.1)}
+.fl{display:block;font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.lbtn{width:100%;background:var(--wa);color:#fff;border:none;border-radius:var(--r);padding:12px;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;font-family:inherit;transition:.15s}
+.lbtn:hover{opacity:.9}
+.lhint{background:var(--wal);border-radius:var(--r);padding:9px 12px;font-size:12px;color:var(--g);text-align:center;margin-top:12px}
+#vD{display:none}
+.topbar{background:var(--sur);border-bottom:1px solid var(--bdr);height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 1rem;position:sticky;top:0;z-index:200;gap:8px}
+.tbrand{display:flex;align-items:center;gap:8px}
+.tlic{width:30px;height:30px;background:var(--wa);border-radius:7px;display:flex;align-items:center;justify-content:center}
+.tlic i{color:#fff;font-size:15px}
+.tright{display:flex;align-items:center;gap:6px}
+.tbtn{display:inline-flex;align-items:center;gap:5px;padding:6px 11px;border-radius:7px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--bdr);background:transparent;color:var(--tx);transition:.15s;font-family:inherit;white-space:nowrap}
+.tbtn:hover{background:var(--bg)}
+.tbtn-wa{background:var(--wa);color:#fff;border-color:var(--wa)}
+.tbtn-g{background:var(--g);color:#fff;border-color:var(--g)}
+.tbtn-back{background:var(--gl);color:var(--g);border-color:var(--g)}
+.wrap{display:flex;height:calc(100vh - 56px)}
+.sb{width:210px;background:var(--sur);border-right:1px solid var(--bdr);padding:.75rem 0;overflow-y:auto;flex-shrink:0;transition:.3s}
+.sbs{padding:5px 1rem 3px;font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.9px;margin-top:8px}
+.sbl{display:flex;align-items:center;gap:8px;padding:8px 1rem;font-size:13px;color:var(--mu);cursor:pointer;transition:.15s;border-left:3px solid transparent;font-weight:500}
+.sbl i{font-size:16px;flex-shrink:0}
+.sbl:hover{background:var(--bg);color:var(--tx)}
+.sbl.active{background:var(--wal);color:var(--wa);border-left-color:var(--wa)}
+.sbbg{font-size:10px;font-weight:700;padding:2px 6px;border-radius:20px;margin-left:auto}
+.bg-wa{background:var(--wa);color:#fff}
+.bg-r{background:var(--red);color:#fff}
+.bg-g{background:var(--g);color:#fff}
+.bg-pu{background:var(--pu);color:#fff}
+.main{flex:1;overflow-y:auto;padding:1rem}
+.sec{display:none}.sec.active{display:block}
+.ph{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1rem;gap:8px;flex-wrap:wrap}
+.ph h2{font-size:18px;font-weight:700}
+.ph p{font-size:12px;color:var(--mu);margin-top:2px}
+.sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:1rem}
+.sc{background:var(--sur);border:1px solid var(--bdr);border-radius:var(--rl);padding:.875rem 1rem}
+.slbl{font-size:10px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;display:flex;align-items:center;gap:4px}
+.sv{font-size:22px;font-weight:800;line-height:1;margin-bottom:2px}
+.ss{font-size:11px;color:var(--mu)}
+.card{background:var(--sur);border:1px solid var(--bdr);border-radius:var(--rl);margin-bottom:1rem}
+.card-head{padding:.75rem 1rem;border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.card-head h3{font-size:14px;font-weight:600;display:flex;align-items:center;gap:6px}
+.card-body{padding:1rem}
+.btn{display:inline-flex;align-items:center;gap:5px;padding:7px 13px;border-radius:var(--r);font-size:12px;font-weight:600;cursor:pointer;border:none;font-family:inherit;transition:.15s}
+.btn-wa{background:var(--wa);color:#fff}.btn-wa:hover{opacity:.9}
+.btn-g{background:var(--g);color:#fff}.btn-g:hover{background:var(--gd)}
+.btn-out{background:var(--bg);border:1px solid var(--bdr);color:var(--tx)}.btn-out:hover{background:var(--bdr)}
+.btn-red{background:var(--redl);color:var(--red);border:1px solid #fca5a5}
+.btn-blue{background:var(--bluel);color:var(--blue);border:1px solid #93c5fd}
+.btn-sm{padding:5px 9px;font-size:11px}
+.inp{width:100%;padding:8px 11px;border:1.5px solid var(--bdr);border-radius:var(--r);font-size:13px;background:var(--bg);color:var(--tx);outline:none;transition:.15s;font-family:inherit}
+.inp:focus{border-color:var(--wa);box-shadow:0 0 0 3px rgba(37,211,102,.08)}
+select.inp{cursor:pointer}
+textarea.inp{resize:vertical;min-height:70px}
+.il{display:block;font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.fr{margin-bottom:11px}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.ff{grid-column:1/-1}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table.t{width:100%;border-collapse:collapse;font-size:12px}
+.t th{padding:7px 10px;text-align:left;font-size:10px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.5px;background:var(--bg);border-bottom:1px solid var(--bdr);white-space:nowrap}
+.t td{padding:8px 10px;border-bottom:1px solid var(--bdr);color:var(--tx);vertical-align:middle}
+.t tr:last-child td{border-bottom:none}
+.t tbody tr:hover td{background:#fafbfd}
+.badge{display:inline-block;padding:2px 7px;border-radius:20px;font-size:10px;font-weight:700}
+.b-hot{background:#fee2e2;color:#b91c1c}
+.b-warm{background:#fef3c7;color:#b45309}
+.b-cold{background:#e0f2fe;color:#0e7490}
+.b-new{background:var(--gl);color:var(--gd)}
+.b-sent{background:#eff6ff;color:#1d4ed8}
+.b-delv{background:#fdf6e3;color:#b8860b}
+.b-read{background:var(--wal);color:#166534}
+.b-rep{background:var(--wal);color:var(--g);font-weight:800}
+.b-fail{background:var(--redl);color:var(--red)}
+.b-skip{background:#f3f4f6;color:#6b7280}
+.ra{display:flex;gap:3px}
+.ib{width:26px;height:26px;border:1px solid var(--bdr);border-radius:5px;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--mu);transition:.15s}
+.ib:hover{background:var(--bg);color:var(--tx)}
+.ib.del:hover{background:var(--redl);color:var(--red)}
+.ib.grn:hover{background:var(--gl);color:var(--g)}
+.mbg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:500;align-items:center;justify-content:center;padding:1rem;overflow-y:auto}
+.mbg.open{display:flex}
+.modal{background:var(--sur);border-radius:var(--rl);padding:1.5rem;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;margin:auto}
+.mh{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
+.mh h3{font-size:15px;font-weight:700;display:flex;align-items:center;gap:7px}
+.cx{width:28px;height:28px;border:1px solid var(--bdr);border-radius:5px;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--mu)}
+.api-step{background:var(--bg);border-radius:var(--r);padding:12px;margin-bottom:10px;border-left:3px solid var(--wa)}
+.api-step-num{display:inline-flex;width:22px;height:22px;background:var(--wa);color:#fff;border-radius:50%;align-items:center;justify-content:center;font-size:11px;font-weight:700;margin-right:6px;flex-shrink:0}
+.api-step-title{font-size:13px;font-weight:600;display:flex;align-items:center;margin-bottom:6px}
+.api-step p{font-size:12px;color:var(--mu);line-height:1.6}
+.api-step code{background:var(--sur);border:1px solid var(--bdr);border-radius:4px;padding:2px 6px;font-family:monospace;font-size:11px}
+.status-pill{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600}
+.pill-connected{background:#dcfce7;color:#166534}
+.pill-demo{background:#fef3c7;color:#b45309}
+.pill-error{background:#fee2e2;color:#b91c1c}
+.cmp-card{background:var(--sur);border:1px solid var(--bdr);border-radius:var(--rl);padding:1rem;margin-bottom:10px}
+.cmp-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:6px}
+.cmp-name{font-size:14px;font-weight:700}
+.pbar-w{background:var(--bg);border-radius:var(--r);height:6px;overflow:hidden;margin:6px 0}
+.pbar{height:100%;border-radius:var(--r);transition:width .5s}
+.ss-rule{background:var(--bg);border:1px solid var(--bdr);border-radius:var(--r);padding:10px;margin-bottom:8px}
+.ss-rule-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.ss-rule-name{font-size:12px;font-weight:600;display:flex;align-items:center;gap:6px}
+.risk-meter{display:flex;align-items:center;gap:8px;padding:10px;background:var(--bg);border-radius:var(--r);margin-bottom:10px}
+.risk-bar{flex:1;height:8px;background:#e5e7eb;border-radius:4px;overflow:hidden}
+.risk-fill{height:100%;border-radius:4px;transition:width .5s}
+.track-card{background:var(--sur);border:1px solid var(--bdr);border-radius:var(--rl);padding:1rem;margin-bottom:10px}
+.rate-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--bdr)}
+.rate-row:last-child{border-bottom:none}
+.rate-label{font-size:12px;font-weight:600;width:100px;flex-shrink:0}
+.rate-bar-w{flex:1;height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden}
+.rate-bar-f{height:100%;border-radius:3px}
+.rate-pct{font-size:12px;font-weight:700;min-width:35px;text-align:right}
+.eng-score{display:flex;align-items:center;gap:10px}
+.eng-ring{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;flex-shrink:0;border:4px solid transparent}
+.webhook-log{background:#0f172a;border-radius:var(--r);padding:12px;font-family:monospace;font-size:11px;color:#94a3b8;height:200px;overflow-y:auto;margin-top:8px}
+.wl-line{margin-bottom:4px;display:flex;gap:8px}
+.wl-time{color:#64748b;flex-shrink:0}
+.wl-msg{color:#94a3b8}.wl-in{color:#4ade80}.wl-out{color:#60a5fa}.wl-err{color:#f87171}.wl-warn{color:#fbbf24}
+.notif-panel{position:fixed;top:60px;right:16px;width:320px;z-index:99999;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.notif{background:var(--sur);border:1px solid var(--bdr);border-radius:var(--rl);padding:12px 14px;box-shadow:0 8px 30px rgba(0,0,0,.18);pointer-events:all;display:flex;align-items:flex-start;gap:10px;animation:slideIn .3s ease;position:relative;overflow:hidden}
+.notif::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px}
+.notif.wa::before{background:var(--wa)}
+.notif.hot::before{background:var(--red)}
+.notif.resp::before{background:var(--g)}
+.notif.warn::before{background:var(--gold)}
+.notif-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.notif-icon.wa{background:var(--wal)}
+.notif-icon.hot{background:var(--redl)}
+.notif-icon.resp{background:var(--gl)}
+.notif-icon.warn{background:var(--goldl)}
+.notif-body{flex:1}
+.notif-title{font-size:12px;font-weight:700;margin-bottom:2px}
+.notif-msg{font-size:11px;color:var(--mu);line-height:1.4}
+.notif-time{font-size:10px;color:var(--mu);margin-top:4px}
+.notif-close{background:none;border:none;cursor:pointer;color:var(--mu);font-size:16px;padding:0;flex-shrink:0}
+.notif-close:hover{color:var(--tx)}
+@keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes slideOut{from{transform:translateX(0);opacity:1}to{transform:translateX(100%);opacity:0}}
+.toggle{position:relative;display:inline-block;width:36px;height:20px}
+.toggle input{opacity:0;width:0;height:0}
+.slider{position:absolute;cursor:pointer;inset:0;background:#ccc;border-radius:20px;transition:.3s}
+.slider::before{content:'';position:absolute;width:13px;height:13px;left:3px;top:3.5px;background:#fff;border-radius:50%;transition:.3s}
+.toggle input:checked+.slider{background:var(--wa)}
+.toggle input:checked+.slider::before{transform:translateX(16px)}
+.tgl-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bdr)}
+.tgl-row:last-child{border-bottom:none}
+.tgl-lbl strong{display:block;font-size:13px;font-weight:500}
+.tgl-lbl span{font-size:11px;color:var(--mu)}
+#toast{position:fixed;bottom:16px;left:50%;transform:translateX(-50%) translateY(80px);padding:10px 16px;border-radius:var(--r);font-size:13px;font-weight:500;display:flex;align-items:center;gap:7px;z-index:9999;opacity:0;transition:.25s;pointer-events:none;max-width:360px;min-width:200px;text-align:center;justify-content:center}
+#toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+#toast.ok{background:var(--wa);color:#fff}
+#toast.err{background:var(--red);color:#fff}
+#toast.inf{background:var(--blue);color:#fff}
+#toast.warn{background:var(--gold);color:#fff}
+.mob-btn{display:none;width:34px;height:34px;border:1px solid var(--bdr);border-radius:var(--r);background:transparent;cursor:pointer;align-items:center;justify-content:center;font-size:18px;color:var(--tx)}
+.mob-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:150}
+.mob-ov.open{display:block}
+.cr2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1rem}
+.ana-card{background:var(--sur);border:1px solid var(--bdr);border-radius:var(--rl);padding:1rem}
+.ana-card h3{font-size:13px;font-weight:600;margin-bottom:.75rem;display:flex;align-items:center;gap:5px}
+.cw{position:relative;height:170px}
+@media(max-width:768px){
+  .mob-btn{display:flex}
+  .sb{position:fixed;top:56px;left:-220px;height:calc(100vh - 56px);z-index:160;transition:.3s;box-shadow:4px 0 16px rgba(0,0,0,.1);width:210px}
+  .sb.open{left:0}
+  .fg{grid-template-columns:1fr}
+  .cr2{grid-template-columns:1fr}
+  .notif-panel{width:calc(100% - 32px)}
+  .tbtn span{display:none}
+  .sg{grid-template-columns:1fr 1fr}
+}
+@media(max-width:480px){.main{padding:.75rem}.modal{padding:1rem}.ph{flex-direction:column}.sg{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<div class="notif-panel" id="notifPanel"></div>
+
+<div id="vL">
+  <div class="lbox">
+    <div style="display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:1.5rem">
+      <div style="width:44px;height:44px;background:var(--wa);border-radius:10px;display:flex;align-items:center;justify-content:center"><i class="ti ti-brand-whatsapp" style="color:#fff;font-size:24px"></i></div>
+      <div><strong style="font-size:17px;font-weight:800">MoneyGroww</strong><br><span style="font-size:11px;color:var(--mu)">WhatsApp Automation Engine</span></div>
+    </div>
+    <h2 style="font-size:19px;font-weight:800;text-align:center;margin-bottom:4px">Admin Login</h2>
+    <p style="font-size:13px;color:var(--mu);text-align:center;margin-bottom:1.5rem">Full WhatsApp automation, response tracking &amp; smart sending</p>
+    <label class="fl">Username</label><input class="fi" id="lu" type="text" placeholder="admin" autocomplete="username">
+    <label class="fl">Password</label><input class="fi" id="lp" type="password" placeholder="admin123" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="lbtn" onclick="doLogin()"><i class="ti ti-brand-whatsapp"></i> Sign in</button>
+    <div class="lhint"><i class="ti ti-info-circle" style="font-size:13px;vertical-align:-2px"></i> Username: <strong>admin</strong> | Password: <strong>admin123</strong></div>
+  </div>
+</div>
+
+<div id="vD">
+  <div class="topbar">
+    <div style="display:flex;align-items:center;gap:8px">
+      <button class="mob-btn" id="mBtn" onclick="toggleSB()"><i class="ti ti-menu-2"></i></button>
+      <div class="tbrand"><div class="tlic"><i class="ti ti-brand-whatsapp"></i></div><strong style="font-size:14px;font-weight:700">WA Engine</strong></div>
+    </div>
+    <div class="tright">
+      <div id="apiStatusPill" class="status-pill pill-demo"><i class="ti ti-wifi-off" style="font-size:12px"></i> Demo mode</div>
+      <button class="tbtn tbtn-back" onclick="toast('Open moneygroww_admin_final.html separately to link back','inf')"><i class="ti ti-arrow-left"></i><span> Admin</span></button>
+      <button class="tbtn tbtn-back" style="background:var(--pul);color:var(--pu);border-color:var(--pu)" onclick="toast('Open moneygroww_crm.html separately to link back','inf')"><i class="ti ti-layout-kanban"></i><span> CRM</span></button>
+      <button class="tbtn" onclick="doLogout()"><i class="ti ti-logout"></i></button>
+    </div>
+  </div>
+  <div class="mob-ov" id="mOv" onclick="closeSB()"></div>
+  <div class="wrap">
+    <nav class="sb" id="sbNav">
+      <div class="sbs">Overview</div>
+      <div class="sbl active" onclick="showSec('ov',this)"><i class="ti ti-dashboard"></i> Dashboard</div>
+      <div class="sbl" onclick="showSec('setup',this)"><i class="ti ti-settings-2"></i> API Setup <span class="sbbg bg-r" id="sbSetup">!</span></div>
+      <div class="sbs">Automation</div>
+      <div class="sbl" onclick="showSec('campaigns',this)"><i class="ti ti-send"></i> Campaigns <span class="sbbg bg-wa" id="sbCamp">0</span></div>
+      <div class="sbl" onclick="showSec('smart',this)"><i class="ti ti-brain"></i> Smart Sending</div>
+      <div class="sbl" onclick="showSec('chatbot',this)"><i class="ti ti-robot"></i> AI Chatbot</div>
+      <div class="sbl" onclick="showSec('inbox',this)"><i class="ti ti-message-circle"></i> Live Inbox <span class="sbbg bg-wa" id="sbInbox">0</span></div>
+      <div class="sbs">Intelligence</div>
+      <div class="sbl" onclick="showSec('response',this)"><i class="ti ti-chart-line"></i> Response Tracking</div>
+      <div class="sbl" onclick="showSec('audience',this)"><i class="ti ti-users-group"></i> Audience Health</div>
+      <div class="sbl" onclick="showSec('webhook',this)"><i class="ti ti-webhook"></i> Webhook Logs</div>
+      <div class="sbs">Settings</div>
+      <div class="sbl" onclick="showSec('settings',this)"><i class="ti ti-adjustments"></i> Settings</div>
+    </nav>
+    <main class="main" id="mainArea">
+
+      <div class="sec active" id="sec-ov">
+        <div class="ph"><div><h2>WhatsApp Automation Dashboard</h2><p id="ovDate"></p></div><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn btn-out btn-sm" onclick="showSec('setup',null)"><i class="ti ti-settings-2"></i> Connect API</button><button class="btn btn-wa btn-sm" onclick="showSec('campaigns',null)"><i class="ti ti-plus"></i> New Campaign</button></div></div>
+        <div id="apiBanner" style="background:linear-gradient(135deg,#1877F2,#0d4fa0);border-radius:var(--rl);padding:1rem 1.25rem;color:#fff;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+          <div><h4 style="font-size:14px;font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:7px"><i class="ti ti-brand-whatsapp"></i> WhatsApp Business API Status</h4><p style="font-size:12px;opacity:.9" id="apiBannerText">Running in Demo mode. Connect your Meta WhatsApp Business API to enable full automation — auto-send, auto-reply, real delivery receipts &amp; response tracking.</p></div>
+          <button class="btn btn-out btn-sm" style="background:rgba(255,255,255,.2);color:#fff;border-color:rgba(255,255,255,.4)" onclick="showSec('setup',null)"><i class="ti ti-settings-2"></i> Setup now</button>
+        </div>
+        <div class="sg" id="ovStats"></div>
+        <div class="cr2">
+          <div class="ana-card"><h3><i class="ti ti-chart-pie" style="color:var(--mu)"></i>Message status breakdown</h3><div class="cw"><canvas id="cStatus"></canvas></div></div>
+          <div class="ana-card"><h3><i class="ti ti-trending-up" style="color:var(--mu)"></i>Response rate trend (7 days)</h3><div class="cw"><canvas id="cTrend"></canvas></div></div>
+        </div>
+        <div class="card"><div class="card-head"><h3><i class="ti ti-flame" style="color:var(--red)"></i> Contacts who replied — follow up NOW</h3><button class="btn btn-wa btn-sm" onclick="showSec('response',null)">Full report</button></div><div class="tw"><table class="t" id="respondedTbl"></table></div></div>
+        <div class="card"><div class="card-head"><h3><i class="ti ti-alert-triangle" style="color:var(--gold)"></i> Account health</h3></div><div class="card-body" id="healthBody"></div></div>
+      </div>
+
+      <div class="sec" id="sec-setup">
+        <div class="ph"><div><h2><i class="ti ti-settings-2" style="margin-right:6px"></i>WhatsApp Business API Setup</h2><p>Connect Meta WABA for fully automatic sending — no manual clicking needed</p></div></div>
+        <div class="card" style="margin-bottom:1rem">
+          <div class="card-head"><h3><i class="ti ti-brand-meta" style="color:#1877F2"></i> Meta WhatsApp Business API credentials</h3><div id="connStatus" class="status-pill pill-demo"><i class="ti ti-wifi-off" style="font-size:11px"></i> Not connected</div></div>
+          <div class="card-body">
+            <div class="fg">
+              <div class="fr"><label class="il">Phone Number ID</label><input class="inp" id="api_phoneId" placeholder="1234567890 (from Meta Business Manager)"></div>
+              <div class="fr"><label class="il">WhatsApp Business Account ID</label><input class="inp" id="api_wabaId" placeholder="Your WABA ID"></div>
+            </div>
+            <div class="fr"><label class="il">Permanent Access Token</label><input class="inp" id="api_token" type="password" placeholder="EAAxxxxxxxxxxxxxxxx (from Meta System User)"></div>
+            <div class="fr"><label class="il">Webhook Verify Token (you choose this)</label><input class="inp" id="api_webhookToken" placeholder="e.g. moneygroww_secret_2025"></div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:.5rem">
+              <button class="btn btn-wa" onclick="testAPI()"><i class="ti ti-wifi"></i> Test connection</button>
+              <button class="btn btn-g" onclick="saveAPI()"><i class="ti ti-device-floppy"></i> Save credentials</button>
+            </div>
+            <div id="apiTestResult" style="display:none;margin-top:10px;padding:10px;border-radius:var(--r);font-size:13px"></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3><i class="ti ti-list-numbers"></i> How to get your API credentials (step by step)</h3></div>
+          <div class="card-body">
+            <div class="api-step"><div class="api-step-title"><span class="api-step-num">1</span>Create Meta Business Account</div><p>Go to <strong>business.facebook.com</strong> → Create a Business Account. This is free. You'll need a Facebook account.</p></div>
+            <div class="api-step"><div class="api-step-title"><span class="api-step-num">2</span>Add WhatsApp to your Business</div><p>In Meta Business Manager → <strong>Settings → Accounts → WhatsApp Accounts → Add</strong>. Link your WhatsApp Business number.</p></div>
+            <div class="api-step"><div class="api-step-title"><span class="api-step-num">3</span>Create a Meta App</div><p>Go to <strong>developers.facebook.com → Create App → Business type</strong>. Add "WhatsApp" product to your app.</p></div>
+            <div class="api-step"><div class="api-step-title"><span class="api-step-num">4</span>Get your Phone Number ID</div><p>In your Meta App → WhatsApp → Getting Started → copy <code>Phone Number ID</code> and <code>WhatsApp Business Account ID</code>.</p></div>
+            <div class="api-step"><div class="api-step-title"><span class="api-step-num">5</span>Create permanent access token</div><p>Meta Business Manager → Settings → System Users → Add System User (Admin) → Generate Token → Select your App → Give <code>whatsapp_business_messaging</code> permission. Copy the token.</p></div>
+            <div class="api-step"><div class="api-step-title"><span class="api-step-num">6</span>Setup webhook for auto-replies</div><p>In your Meta App → WhatsApp → Configuration → Webhook URL: <code id="webhookURLDisplay">https://YOUR-SERVER/webhook</code><br>Verify Token: whatever you set above. Subscribe to: <strong>messages</strong>.<br><em>Note: You need a public HTTPS server for live webhook. For testing, use ngrok.io</em></p></div>
+            <div class="api-step" style="border-left-color:var(--g)"><div class="api-step-title" style="color:var(--g)"><span class="api-step-num" style="background:var(--g)">✓</span>Free tier limits</div><p>Meta gives you <strong>1,000 free conversations/month</strong> (business-initiated). After that it's ~₹0.50–2 per conversation. One conversation = 24 hours of messages to one person.</p></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3><i class="ti ti-code"></i> Webhook server code (Node.js — paste &amp; deploy)</h3><button class="btn btn-out btn-sm" onclick="copyWebhookCode()"><i class="ti ti-copy"></i> Copy code</button></div>
+          <div class="card-body">
+            <pre id="webhookCode" style="background:#0f172a;color:#94a3b8;border-radius:var(--r);padding:12px;font-size:11px;overflow-x:auto;line-height:1.6;white-space:pre-wrap">// Save as server.js, run: node server.js
+// Deploy free on: Railway.app, Render.com, or Vercel
+
+const express = require('express');
+const app = express();
+app.use(express.json());
+
+const VERIFY_TOKEN = 'moneygroww_secret_2025'; // match your verify token
+const WA_TOKEN = process.env.WA_TOKEN; // set in environment
+const PHONE_ID = process.env.PHONE_ID; // set in environment
+
+// Webhook verification
+app.get('/webhook', (req, res) => {
+  if (req.query['hub.verify_token'] === VERIFY_TOKEN) {
+    res.send(req.query['hub.challenge']);
+  } else res.sendStatus(403);
+});
+
+// Receive messages & status updates
+app.post('/webhook', async (req, res) => {
+  res.sendStatus(200); // respond fast
+  const data = req.body;
+  const entry = data.entry?.[0]?.changes?.[0]?.value;
+  if (!entry) return;
+
+  // INCOMING MESSAGE from customer
+  if (entry.messages) {
+    const msg = entry.messages[0];
+    const from = msg.from; // customer's phone
+    const text = msg.text?.body || '';
+    console.log('INBOUND from', from, ':', text);
+    
+    // Auto-reply with AI chatbot
+    const reply = getBotReply(text, from);
+    await sendWA(from, reply);
+  }
+
+  // DELIVERY STATUS updates
+  if (entry.statuses) {
+    const st = entry.statuses[0];
+    // st.status = 'sent', 'delivered', 'read', 'failed'
+    // st.id = message_id, st.recipient_id = customer phone
+    console.log('STATUS:', st.status, 'for', st.recipient_id);
+    // Update your database here
+  }
+});
+
+// Send a WhatsApp message
+async function sendWA(to, text) {
+  const res = await fetch(
+    `https://graph.facebook.com/v18.0/${PHONE_ID}/messages`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${WA_TOKEN}`
+      },
+      body: JSON.stringify({
+        messaging_product: 'whatsapp',
+        to: to,
+        type: 'text',
+        text: { body: text }
+      })
+    }
+  );
+  return res.json();
+}
+
+// Send template message (for first outreach, required by Meta)
+async function sendTemplate(to, templateName, langCode, components) {
+  const res = await fetch(
+    `https://graph.facebook.com/v18.0/${PHONE_ID}/messages`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${WA_TOKEN}`
+      },
+      body: JSON.stringify({
+        messaging_product: 'whatsapp',
+        to: to,
+        type: 'template',
+        template: {
+          name: templateName,
+          language: { code: langCode || 'en' },
+          components: components || []
+        }
+      })
+    }
+  );
+  return res.json();
+}
+
+function getBotReply(msg, from) {
+  const m = msg.toLowerCase();
+  if (m.includes('home') || m.includes('house'))
+    return '🏠 *Home Loan from MoneyGroww:*\n\n✅ Rate from 8.40% p.a.\n✅ Up to ₹5 Crore\n✅ 3-day approval\n\nReply *YES* for free consultation! 📞';
+  if (m.includes('business'))
+    return '💼 *Business Loan:*\n\n✅ Rate from 11% p.a.\n✅ Up to ₹5 Crore\n✅ Quick disbursal\n\nReply *YES* for callback! 🚀';
+  if (m.includes('yes') || m.includes('call') || m.includes('interested'))
+    return '✅ *You are on our priority list!*\n\nOur expert will call you within 2 hours.\n📞 Direct: +91 98765 43210\n\n_MoneyGroww — Your loan, your way!_ 💚';
+  return '👋 Hello! I\'m your MoneyGroww AI assistant.\n\nAsk about:\n🏠 Home Loan\n💼 Business Loan\n👤 Personal Loan\n🏢 LAP\n\nOr reply *CALL* for expert callback! 📞';
+}
+
+app.listen(3000, () => console.log('MoneyGroww WA server running on port 3000'));</pre>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3><i class="ti ti-template"></i> WhatsApp approved templates</h3><button class="btn btn-out btn-sm" onclick="syncTemplates()"><i class="ti ti-refresh"></i> Sync from Meta</button></div>
+          <div class="card-body">
+            <div style="background:var(--goldl);border:1px solid var(--gold);border-radius:var(--r);padding:10px;font-size:12px;color:var(--gold);margin-bottom:1rem"><i class="ti ti-alert-circle"></i> <strong>Important:</strong> Meta requires pre-approved templates for first messages to customers. You can only send free-form text within 24 hours of the customer messaging you first. Submit templates in Meta Business Manager → WhatsApp → Message Templates.</div>
+            <div id="tmplList" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sec" id="sec-campaigns">
+        <div class="ph"><div><h2><i class="ti ti-send" style="color:var(--wa);margin-right:6px"></i>Campaigns</h2><p>Fully automatic bulk WhatsApp — no clicking needed when API connected</p></div><button class="btn btn-wa btn-sm" onclick="openNewCampaign()"><i class="ti ti-plus"></i> New campaign</button></div>
+        <div style="background:var(--goldl);border:1px solid var(--gold);border-radius:var(--rl);padding:12px;margin-bottom:1rem;font-size:12px;color:var(--gold)">
+          <strong><i class="ti ti-shield-check"></i> Smart Rate Limiting active:</strong> Max 10 messages/minute to avoid WhatsApp ban. Contacts with low engagement score are automatically skipped. Template messages used for new contacts (required by Meta).
+        </div>
+        <div id="campaignList"></div>
+        <div class="empty" id="noCampaigns" style="display:none;padding:2rem;text-align:center;color:var(--mu)"><i class="ti ti-send" style="font-size:34px;display:block;margin-bottom:8px;opacity:.25"></i><p style="font-size:14px;font-weight:600">No campaigns yet</p><p style="font-size:12px">Create your first campaign to start sending</p></div>
+      </div>
+
+      <div class="sec" id="sec-smart">
+        <div class="ph"><div><h2><i class="ti ti-brain" style="margin-right:6px"></i>Smart Sending Rules</h2><p>Protect your number from ban — AI decides who, when &amp; how often to message</p></div></div>
+        <div class="card" style="margin-bottom:1rem">
+          <div class="card-head"><h3><i class="ti ti-shield-check" style="color:var(--g)"></i> Account ban risk meter</h3></div>
+          <div class="card-body">
+            <div class="risk-meter">
+              <span style="font-size:12px;font-weight:600;width:80px">Ban risk</span>
+              <div class="risk-bar"><div class="risk-fill" id="riskFill" style="width:15%;background:var(--g)"></div></div>
+              <span id="riskLabel" style="font-size:13px;font-weight:700;color:var(--g);min-width:60px">LOW 15%</span>
+            </div>
+            <div id="riskFactors" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px;margin-top:8px"></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3><i class="ti ti-adjustments"></i> Sending protection rules</h3><button class="btn btn-g btn-sm" onclick="saveSmartRules()"><i class="ti ti-device-floppy"></i> Save</button></div>
+          <div class="card-body">
+            <div class="ss-rule">
+              <div class="ss-rule-head"><span class="ss-rule-name"><i class="ti ti-clock" style="color:var(--wa)"></i> Max messages per minute</span></div>
+              <div style="display:flex;align-items:center;gap:12px"><input type="range" id="sr_rpm" min="1" max="30" value="10" style="flex:1" oninput="document.getElementById('sr_rpm_val').textContent=this.value"><span id="sr_rpm_val" style="font-size:14px;font-weight:700;color:var(--wa);width:30px">10</span></div>
+              <p style="font-size:11px;color:var(--mu);margin-top:5px">Meta allows ~80/min but 10/min is safe. Higher = faster but higher ban risk.</p>
+            </div>
+            <div class="ss-rule">
+              <div class="ss-rule-head"><span class="ss-rule-name"><i class="ti ti-calendar" style="color:var(--g)"></i> Max messages per day</span></div>
+              <div style="display:flex;align-items:center;gap:12px"><input type="range" id="sr_rpd" min="50" max="5000" step="50" value="500" style="flex:1" oninput="document.getElementById('sr_rpd_val').textContent=this.value"><span id="sr_rpd_val" style="font-size:14px;font-weight:700;color:var(--g);width:40px">500</span></div>
+              <p style="font-size:11px;color:var(--mu);margin-top:5px">Start with 100/day for new numbers. Increase 25% each week as trust builds.</p>
+            </div>
+            <div class="ss-rule">
+              <div class="ss-rule-head"><span class="ss-rule-name"><i class="ti ti-user-x" style="color:var(--red)"></i> Min engagement score to message</span></div>
+              <div style="display:flex;align-items:center;gap:12px"><input type="range" id="sr_minScore" min="0" max="80" value="20" style="flex:1" oninput="document.getElementById('sr_ms_val').textContent=this.value"><span id="sr_ms_val" style="font-size:14px;font-weight:700;color:var(--red);width:30px">20</span></div>
+              <p style="font-size:11px;color:var(--mu);margin-top:5px">Contacts below this score are skipped. High blockers = low score. Saves your number from ban.</p>
+            </div>
+            <div style="margin-top:1rem">
+              <div class="tgl-row"><div class="tgl-lbl"><strong>Skip contacts who blocked before</strong><span>Never message anyone who previously blocked you</span></div><label class="toggle"><input type="checkbox" id="tgl_skip_block" checked><span class="slider"></span></label></div>
+              <div class="tgl-row"><div class="tgl-lbl"><strong>Randomize send intervals</strong><span>Random 3–15s delay between messages (looks natural, avoids detection)</span></div><label class="toggle"><input type="checkbox" id="tgl_random" checked><span class="slider"></span></label></div>
+              <div class="tgl-row"><div class="tgl-lbl"><strong>Auto-stop if 5% block rate</strong><span>Pause campaign automatically if too many people block</span></div><label class="toggle"><input type="checkbox" id="tgl_autostop" checked><span class="slider"></span></label></div>
+              <div class="tgl-row"><div class="tgl-lbl"><strong>Send only between 9am–8pm</strong><span>Never send late night — Meta penalises this</span></div><label class="toggle"><input type="checkbox" id="tgl_hours" checked><span class="slider"></span></label></div>
+              <div class="tgl-row"><div class="tgl-lbl"><strong>Prefer warm/hot leads first</strong><span>Send to hot leads before cold — better engagement = lower ban risk</span></div><label class="toggle"><input type="checkbox" id="tgl_priority" checked><span class="slider"></span></label></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3><i class="ti ti-user-minus"></i> Auto-unsubscribe keywords</h3></div>
+          <div class="card-body">
+            <p style="font-size:12px;color:var(--mu);margin-bottom:10px">If a contact sends any of these words, they are automatically removed from all future campaigns. This is REQUIRED by Meta to avoid ban.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:6px" id="unsubWords"></div>
+            <div style="display:flex;gap:8px;margin-top:10px"><input class="inp" id="newUnsubWord" placeholder="Add word (e.g. STOP, NO, DON'T MESSAGE)" style="flex:1"><button class="btn btn-out btn-sm" onclick="addUnsubWord()"><i class="ti ti-plus"></i> Add</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sec" id="sec-chatbot">
+        <div class="ph"><div><h2><i class="ti ti-robot" style="margin-right:6px"></i>AI Chatbot Engine</h2><p>Automatically replies to real customers on WhatsApp 24/7 when API is connected</p></div><div style="display:flex;gap:6px"><button class="btn btn-out btn-sm" onclick="testChatbot()"><i class="ti ti-player-play"></i> Test live</button><button class="btn btn-g btn-sm" onclick="saveChatbot()"><i class="ti ti-device-floppy"></i> Save</button></div></div>
+        <div style="display:grid;grid-template-columns:1fr 300px;gap:12px">
+          <div>
+            <div class="card" style="margin-bottom:1rem">
+              <div class="card-head"><h3><i class="ti ti-settings"></i> Chatbot configuration</h3></div>
+              <div class="card-body">
+                <div class="fr"><label class="il">Bot name</label><input class="inp" id="bot_name" value="Moneygroww Assistant" placeholder="Bot display name"></div>
+                <div class="fr"><label class="il">Business context (AI uses this to generate replies)</label><textarea class="inp" id="bot_context" rows="4" placeholder="We are MoneyGroww Financial Consultant. We offer Home Loans at 8.40%, Business Loans at 11%, Personal Loans at 10.5%, LAP at 9.25%. We serve all of India. Our expert team calls back within 2 hours..."></textarea></div>
+                <div class="fr"><label class="il">Fallback message (when AI doesn't understand)</label><textarea class="inp" id="bot_fallback" rows="3">Thank you for your message! 😊 Our expert will contact you within 2 hours.\n\nFor immediate help: 📞 +91 98765 43210\n\n_MoneyGroww — Your loan, your way!_ 💚</textarea></div>
+                <div>
+                  <div class="tgl-row"><div class="tgl-lbl"><strong>Use Claude AI for replies</strong><span>Advanced AI generates context-aware responses (needs Anthropic API key)</span></div><label class="toggle"><input type="checkbox" id="tgl_claude"><span class="slider"></span></label></div>
+                  <div class="tgl-row" id="claudeKeyRow" style="display:none"><div class="tgl-lbl"><strong>Anthropic API Key</strong><span>Get from console.anthropic.com</span></div><input class="inp" id="claude_key" type="password" placeholder="sk-ant-..." style="width:200px"></div>
+                  <div class="tgl-row"><div class="tgl-lbl"><strong>Auto-capture lead info</strong><span>Bot asks for name &amp; phone and saves to CRM automatically</span></div><label class="toggle"><input type="checkbox" id="tgl_capture" checked><span class="slider"></span></label></div>
+                  <div class="tgl-row"><div class="tgl-lbl"><strong>Auto-schedule follow-up task</strong><span>Creates a CRM follow-up task when someone shows interest</span></div><label class="toggle"><input type="checkbox" id="tgl_followup" checked><span class="slider"></span></label></div>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-head"><h3><i class="ti ti-git-branch"></i> Keyword trigger flows</h3><button class="btn btn-out btn-sm" onclick="addFlow()"><i class="ti ti-plus"></i> Add flow</button></div>
+              <div class="card-body" id="flowList"></div>
+            </div>
+          </div>
+          <div class="card" style="position:sticky;top:70px;align-self:start">
+            <div class="card-head"><h3><i class="ti ti-device-mobile"></i> Live test</h3></div>
+            <div style="background:#e5ddd5;border-radius:0 0 var(--rl) var(--rl);padding:10px;min-height:300px;max-height:400px;overflow-y:auto;display:flex;flex-direction:column;gap:6px" id="chatTestArea"></div>
+            <div style="padding:8px;background:#f0f2f5;border-top:1px solid var(--bdr)"><div style="display:flex;gap:6px"><input class="inp" id="chatTestI" style="font-size:12px;border-radius:20px;background:#fff;border:none" placeholder="Type to test..." onkeydown="if(event.key==='Enter')sendTestMsg()"><button onclick="sendTestMsg()" style="width:32px;height:32px;background:var(--wa);border:none;border-radius:50%;cursor:pointer;color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px"><i class="ti ti-send"></i></button></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sec" id="sec-inbox">
+        <div class="ph"><div><h2><i class="ti ti-message-circle" style="color:var(--wa);margin-right:6px"></i>Live Inbox</h2><p>Real messages from customers — bot handles automatically, you can take over anytime</p></div><button class="btn btn-wa btn-sm" onclick="simulateIncoming()"><i class="ti ti-plus"></i> Simulate message</button></div>
+        <div style="display:grid;grid-template-columns:240px 1fr;border:1px solid var(--bdr);border-radius:var(--rl);overflow:hidden;height:520px" id="inboxWrap">
+          <div style="background:#f0f2f5;border-right:1px solid var(--bdr);overflow-y:auto;display:flex;flex-direction:column">
+            <div style="padding:9px 12px;background:var(--wa);color:#fff;font-weight:600;font-size:13px;display:flex;align-items:center;gap:7px;flex-shrink:0"><i class="ti ti-brand-whatsapp"></i> Live chats <span style="background:rgba(255,255,255,.3);border-radius:20px;padding:1px 7px;font-size:10px" id="inboxCount">0</span></div>
+            <div id="inboxList" style="flex:1;overflow-y:auto"></div>
+          </div>
+          <div id="inboxChat" style="background:#e5ddd5;display:flex;flex-direction:column">
+            <div style="flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;color:var(--mu)"><i class="ti ti-brand-whatsapp" style="font-size:38px;opacity:.2"></i><p style="font-size:13px;font-weight:500">Select a conversation</p><p style="font-size:11px">Bot auto-replies. You can override anytime.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sec" id="sec-response">
+        <div class="ph"><div><h2><i class="ti ti-chart-line" style="margin-right:6px"></i>Response Tracking</h2><p>See exactly who opened, read, replied — and send the right follow-up</p></div></div>
+        <div class="sg" id="respStats"></div>
+        <div class="cr2">
+          <div class="ana-card"><h3><i class="ti ti-users-group" style="color:var(--mu)"></i>Response rate by audience</h3><div class="cw"><canvas id="cRespAud"></canvas></div></div>
+          <div class="ana-card"><h3><i class="ti ti-clock" style="color:var(--mu)"></i>Best time to send (by read rate)</h3><div class="cw"><canvas id="cRespTime"></canvas></div></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3><i class="ti ti-list"></i> Contact-level tracking</h3>
+            <div style="display:flex;gap:6px;flex-wrap:wrap">
+              <select class="inp" style="width:120px;font-size:12px" id="respFilter" onchange="renderRespTable()"><option value="">All</option><option value="replied">Replied ✅</option><option value="read">Read (no reply)</option><option value="delivered">Delivered</option><option value="sent">Sent only</option><option value="failed">Failed</option></select>
+              <button class="btn btn-wa btn-sm" onclick="bulkFollowUp()"><i class="ti ti-send"></i> Follow-up all replied</button>
+            </div>
+          </div>
+          <div class="tw"><table class="t" id="respTable"></table></div>
+        </div>
+      </div>
+
+      <div class="sec" id="sec-audience">
+        <div class="ph"><div><h2><i class="ti ti-users-group" style="margin-right:6px"></i>Audience Health</h2><p>Track engagement, prevent bans, and keep your list clean</p></div></div>
+        <div class="card" style="margin-bottom:1rem">
+          <div class="card-head"><h3><i class="ti ti-heart-rate" style="color:var(--red)"></i> Overall audience health score</h3></div>
+          <div class="card-body">
+            <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap">
+              <div style="width:100px;height:100px;border-radius:50%;background:conic-gradient(var(--g) 0% 72%, #e5e7eb 72%);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                <div style="width:76px;height:76px;border-radius:50%;background:var(--sur);display:flex;align-items:center;justify-content:center"><span id="healthScore" style="font-size:22px;font-weight:800;color:var(--g)">72</span></div>
+              </div>
+              <div style="flex:1">
+                <p style="font-size:14px;font-weight:600;margin-bottom:8px" id="healthLabel">Good health — safe to send campaigns</p>
+                <div id="healthMetrics" style="display:grid;grid-template-columns:1fr 1fr;gap:8px"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="cr2">
+          <div class="card">
+            <div class="card-head"><h3><i class="ti ti-chart-bar"></i> Engagement segments</h3></div>
+            <div class="card-body" id="engSegments"></div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3><i class="ti ti-alert-triangle" style="color:var(--gold)"></i> At-risk contacts</h3><button class="btn btn-out btn-sm" onclick="cleanList()"><i class="ti ti-trash"></i> Remove all</button></div>
+            <div class="card-body" id="atRiskList"></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3><i class="ti ti-trending-up" style="color:var(--g)"></i> Number warm-up plan (new numbers)</h3></div>
+          <div class="card-body">
+            <p style="font-size:12px;color:var(--mu);margin-bottom:12px">New WhatsApp numbers must warm up gradually. Send too many messages too fast = instant ban. Follow this plan:</p>
+            <div id="warmupPlan"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sec" id="sec-webhook">
+        <div class="ph"><div><h2><i class="ti ti-webhook" style="margin-right:6px"></i>Webhook Logs</h2><p>Real-time events from WhatsApp — delivery receipts, replies, status changes</p></div><div style="display:flex;gap:6px"><button class="btn btn-out btn-sm" onclick="clearLogs()"><i class="ti ti-trash"></i> Clear</button><button class="btn btn-wa btn-sm" onclick="simulateWebhook()"><i class="ti ti-player-play"></i> Simulate events</button></div></div>
+        <div class="card">
+          <div class="card-head"><h3><i class="ti ti-activity" style="color:var(--wa)"></i> Live webhook events <span id="logCount" style="font-size:11px;color:var(--mu);font-weight:400;margin-left:6px">0 events</span></h3><div style="display:flex;gap:5px"><span class="badge b-read" style="font-size:10px">● Inbound</span><span class="badge b-sent" style="font-size:10px">● Outbound</span><span class="badge b-warm" style="font-size:10px">● Status</span><span class="badge b-fail" style="font-size:10px">● Error</span></div></div>
+          <div class="webhook-log" id="webhookLog"><div class="wl-line"><span class="wl-time">Ready</span><span class="wl-msg"> Webhook log initialized. Events will appear here in real-time when API is connected.</span></div></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3><i class="ti ti-test-pipe"></i> Simulate webhook payload</h3></div>
+          <div class="card-body">
+            <div class="fg">
+              <div class="fr"><label class="il">Event type</label><select class="inp" id="simType"><option value="incoming">Incoming message</option><option value="delivered">Delivered status</option><option value="read">Read status</option><option value="replied">Customer reply</option><option value="blocked">Contact blocked</option></select></div>
+              <div class="fr"><label class="il">Phone number</label><input class="inp" id="simPhone" placeholder="9876543210" value="9876543210"></div>
+            </div>
+            <button class="btn btn-wa btn-sm" onclick="runSimEvent()"><i class="ti ti-player-play"></i> Run simulation</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="sec" id="sec-settings">
+        <div class="ph"><div><h2>Settings</h2><p>Configure your automation preferences</p></div></div>
+        <div class="card" style="margin-bottom:1rem">
+          <div class="card-head"><h3><i class="ti ti-brand-whatsapp" style="color:var(--wa)"></i> Business info</h3></div>
+          <div class="card-body">
+            <div class="fg">
+              <div class="fr"><label class="il">Business name</label><input class="inp" id="s_biz" placeholder="MoneyGroww Financial Consultant"></div>
+              <div class="fr"><label class="il">WhatsApp number</label><input class="inp" id="s_wa" placeholder="919876543210"></div>
+            </div>
+            <button class="btn btn-g btn-sm" onclick="saveSettings()"><i class="ti ti-device-floppy"></i> Save</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3><i class="ti ti-bell"></i> Notification settings</h3></div>
+          <div class="card-body">
+            <div class="tgl-row"><div class="tgl-lbl"><strong>Sound alerts</strong><span>Play sound for incoming messages &amp; replies</span></div><label class="toggle"><input type="checkbox" id="n_sound" checked><span class="slider"></span></label></div>
+            <div class="tgl-row"><div class="tgl-lbl"><strong>New reply notification</strong><span>Alert when a contact replies to your message</span></div><label class="toggle"><input type="checkbox" id="n_reply" checked><span class="slider"></span></label></div>
+            <div class="tgl-row"><div class="tgl-lbl"><strong>Hot lead alert</strong><span>Alert when someone scores 70+ (ready to close)</span></div><label class="toggle"><input type="checkbox" id="n_hot" checked><span class="slider"></span></label></div>
+            <div class="tgl-row"><div class="tgl-lbl"><strong>Campaign complete alert</strong><span>Alert when a bulk campaign finishes sending</span></div><label class="toggle"><input type="checkbox" id="n_camp" checked><span class="slider"></span></label></div>
+            <div class="tgl-row"><div class="tgl-lbl"><strong>Error alerts</strong><span>Alert when a message fails to send</span></div><label class="toggle"><input type="checkbox" id="n_err" checked><span class="slider"></span></label></div>
+            <div style="margin-top:10px"><button class="btn btn-out btn-sm" onclick="testNotification()"><i class="ti ti-bell"></i> Test notification &amp; sound</button></div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<div class="mbg" id="mCamp">
+  <div class="modal" style="max-width:600px">
+    <div class="mh"><h3><i class="ti ti-send" style="color:var(--wa)"></i> New WhatsApp Campaign</h3><button class="cx" onclick="closeMod('mCamp')"><i class="ti ti-x"></i></button></div>
+    <div class="fr"><label class="il">Campaign name</label><input class="inp" id="camp_name" placeholder="e.g. Home loan offer June 2025"></div>
+    <div class="fg">
+      <div class="fr"><label class="il">Recipient group</label><select class="inp" id="camp_grp"><option value="all">All contacts</option><option value="hot">🔥 Hot leads only</option><option value="warm">🌡 Warm leads</option><option value="cold">❄ Cold leads</option><option value="followup">Follow-up stage</option><option value="new">New leads</option></select></div>
+      <div class="fr"><label class="il">Message type</label><select class="inp" id="camp_type"><option value="template">Template (first outreach)</option><option value="freeform">Free-form (24hr window)</option></select></div>
+    </div>
+    <div class="fr"><label class="il">Template / message</label><select class="inp" id="camp_tmpl" style="margin-bottom:8px"></select><textarea class="inp" id="camp_msg" rows="5" placeholder="Hello {name}! 👋 MoneyGroww here..."></textarea></div>
+    <div class="fg">
+      <div class="fr"><label class="il">Schedule (blank = start now)</label><input class="inp" id="camp_sched" type="datetime-local"></div>
+      <div class="fr"><label class="il">Rate limit (msgs/minute)</label><input class="inp" id="camp_rpm" type="number" value="10" min="1" max="30"></div>
+    </div>
+    <div style="background:var(--goldl);border:1px solid var(--gold);border-radius:var(--r);padding:9px;font-size:11px;color:var(--gold);margin-bottom:12px"><i class="ti ti-alert-circle"></i> Smart rules apply: contacts below engagement threshold, those who blocked, or unsubscribed will be automatically skipped.</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-wa" style="flex:1;justify-content:center" onclick="createCampaign()"><i class="ti ti-send"></i> Launch campaign</button>
+      <button class="btn btn-out" onclick="closeMod('mCamp')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const SK={api:'mg_wa_api',camps:'mg_wa_camps',msgs:'mg_wa_msgs',flows:'mg_wa_flows',logs:'mg_wa_logs',unsub:'mg_wa_unsub',cfg:'mg_site_v1',pass:'mg_pass_v1',contacts:'mg_crm_contacts'};
+function ld(k){try{return JSON.parse(localStorage.getItem(k)||'[]')}catch{return[]}}
+function ldO(k){try{return JSON.parse(localStorage.getItem(k)||'{}')}catch{return{}}}
+function sv(k,v){localStorage.setItem(k,JSON.stringify(v))}
+function getPass(){return localStorage.getItem(SK.pass)||'admin123'}
+function getContacts(){return ld(SK.contacts)}
+
+let audioCtx=null;
+function initAudio(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)()}
+function playSound(type){
+  try{
+    initAudio();
+    const osc=audioCtx.createOscillator(),gain=audioCtx.createGain();
+    osc.connect(gain);gain.connect(audioCtx.destination);
+    if(type==='msg'){osc.frequency.setValueAtTime(880,audioCtx.currentTime);osc.frequency.setValueAtTime(1100,audioCtx.currentTime+.08);gain.gain.setValueAtTime(.3,audioCtx.currentTime);gain.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+.3);osc.start();osc.stop(audioCtx.currentTime+.3)}
+    else if(type==='hot'){osc.frequency.setValueAtTime(660,audioCtx.currentTime);osc.frequency.setValueAtTime(880,audioCtx.currentTime+.08);osc.frequency.setValueAtTime(1100,audioCtx.currentTime+.16);gain.gain.setValueAtTime(.4,audioCtx.currentTime);gain.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+.5);osc.start();osc.stop(audioCtx.currentTime+.5)}
+    else if(type==='error'){osc.frequency.setValueAtTime(300,audioCtx.currentTime);osc.type='sawtooth';gain.gain.setValueAtTime(.3,audioCtx.currentTime);gain.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+.4);osc.start();osc.stop(audioCtx.currentTime+.4)}
+    else if(type==='success'){osc.frequency.setValueAtTime(523,audioCtx.currentTime);osc.frequency.setValueAtTime(659,audioCtx.currentTime+.1);osc.frequency.setValueAtTime(784,audioCtx.currentTime+.2);gain.gain.setValueAtTime(.3,audioCtx.currentTime);gain.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+.5);osc.start();osc.stop(audioCtx.currentTime+.5)}
+  }catch(e){}
+}
+
+const notifQ=[];
+function showNotif(title,msg,type='wa',duration=6000){
+  if(document.getElementById('n_sound')?.checked!==false){
+    if(type==='resp'||type==='wa')playSound('msg');
+    else if(type==='hot')playSound('hot');
+    else if(type==='warn')playSound('error');
+  }
+  const panel=document.getElementById('notifPanel');
+  const id='n'+Date.now()+Math.floor(Math.random()*1000);
+  const typeIcon={wa:'ti-brand-whatsapp',hot:'ti-flame',resp:'ti-message-check',warn:'ti-alert-triangle'}[type]||'ti-bell';
+  const el=document.createElement('div');
+  el.className='notif '+type;el.id=id;
+  el.innerHTML=`<div class="notif-icon ${type}"><i class="ti ${typeIcon}"></i></div><div class="notif-body"><div class="notif-title">${title}</div><div class="notif-msg">${msg}</div><div class="notif-time">${new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})}</div></div><button class="notif-close" onclick="closeNotif('${id}')"><i class="ti ti-x"></i></button>`;
+  panel.appendChild(el);
+  if(panel.children.length>5)panel.removeChild(panel.children[0]);
+  setTimeout(()=>closeNotif(id),duration);
+  addWebhookLog(type==='resp'?'in':type==='warn'?'warn':'out',title+': '+msg);
+}
+function closeNotif(id){const el=document.getElementById(id);if(el){el.style.animation='slideOut .25s ease forwards';setTimeout(()=>el.remove(),250)}}
+
+let logLines=[];
+function addWebhookLog(type,msg){
+  const time=new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  const cls={in:'wl-in',out:'wl-out',err:'wl-err',warn:'wl-warn'}[type]||'wl-msg';
+  const prefix={in:'◄ IN',out:'► OUT',err:'✗ ERR',warn:'⚠ WARN'}[type]||'● LOG';
+  logLines.push({time,cls,prefix,msg});
+  if(logLines.length>200)logLines.shift();
+  const el=document.getElementById('webhookLog');
+  if(el){el.innerHTML=logLines.map(l=>`<div class="wl-line"><span class="wl-time">${l.time}</span><span class="${l.cls}"> ${l.prefix} </span><span class="wl-msg">${l.msg}</span></div>`).join('');el.scrollTop=el.scrollHeight}
+  const lc=document.getElementById('logCount');if(lc)lc.textContent=logLines.length+' events';
+}
+
+function doLogin(){
+  if(document.getElementById('lu').value.trim()==='admin'&&document.getElementById('lp').value===getPass()){
+    document.getElementById('vL').style.display='none';document.getElementById('vD').style.display='block';
+    initDash();
+  } else toast('Incorrect credentials','err');
+}
+function doLogout(){document.getElementById('vD').style.display='none';document.getElementById('vL').style.display='flex';document.getElementById('lp').value=''}
+
+function toast(m,t='ok'){const el=document.getElementById('toast');el.innerHTML='<i class="ti ti-'+(t==='ok'?'check':t==='err'?'x':t==='warn'?'alert-triangle':'info-circle')+'"></i>'+m;el.className=t;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),3200)}
+
+function toggleSB(){document.getElementById('sbNav').classList.toggle('open');document.getElementById('mOv').classList.toggle('open')}
+function closeSB(){document.getElementById('sbNav').classList.remove('open');document.getElementById('mOv').classList.remove('open')}
+
+function showSec(id,el){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  if(el){document.querySelectorAll('.sbl').forEach(l=>l.classList.remove('active'));el.classList.add('active')}
+  closeSB();
+  const map={ov:rfOv,setup:rfSetup,campaigns:rfCampaigns,smart:rfSmart,chatbot:rfChatbot,inbox:rfInbox,response:rfResponse,audience:rfAudience,webhook:()=>{},settings:loadSettings};
+  if(map[id])map[id]();
+}
+
+let charts={};
+function dc(k){if(charts[k]){charts[k].destroy();delete charts[k]}}
+function initDash(){
+  document.getElementById('ovDate').textContent=new Date().toLocaleDateString('en-IN',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  if(!ld(SK.unsub).length)sv(SK.unsub,['STOP','NO','DON\'T CONTACT','REMOVE','UNSUBSCRIBE','BLOCK','SPAM','OPT OUT']);
+  if(!ld(SK.flows).length)initFlows();
+  checkAPIStatus();
+  rfOv();
+  setTimeout(()=>simLiveEvents(),3000);
+}
+function checkAPIStatus(){
+  const api=ldO(SK.api);
+  const connected=!!(api.token&&api.phoneId);
+  document.getElementById('apiStatusPill').className='status-pill '+(connected?'pill-connected':'pill-demo');
+  document.getElementById('apiStatusPill').innerHTML=connected?'<i class="ti ti-wifi" style="font-size:12px"></i> API Connected':'<i class="ti ti-wifi-off" style="font-size:12px"></i> Demo mode';
+  document.getElementById('sbSetup').textContent=connected?'✓':'!';
+  document.getElementById('sbSetup').className='sbbg '+(connected?'bg-g':'bg-r');
+}
+function initFlows(){
+  sv(SK.flows,[
+    {id:'f1',keywords:['home','house','ghar','makan'],response:'🏠 *Home Loan from MoneyGroww:*\n\n✅ Rate from 8.40% p.a.\n✅ Loan up to ₹5 Crore\n✅ 3-day approval\n✅ Zero hidden charges\n\nReply *YES* for FREE consultation! 📞'},
+    {id:'f2',keywords:['business','vyapar','dukaan'],response:'💼 *Business Loan from MoneyGroww:*\n\n✅ Rate from 11.00% p.a.\n✅ Up to ₹5 Crore\n✅ Quick disbursal\n✅ No collateral options\n\nReply *YES* for callback! 🚀'},
+    {id:'f3',keywords:['personal','urgent','medical','wedding','travel'],response:'👤 *Personal Loan from MoneyGroww:*\n\n✅ Rate from 10.50% p.a.\n✅ Same-day disbursal\n✅ No collateral\n\nReply *YES* for instant callback! ⚡'},
+    {id:'f4',keywords:['property','land','zameen','plot','lap'],response:'🏢 *Loan Against Property:*\n\n✅ Rate from 9.25% p.a.\n✅ Get up to 70% of property value\n✅ Keep using your property\n\nReply *YES* to calculate your amount! 💰'},
+    {id:'f5',keywords:['yes','haan','interested','call me','callback','ok'],response:'✅ *You are on our PRIORITY list!*\n\nOur expert will call you within 2 hours.\n\n📞 Direct line: +91 98765 43210\n\n_MoneyGroww — Your loan, your way!_ 💚'},
+    {id:'f6',keywords:['rate','interest','byaj','kitna'],response:'📊 *Current best rates:*\n\n🏠 Home Loan: 8.40%+ p.a.\n🏢 LAP: 9.25%+ p.a.\n👤 Personal: 10.50%+ p.a.\n💼 Business: 11.00%+ p.a.\n\nRates vary by profile. Reply *YES* for personalised rate! 😊'},
+    {id:'f7',keywords:['stop','remove','unsubscribe','mat bhejo','band karo'],response:'✅ You have been removed from our list. We will not contact you again.\n\n_MoneyGroww Financial Consultant_'}
+  ]);
+}
+
+function rfOv(){
+  const msgs=ld(SK.msgs),camps=ld(SK.camps);
+  const sent=msgs.filter(m=>m.status!=='queued').length;
+  const delivered=msgs.filter(m=>['delivered','read','replied'].includes(m.status)).length;
+  const read=msgs.filter(m=>['read','replied'].includes(m.status)).length;
+  const replied=msgs.filter(m=>m.status==='replied').length;
+  document.getElementById('ovStats').innerHTML=`
+    <div class="sc"><div class="slbl" style="color:var(--wa)"><i class="ti ti-send"></i>Total sent</div><div class="sv" style="color:var(--wa)">${sent}</div><div class="ss">All campaigns</div></div>
+    <div class="sc"><div class="slbl" style="color:var(--blue)"><i class="ti ti-check"></i>Delivered</div><div class="sv" style="color:var(--blue)">${delivered}</div><div class="ss">${sent?Math.round(delivered/sent*100):0}% rate</div></div>
+    <div class="sc"><div class="slbl" style="color:var(--g)"><i class="ti ti-eye"></i>Read</div><div class="sv" style="color:var(--g)">${read}</div><div class="ss">${sent?Math.round(read/sent*100):0}% rate</div></div>
+    <div class="sc"><div class="slbl" style="color:var(--red)"><i class="ti ti-message-reply"></i>Replied</div><div class="sv" style="color:var(--red)">${replied}</div><div class="ss">${sent?Math.round(replied/sent*100):0}% rate</div></div>
+    <div class="sc"><div class="slbl" style="color:var(--gold)"><i class="ti ti-clock"></i>Campaigns</div><div class="sv" style="color:var(--gold)">${camps.length}</div><div class="ss">${camps.filter(c=>c.status==='running').length} running</div></div>`;
+  const bo={responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:10,padding:7}}}};
+  dc('cStatus');charts.cStatus=new Chart(document.getElementById('cStatus'),{type:'doughnut',data:{labels:['Sent','Delivered','Read','Replied','Failed'],datasets:[{data:[Math.max(0,sent-delivered),Math.max(0,delivered-read),Math.max(0,read-replied),replied,msgs.filter(m=>m.status==='failed').length],backgroundColor:['#eff6ff','#fdf6e3','#e8f7ef','#dcfce7','#fee2e2'],borderColor:['#1d4ed8','#b8860b','#1a7f4e','#166534','#b91c1c'],borderWidth:2}]},options:{...bo,cutout:'60%'}});
+  const days=[],rates=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const ds=d.toISOString().slice(0,10);const dm=msgs.filter(m=>m.sentAt?.startsWith(ds));days.push(d.toLocaleDateString('en-IN',{weekday:'short'}));rates.push(dm.length?Math.round(dm.filter(x=>x.status==='replied').length/dm.length*100):0)}
+  dc('cTrend');charts.cTrend=new Chart(document.getElementById('cTrend'),{type:'line',data:{labels:days,datasets:[{label:'Reply rate %',data:rates,borderColor:'#25D366',backgroundColor:'rgba(37,211,102,.1)',fill:true,tension:.4,pointBackgroundColor:'#25D366',pointRadius:3}]},options:{...bo,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,max:100,ticks:{callback:v=>v+'%',font:{size:9}}},x:{grid:{display:false},ticks:{font:{size:9}}}}}});
+  const replied2=msgs.filter(m=>m.status==='replied').slice(0,6);
+  document.getElementById('respondedTbl').innerHTML=replied2.length?`<thead><tr><th>Name</th><th>Phone</th><th>Message</th><th>Time</th><th>Actions</th></tr></thead><tbody>${replied2.map(m=>`<tr><td style="font-weight:600">${m.name}</td><td>${m.phone}</td><td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px;color:var(--mu)">${m.replyText||'Replied'}</td><td style="font-size:11px">${m.repliedAt?new Date(m.repliedAt).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}):''}</td><td class="ra"><a href="tel:${m.phone}" class="ib grn"><i class="ti ti-phone"></i></a><button class="ib" onclick="sendFollowUp('${m.phone}','${m.name}')"><i class="ti ti-brand-whatsapp"></i></button></td></tr>`).join('')}</tbody>`:'<tr><td colspan="5" style="padding:1rem;text-align:center;color:var(--mu);font-size:12px">No replies yet — launch a campaign to start</td></tr>';
+  document.getElementById('healthBody').innerHTML=`<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px">${[
+    {label:'Delivery rate',value:sent?Math.round(delivered/sent*100):0,good:85,warn:70,unit:'%'},
+    {label:'Read rate',value:sent?Math.round(read/sent*100):0,good:60,warn:40,unit:'%'},
+    {label:'Reply rate',value:sent?Math.round(replied/sent*100):0,good:20,warn:10,unit:'%'},
+    {label:'Block rate',value:sent?Math.round(msgs.filter(m=>m.status==='blocked').length/Math.max(sent,1)*100):0,good:0,warn:2,unit:'%',invert:true}
+  ].map(h=>`<div style="background:var(--bg);border-radius:var(--r);padding:10px;text-align:center"><div style="font-size:10px;color:var(--mu);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">${h.label}</div><div style="font-size:20px;font-weight:800;color:${h.invert?(h.value<=h.good?'var(--g)':h.value<=h.warn?'var(--gold)':'var(--red)'):(h.value>=h.good?'var(--g)':h.value>=h.warn?'var(--gold)':'var(--red)')}">${h.value}${h.unit}</div><div style="font-size:10px;color:var(--mu);margin-top:2px">${h.invert?(h.value<=h.good?'Excellent':h.value<=h.warn?'Caution':'Danger'):(h.value>=h.good?'Excellent':h.value>=h.warn?'Good':'Needs work')}</div></div>`).join('')}</div>`;
+}
+
+function rfSetup(){
+  const api=ldO(SK.api);
+  if(api.phoneId)document.getElementById('api_phoneId').value=api.phoneId;
+  if(api.wabaId)document.getElementById('api_wabaId').value=api.wabaId;
+  if(api.token)document.getElementById('api_token').value=api.token;
+  if(api.webhookToken)document.getElementById('api_webhookToken').value=api.webhookToken;
+  document.getElementById('webhookURLDisplay').textContent=window.location.origin+'/webhook';
+  renderSavedTemplates();
+}
+async function testAPI(){
+  const token=document.getElementById('api_token').value.trim();
+  const phoneId=document.getElementById('api_phoneId').value.trim();
+  const res=document.getElementById('apiTestResult');
+  res.style.display='block';res.style.background='#fef3c7';res.style.color='var(--gold)';res.textContent='Testing connection...';
+  if(!token||!phoneId){res.style.background='var(--redl)';res.style.color='var(--red)';res.textContent='Please enter Phone Number ID and Access Token first.';return}
+  try{
+    const r=await fetch(`https://graph.facebook.com/v18.0/${phoneId}?fields=display_phone_number,verified_name&access_token=${token}`);
+    const d=await r.json();
+    if(d.display_phone_number){
+      res.style.background='var(--wal)';res.style.color='#166534';res.textContent='✅ Connected! Phone: '+d.display_phone_number+' ('+d.verified_name+')';
+      addWebhookLog('in','API test successful — connected to '+d.display_phone_number);
+      showNotif('API Connected!','WhatsApp Business API successfully connected to '+d.display_phone_number,'resp');
+    } else {
+      res.style.background='var(--redl)';res.style.color='var(--red)';res.textContent='❌ Error: '+(d.error?.message||'Invalid credentials');
+      addWebhookLog('err','API test failed: '+(d.error?.message||'Invalid credentials'));
+    }
+  }catch(e){res.style.background='var(--redl)';res.style.color='var(--red)';res.textContent='❌ Network error — check your token and try again.';addWebhookLog('err','API test network error: '+e.message)}
+}
+function saveAPI(){
+  const api={phoneId:document.getElementById('api_phoneId').value.trim(),wabaId:document.getElementById('api_wabaId').value.trim(),token:document.getElementById('api_token').value.trim(),webhookToken:document.getElementById('api_webhookToken').value.trim()};
+  sv(SK.api,api);checkAPIStatus();toast('API credentials saved!');addWebhookLog('out','API credentials updated');
+}
+function renderSavedTemplates(){
+  document.getElementById('tmplList').innerHTML=`<div style="border:1px solid var(--bdr);border-radius:var(--r);padding:10px;margin-bottom:8px"><div style="font-size:12px;font-weight:600;margin-bottom:4px">hello_world <span class="badge b-new">APPROVED</span></div><div style="font-size:11px;color:var(--mu)">Default Meta template. "Hello World!" — Use for first outreach testing.</div></div><div style="border:1px solid var(--bdr);border-radius:var(--r);padding:10px"><div style="font-size:12px;font-weight:600;margin-bottom:4px">loan_offer_generic <span class="badge" style="background:#fef3c7;color:#b45309">PENDING APPROVAL</span></div><div style="font-size:11px;color:var(--mu)">Generic loan offer template. Approval takes 24-48 hours.</div></div><p style="font-size:11px;color:var(--mu);margin-top:10px">To add real templates, go to Meta Business Manager → WhatsApp → Message Templates → Create Template. After approval (24-48h), click "Sync from Meta" above.</p>`;
+}
+function syncTemplates(){toast('Syncing templates from Meta API...','inf');addWebhookLog('out','Template sync requested');setTimeout(()=>{toast('Templates synced!');addWebhookLog('in','Templates synced successfully')},2000)}
+function copyWebhookCode(){const code=document.getElementById('webhookCode').textContent;navigator.clipboard.writeText(code).then(()=>toast('Webhook code copied!'));}
+
+function rfCampaigns(){
+  const camps=ld(SK.camps);
+  document.getElementById('sbCamp').textContent=camps.length;
+  const list=document.getElementById('campaignList');const noCamp=document.getElementById('noCampaigns');
+  if(!camps.length){list.innerHTML='';noCamp.style.display='block';return}
+  noCamp.style.display='none';
+  list.innerHTML=camps.map(c=>{
+    const total=c.total||0,sent=c.sent||0,delivered=c.delivered||0,read=c.read||0,replied=c.replied||0,failed=c.failed||0;
+    const pct=total?Math.round(sent/total*100):0;
+    const statusColor={draft:'var(--mu)',scheduled:'var(--blue)',running:'var(--wa)',paused:'var(--gold)',completed:'var(--g)',stopped:'var(--red)'}[c.status]||'var(--mu)';
+    return `<div class="cmp-card">
+      <div class="cmp-header">
+        <div><div class="cmp-name">${c.name}</div><div style="font-size:11px;color:var(--mu);margin-top:2px">${c.group} • ${total} contacts • Created ${new Date(c.created).toLocaleDateString('en-IN')}</div></div>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <span class="badge" style="background:${statusColor}20;color:${statusColor};font-size:11px">${c.status.toUpperCase()}</span>
+          <div class="ra">${c.status==='running'?`<button class="ib" onclick="pauseCamp('${c.id}')" title="Pause"><i class="ti ti-player-pause"></i></button>`:''}${c.status==='paused'?`<button class="ib grn" onclick="resumeCamp('${c.id}')" title="Resume"><i class="ti ti-player-play"></i></button>`:''}<button class="ib del" onclick="deleteCamp('${c.id}')" title="Delete"><i class="ti ti-trash"></i></button></div>
+        </div>
+      </div>
+      ${total?`<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(80px,1fr));gap:8px;margin-bottom:8px">
+        <div style="text-align:center"><div style="font-size:16px;font-weight:700;color:var(--blue)">${sent}</div><div style="font-size:10px;color:var(--mu)">Sent</div></div>
+        <div style="text-align:center"><div style="font-size:16px;font-weight:700;color:var(--g)">${delivered}</div><div style="font-size:10px;color:var(--mu)">Delivered</div></div>
+        <div style="text-align:center"><div style="font-size:16px;font-weight:700;color:var(--g)">${read}</div><div style="font-size:10px;color:var(--mu)">Read</div></div>
+        <div style="text-align:center"><div style="font-size:16px;font-weight:700;color:var(--wa)">${replied}</div><div style="font-size:10px;color:var(--mu)">Replied</div></div>
+        <div style="text-align:center"><div style="font-size:16px;font-weight:700;color:${total&&Math.round(replied/total*100)>=10?'var(--g)':'var(--red)'}">${total?Math.round(replied/total*100):0}%</div><div style="font-size:10px;color:var(--mu)">Reply rate</div></div>
+        <div style="text-align:center"><div style="font-size:16px;font-weight:700;color:var(--red)">${failed}</div><div style="font-size:10px;color:var(--mu)">Failed</div></div>
+      </div>
+      <div class="pbar-w"><div class="pbar" style="width:${pct}%;background:${c.status==='running'?'var(--wa)':'var(--g)'}"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--mu);margin-top:3px"><span>${sent}/${total} sent (${pct}%)</span><span>${c.status==='running'?'Running...':c.status==='completed'?'Completed':'—'}</span></div>`:''}
+    </div>`;
+  }).join('');
+}
+function openNewCampaign(){
+  const sel=document.getElementById('camp_tmpl');
+  sel.innerHTML='<option value="custom">Custom message</option><option value="home">Home loan offer</option><option value="followup">Follow-up reminder</option><option value="business">Business loan</option>';
+  document.getElementById('camp_msg').value='Hello {name}! 👋\n\nMoneyGroww Financial Consultant here.\n\nWe have special loan offers this month!\n\n🏠 Home Loan: 8.40%+\n💼 Business Loan: 11%+\n👤 Personal Loan: 10.5%+\n\nInterested? Reply *YES* for a FREE consultation! 📞\n\n_MoneyGroww_ 💚';
+  openMod('mCamp');
+}
+document.addEventListener('change',function(e){
+  if(e.target.id==='camp_tmpl'){
+    const msgs={home:'Hello {name}! 👋\n\nGreat news from MoneyGroww! 🏠\n\nSpecial home loan from *8.40% p.a.*!\n✅ Up to ₹5 Crore\n✅ 3-day approval\n\nReply *YES* for free consultation! 📞\n\n_MoneyGroww_ 💚',followup:'Hello {name}! 👋\n\nFollowing up on your loan inquiry from MoneyGroww. 😊\n\nOur rates are the best right now!\n\nReply *CALL* — we\'ll connect within the hour.\n\n_MoneyGroww_ 💚',business:'Hello {name}! 🚀\n\nGrow your business with MoneyGroww! 💼\n\nBusiness Loan from *11% p.a.*\n✅ Up to ₹5 Crore\n✅ Quick disbursal\n\nReply *YES* for callback!\n\n_MoneyGroww_ 💚'};
+    if(msgs[e.target.value])document.getElementById('camp_msg').value=msgs[e.target.value];
+  }
+});
+function createCampaign(){
+  const name=document.getElementById('camp_name').value.trim();
+  if(!name){toast('Enter a campaign name','err');return}
+  const contacts=getContacts();
+  const grp=document.getElementById('camp_grp').value;
+  let targets=contacts;
+  if(grp==='hot')targets=contacts.filter(c=>c.temp==='🔥 Hot');
+  else if(grp==='warm')targets=contacts.filter(c=>c.temp==='🌡 Warm');
+  else if(grp==='cold')targets=contacts.filter(c=>c.temp==='❄ Cold');
+  else if(grp==='followup')targets=contacts.filter(c=>c.stage==='Follow-up');
+  else if(grp==='new')targets=contacts.filter(c=>c.stage==='New Lead');
+  const minScore=parseInt(document.getElementById('sr_minScore')?.value||20);
+  targets=targets.filter(c=>!c.unsubscribed&&(c.score||0)>=minScore);
+  const camp={id:'c'+Date.now(),name,group:grp,total:targets.length,sent:0,delivered:0,read:0,replied:0,failed:0,skipped:contacts.length-targets.length,status:'running',created:new Date().toISOString(),msg:document.getElementById('camp_msg').value,rpm:parseInt(document.getElementById('camp_rpm').value)||10};
+  const camps=ld(SK.camps);camps.unshift(camp);sv(SK.camps,camps);
+  closeMod('mCamp');rfCampaigns();
+  toast('Campaign launched! Sending to '+targets.length+' contacts...','ok');
+  addWebhookLog('out','Campaign "'+name+'" started — '+targets.length+' recipients');
+  showNotif('Campaign launched! 🚀','"'+name+'" sending to '+targets.length+' contacts','wa');
+  runCampaign(camp.id,targets);
+}
+function runCampaign(campId,targets){
+  const api=ldO(SK.api);const isLive=!!(api.token&&api.phoneId);
+  const rpm=parseInt(document.getElementById('camp_rpm')?.value||10);
+  const delay=isLive?Math.ceil(60000/rpm):800;
+  let i=0;
+  function sendNext(){
+    if(i>=targets.length){
+      const camps=ld(SK.camps),c=camps.find(x=>x.id===campId);
+      if(c){c.status='completed';sv(SK.camps,camps)}
+      rfCampaigns();rfOv();
+      showNotif('Campaign complete! ✅','"'+(ld(SK.camps).find(x=>x.id===campId)?.name||'')+'" sent to '+targets.length+' contacts','resp');
+      playSound('success');
+      addWebhookLog('out','Campaign '+campId+' completed — '+targets.length+' messages sent');
+      return;
+    }
+    const target=targets[i];
+    const msgText=(ld(SK.camps).find(x=>x.id===campId)?.msg||'').replace(/{name}/g,target.name||'').replace(/{loan_type}/g,target.loanType||'loan');
+    if(isLive){
+      sendWAMessage(target.phone,msgText,api).then(result=>{
+        const msgs2=ld(SK.msgs);
+        msgs2.push({id:'m'+Date.now()+i,campId,phone:target.phone,name:target.name||'',text:msgText,status:result.messages?'sent':'failed',msgId:result.messages?.[0]?.id,sentAt:new Date().toISOString()});
+        sv(SK.msgs,msgs2);
+        const camps=ld(SK.camps),c=camps.find(x=>x.id===campId);
+        if(c){if(result.messages)c.sent++;else c.failed++;sv(SK.camps,camps)}
+        addWebhookLog(result.messages?'out':'err',(result.messages?'Sent to ':'Failed: ')+target.name+' ('+target.phone+')');
+      });
+    } else {
+      const msgs2=ld(SK.msgs);
+      const status=Math.random()>0.08?'sent':'failed';
+      msgs2.push({id:'m'+Date.now()+i,campId,phone:target.phone,name:target.name||'',text:msgText,status,sentAt:new Date().toISOString()});
+      sv(SK.msgs,msgs2);
+      const camps=ld(SK.camps),c=camps.find(x=>x.id===campId);
+      if(c){if(status==='sent')c.sent++;else c.failed++;sv(SK.camps,camps)}
+      addWebhookLog(status==='sent'?'out':'err',(status==='sent'?'[DEMO] Sent to ':'[DEMO] Failed: ')+target.name);
+      setTimeout(()=>{
+        const m=ld(SK.msgs),idx=m.findIndex(x=>x.phone===target.phone&&x.campId===campId);
+        if(idx>-1&&Math.random()>0.1){m[idx].status='delivered';sv(SK.msgs,m);const camps2=ld(SK.camps),c2=camps2.find(x=>x.id===campId);if(c2){c2.delivered++;sv(SK.camps,camps2)}}
+      },delay*2);
+      setTimeout(()=>{
+        const m=ld(SK.msgs),idx=m.findIndex(x=>x.phone===target.phone&&x.campId===campId);
+        if(idx>-1&&Math.random()>0.4){m[idx].status='read';sv(SK.msgs,m);const camps2=ld(SK.camps),c2=camps2.find(x=>x.id===campId);if(c2){c2.read++;sv(SK.camps,camps2)}addWebhookLog('in','[DEMO] Read by '+target.name)}
+      },delay*4);
+      if(Math.random()>0.75){
+        setTimeout(()=>{
+          const m=ld(SK.msgs),idx=m.findIndex(x=>x.phone===target.phone&&x.campId===campId);
+          const replies=['Interested, please call','What is the interest rate?','Yes please','Tell me more','How much loan can I get?','Mujhe call karo'];
+          const replyText=replies[Math.floor(Math.random()*replies.length)];
+          if(idx>-1){m[idx].status='replied';m[idx].replyText=replyText;m[idx].repliedAt=new Date().toISOString();sv(SK.msgs,m);const camps2=ld(SK.camps),c2=camps2.find(x=>x.id===campId);if(c2){c2.replied++;sv(SK.camps,camps2)}}
+          addWebhookLog('in','[DEMO] Reply from '+target.name+': "'+replyText+'"');
+          showNotif('💬 '+target.name+' replied!','"'+replyText+'"','resp');
+          rfOv();
+        },delay*6+Math.random()*delay*3);
+      }
+    }
+    rfCampaigns();
+    i++;
+    const randDelay=document.getElementById('tgl_random')?.checked?delay+Math.random()*delay:delay;
+    setTimeout(sendNext,randDelay);
+  }
+  sendNext();
+}
+async function sendWAMessage(phone,text,api){
+  try{
+    const r=await fetch(`https://graph.facebook.com/v18.0/${api.phoneId}/messages`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+api.token},
+      body:JSON.stringify({messaging_product:'whatsapp',to:'91'+phone,type:'text',text:{body:text}})
+    });
+    return r.json();
+  }catch(e){return{error:e.message}}
+}
+function pauseCamp(id){const c=ld(SK.camps),x=c.find(i=>i.id===id);if(x){x.status='paused';sv(SK.camps,c);rfCampaigns();toast('Campaign paused')}}
+function resumeCamp(id){const c=ld(SK.camps),x=c.find(i=>i.id===id);if(x){x.status='running';sv(SK.camps,c);rfCampaigns();toast('Campaign resumed')}}
+function deleteCamp(id){if(!confirm('Delete campaign?'))return;sv(SK.camps,ld(SK.camps).filter(c=>c.id!==id));rfCampaigns();toast('Deleted')}
+
+function rfSmart(){
+  const msgs=ld(SK.msgs),total=msgs.length,failed=msgs.filter(m=>m.status==='failed').length,blocked=msgs.filter(m=>m.status==='blocked').length;
+  const risk=Math.min(100,Math.round((failed+blocked*3)/Math.max(total,1)*100)+15);
+  const fill=document.getElementById('riskFill'),lbl=document.getElementById('riskLabel');
+  fill.style.width=risk+'%';fill.style.background=risk<30?'var(--g)':risk<60?'var(--gold)':'var(--red)';
+  lbl.style.color=risk<30?'var(--g)':risk<60?'var(--gold)':'var(--red)';
+  lbl.textContent=(risk<30?'LOW':risk<60?'MEDIUM':'HIGH')+' '+risk+'%';
+  document.getElementById('riskFactors').innerHTML=`
+    <div style="background:var(--sur);border-radius:var(--r);padding:8px;text-align:center;border:1px solid var(--bdr)"><div style="font-size:10px;color:var(--mu);margin-bottom:3px">Failure rate</div><div style="font-size:15px;font-weight:700;color:${failed/Math.max(total,1)>0.05?'var(--red)':'var(--g)'}">${total?Math.round(failed/total*100):0}%</div></div>
+    <div style="background:var(--sur);border-radius:var(--r);padding:8px;text-align:center;border:1px solid var(--bdr)"><div style="font-size:10px;color:var(--mu);margin-bottom:3px">Block rate</div><div style="font-size:15px;font-weight:700;color:${blocked/Math.max(total,1)>0.02?'var(--red)':'var(--g)'}">${total?Math.round(blocked/total*100):0}%</div></div>
+    <div style="background:var(--sur);border-radius:var(--r);padding:8px;text-align:center;border:1px solid var(--bdr)"><div style="font-size:10px;color:var(--mu);margin-bottom:3px">Messages today</div><div style="font-size:15px;font-weight:700;color:var(--wa)">${msgs.filter(m=>m.sentAt?.startsWith(new Date().toISOString().slice(0,10))).length}</div></div>
+    <div style="background:var(--sur);border-radius:var(--r);padding:8px;text-align:center;border:1px solid var(--bdr)"><div style="font-size:10px;color:var(--mu);margin-bottom:3px">Skipped (low score)</div><div style="font-size:15px;font-weight:700;color:var(--gold)">${ld(SK.camps).reduce((a,c)=>a+(c.skipped||0),0)}</div></div>`;
+  const words=ld(SK.unsub);
+  document.getElementById('unsubWords').innerHTML=words.map((w,i)=>`<span style="background:var(--redl);color:var(--red);padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;display:inline-flex;align-items:center;gap:4px">${w}<button onclick="removeUnsubWord(${i})" style="background:none;border:none;cursor:pointer;color:var(--red);font-size:12px;padding:0;line-height:1">×</button></span>`).join('');
+}
+function addUnsubWord(){const inp=document.getElementById('newUnsubWord');if(!inp.value.trim())return;const w=ld(SK.unsub);w.push(inp.value.trim().toUpperCase());sv(SK.unsub,w);inp.value='';rfSmart()}
+function removeUnsubWord(i){const w=ld(SK.unsub);w.splice(i,1);sv(SK.unsub,w);rfSmart()}
+function saveSmartRules(){toast('Smart rules saved!')}
+
+function rfChatbot(){
+  const flows=ld(SK.flows);
+  document.getElementById('flowList').innerHTML=flows.map((f,i)=>`<div style="border:1px solid var(--bdr);border-radius:var(--r);padding:10px;margin-bottom:8px"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:7px"><span style="font-size:12px;font-weight:600;color:var(--g)"><i class="ti ti-git-branch"></i> Flow ${i+1}</span><div class="ra"><button class="ib del" onclick="deleteFlow('${f.id}')"><i class="ti ti-trash"></i></button></div></div><div class="fr"><label class="il">Keywords (comma separated)</label><input class="inp" style="font-size:12px" value="${f.keywords.join(', ')}" onchange="updFlow('${f.id}','keywords',this.value.split(',').map(k=>k.trim().toLowerCase()))"></div><div class="fr" style="margin-bottom:0"><label class="il">Auto-reply message</label><textarea class="inp" style="font-size:12px" rows="3" onchange="updFlow('${f.id}','response',this.value)">${f.response}</textarea></div></div>`).join('');
+  const area=document.getElementById('chatTestArea');
+  if(area&&!area.children.length){area.innerHTML=`<div style="max-width:80%;padding:7px 10px;border-radius:0 7px 7px 7px;background:#fff;align-self:flex-start;font-size:12px;line-height:1.5"><div style="font-size:9px;color:var(--g);font-weight:600;margin-bottom:1px">🤖 AI Bot</div><div style="white-space:pre-wrap">Hello! 👋 Welcome to MoneyGroww!\n\nI'm your AI loan assistant. Ask about:\n🏠 Home Loan | 💼 Business Loan\n👤 Personal Loan | 🏢 LAP\n\nOr reply *CALL* for expert callback! 📞</div></div>`;}
+  const ct=document.getElementById('tgl_claude');
+  if(ct&&!ct._wired){ct._wired=true;ct.addEventListener('change',function(){document.getElementById('claudeKeyRow').style.display=this.checked?'flex':'none'})}
+}
+function updFlow(id,key,val){const f=ld(SK.flows),x=f.find(i=>i.id===id);if(x){x[key]=val;sv(SK.flows,f)}}
+function deleteFlow(id){if(!confirm('Delete flow?'))return;sv(SK.flows,ld(SK.flows).filter(f=>f.id!==id));rfChatbot()}
+function addFlow(){const f=ld(SK.flows);f.push({id:'f'+Date.now(),keywords:['keyword1','keyword2'],response:'Your auto-reply message here...\n\n_MoneyGroww Financial Consultant_ 💚'});sv(SK.flows,f);rfChatbot()}
+function saveChatbot(){sv(SK.flows,ld(SK.flows));toast('Chatbot saved!')}
+async function sendTestMsg(){
+  const inp=document.getElementById('chatTestI');if(!inp?.value.trim())return;
+  const txt=inp.value.trim();inp.value='';
+  const area=document.getElementById('chatTestArea');
+  area.innerHTML+=`<div style="max-width:80%;padding:7px 10px;border-radius:7px 7px 0 7px;background:#d9fdd3;align-self:flex-end;font-size:12px;line-height:1.5;margin-left:auto">${txt}</div>`;
+  area.scrollTop=area.scrollHeight;
+  const useAI=document.getElementById('tgl_claude')?.checked;
+  const key=document.getElementById('claude_key')?.value;
+  let reply;
+  if(useAI&&key){
+    area.innerHTML+=`<div style="max-width:80%;padding:7px 10px;border-radius:0 7px 7px 7px;background:#fff;align-self:flex-start;font-size:12px;color:var(--mu)"><div style="font-size:9px;color:var(--g);font-weight:600;margin-bottom:1px">🤖 AI (Claude)</div>Thinking...</div>`;
+    area.scrollTop=area.scrollHeight;
+    try{
+      const ctx=document.getElementById('bot_context')?.value||'MoneyGroww Financial Consultant offers home loans, business loans, personal loans and LAP.';
+      const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:300,messages:[{role:'user',content:`You are a WhatsApp chatbot for ${ctx}. Reply to this customer message in a helpful, concise way (max 5 lines). Use emojis. End with asking them to reply YES for a callback.\n\nCustomer: ${txt}`}]})});
+      const d=await r.json();reply=d.content?.[0]?.text||getFlowReply(txt);
+    }catch{reply=getFlowReply(txt)}
+  } else {reply=getFlowReply(txt)}
+  setTimeout(()=>{
+    const last=area.lastElementChild;if(last&&last.textContent.includes('Thinking'))last.remove();
+    area.innerHTML+=`<div style="max-width:80%;padding:7px 10px;border-radius:0 7px 7px 7px;background:#fff;align-self:flex-start;font-size:12px;line-height:1.5"><div style="font-size:9px;color:var(--g);font-weight:600;margin-bottom:1px">🤖 AI Bot</div><div style="white-space:pre-wrap">${reply}</div></div>`;
+    area.scrollTop=area.scrollHeight;
+  },800);
+}
+function getFlowReply(msg){
+  const m=msg.toLowerCase(),flows=ld(SK.flows);
+  for(const f of flows){if(f.keywords.some(k=>m.includes(k.toLowerCase())))return f.response}
+  const fb=document.getElementById('bot_fallback')?.value;
+  return fb||'Thank you! 😊 Our expert will contact you within 2 hours.\n📞 +91 98765 43210\n\n_MoneyGroww_ 💚';
+}
+function testChatbot(){showSec('chatbot',document.querySelectorAll('.sbl')[7]);document.getElementById('chatTestI')?.focus()}
+
+let inboxChats={},activeInboxPhone='';
+function rfInbox(){
+  const c=getContacts();
+  const msgs=ld(SK.msgs);
+  c.slice(0,12).forEach(contact=>{
+    if(!inboxChats[contact.phone]){
+      inboxChats[contact.phone]={name:contact.name,phone:contact.phone,msgs:[{from:'bot',text:'Hello '+contact.name+'! 👋 I\'m your MoneyGroww AI assistant. How can I help you with your loan today?',time:new Date(contact.created||Date.now()-3600000).toISOString()}]};
+    }
+  });
+  msgs.filter(m=>m.replyText).forEach(m=>{
+    if(!inboxChats[m.phone])inboxChats[m.phone]={name:m.name,phone:m.phone,msgs:[]};
+    const existing=inboxChats[m.phone].msgs.find(x=>x.text===m.replyText&&x.from==='customer');
+    if(!existing)inboxChats[m.phone].msgs.push({from:'customer',text:m.replyText,time:m.repliedAt||new Date().toISOString()});
+  });
+  const list=document.getElementById('inboxList');
+  const phones=Object.keys(inboxChats);
+  document.getElementById('inboxCount').textContent=phones.length;
+  document.getElementById('sbInbox').textContent=msgs.filter(m=>m.replyText).length;
+  const colors=['#1a7f4e','#b8860b','#0e7490','#6d28d9','#b91c1c'];
+  list.innerHTML=phones.map((ph,i)=>{const ch=inboxChats[ph];const last=ch.msgs[ch.msgs.length-1];return`<div onclick="openInboxChat('${ph}')" style="display:flex;align-items:center;gap:8px;padding:9px 12px;cursor:pointer;border-bottom:1px solid rgba(0,0,0,.06);transition:.15s;background:${activeInboxPhone===ph?'#fff':'transparent'}" onmouseover="this.style.background='#e9edef'" onmouseout="this.style.background='${activeInboxPhone===ph?'#fff':'transparent'}'"><div style="width:36px;height:36px;border-radius:50%;background:${colors[i%colors.length]};display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0">${ch.name.charAt(0).toUpperCase()}</div><div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:600;margin-bottom:1px">${ch.name}</div><div style="font-size:11px;color:var(--mu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px">${(last?.text||'').substring(0,40)}</div></div><div style="font-size:10px;color:var(--mu);flex-shrink:0">${last?new Date(last.time).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}):''}</div></div>`}).join('');
+}
+function openInboxChat(phone){
+  activeInboxPhone=phone;const ch=inboxChats[phone];if(!ch)return;
+  const area=document.getElementById('inboxChat');
+  area.innerHTML=`<div style="background:#f0f2f5;padding:8px 12px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--bdr);flex-shrink:0"><div style="width:32px;height:32px;border-radius:50%;background:var(--wa);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff">${ch.name.charAt(0).toUpperCase()}</div><div style="flex:1"><div style="font-size:13px;font-weight:600">${ch.name}</div><div style="font-size:11px;color:var(--g)">● AI Bot active</div></div><div style="display:flex;gap:5px"><a href="tel:${phone}" style="padding:5px 8px;border:1px solid var(--bdr);border-radius:6px;font-size:11px;color:var(--tx);text-decoration:none;background:var(--sur)"><i class="ti ti-phone"></i></a><a href="https://wa.me/91${phone}" target="_blank" style="padding:5px 8px;border:1px solid var(--wa);border-radius:6px;font-size:11px;color:var(--wa);text-decoration:none;background:var(--wal)"><i class="ti ti-brand-whatsapp"></i> Real WA</a></div></div><div style="flex:1;overflow-y:auto;padding:10px;background:#e5ddd5;display:flex;flex-direction:column;gap:6px" id="inboxMsgs"></div><div style="background:#f0f2f5;padding:7px 10px;display:flex;gap:6px;align-items:center;border-top:1px solid var(--bdr);flex-shrink:0"><input id="inboxInp" style="flex:1;padding:7px 11px;border:none;border-radius:20px;font-size:13px;background:#fff;outline:none;font-family:inherit" placeholder="Type message (bot replies automatically)..." onkeydown="if(event.key==='Enter')sendInboxMsg()"><button onclick="sendInboxMsg()" style="width:34px;height:34px;background:var(--wa);border:none;border-radius:50%;cursor:pointer;color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px"><i class="ti ti-send"></i></button></div>`;
+  renderInboxMsgs();rfInbox();
+}
+function renderInboxMsgs(){const ch=inboxChats[activeInboxPhone];if(!ch)return;const el=document.getElementById('inboxMsgs');if(!el)return;el.innerHTML=ch.msgs.map(m=>`<div style="max-width:80%;padding:7px 10px;border-radius:${m.from==='me'||m.from==='bot'?'7px 7px 0 7px':'0 7px 7px 7px'};background:${m.from==='me'||m.from==='bot'?'#d9fdd3':'#fff'};align-self:${m.from==='me'||m.from==='bot'?'flex-end':'flex-start'};font-size:12px;line-height:1.5">${m.from==='bot'?'<div style="font-size:9px;color:var(--g);font-weight:600;margin-bottom:1px">🤖 AI Bot</div>':m.from==='customer'?'<div style="font-size:9px;color:var(--mu);margin-bottom:1px">Customer</div>':''}<div style="white-space:pre-wrap">${m.text}</div><div style="font-size:10px;color:var(--mu);text-align:right;margin-top:2px">${new Date(m.time).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})}</div></div>`).join('');el.scrollTop=el.scrollHeight}
+function sendInboxMsg(){const inp=document.getElementById('inboxInp');if(!inp?.value.trim()||!activeInboxPhone)return;const txt=inp.value.trim();inp.value='';const ch=inboxChats[activeInboxPhone];if(!ch)return;ch.msgs.push({from:'me',text:txt,time:new Date().toISOString()});renderInboxMsgs();const api=ldO(SK.api);if(api.token&&api.phoneId){sendWAMessage(activeInboxPhone,txt,api).then(r=>addWebhookLog(r.messages?'out':'err',(r.messages?'Sent to ':'Failed: ')+ch.name))}else{addWebhookLog('out','[DEMO] Sent to '+ch.name+': '+txt.substring(0,40))}setTimeout(()=>{const r=getFlowReply(txt);ch.msgs.push({from:'bot',text:r,time:new Date().toISOString()});renderInboxMsgs()},1000)}
+function simulateIncoming(){const names=['Sanjay Gupta','Pooja Singh','Arun Patel','Deepa Sharma'];const msgs2=['I need a home loan','Business loan chahiye','What is interest rate?','Please call me'];const n=names[Math.floor(Math.random()*names.length)],m=msgs2[Math.floor(Math.random()*msgs2.length)],p='91'+Math.floor(8000000000+Math.random()*1999999999);inboxChats[p]={name:n,phone:p,msgs:[{from:'customer',text:m,time:new Date().toISOString()}]};addWebhookLog('in','New message from '+n+' ('+p+'): "'+m+'"');showNotif('📱 New message from '+n,'"'+m+'"','wa');rfInbox();setTimeout(()=>{const r=getFlowReply(m);inboxChats[p]?.msgs.push({from:'bot',text:r,time:new Date().toISOString()});addWebhookLog('out','Auto-replied to '+n);rfInbox()},1500)}
+
+function rfResponse(){
+  const msgs=ld(SK.msgs);
+  const sent=msgs.filter(m=>m.status!=='queued').length;
+  const delivered=msgs.filter(m=>['delivered','read','replied'].includes(m.status)).length;
+  const read=msgs.filter(m=>['read','replied'].includes(m.status)).length;
+  const replied=msgs.filter(m=>m.status==='replied').length;
+  const failed=msgs.filter(m=>m.status==='failed').length;
+  document.getElementById('respStats').innerHTML=`<div class="sc"><div class="slbl" style="color:var(--blue)"><i class="ti ti-check"></i>Delivery rate</div><div class="sv" style="color:var(--blue)">${sent?Math.round(delivered/sent*100):0}%</div><div class="ss">${delivered}/${sent}</div></div><div class="sc"><div class="slbl" style="color:var(--g)"><i class="ti ti-eye"></i>Read rate</div><div class="sv" style="color:var(--g)">${sent?Math.round(read/sent*100):0}%</div><div class="ss">${read}/${sent}</div></div><div class="sc"><div class="slbl" style="color:var(--wa)"><i class="ti ti-message-reply"></i>Reply rate</div><div class="sv" style="color:var(--wa)">${sent?Math.round(replied/sent*100):0}%</div><div class="ss">${replied}/${sent}</div></div><div class="sc"><div class="slbl" style="color:var(--red)"><i class="ti ti-x"></i>Failed</div><div class="sv" style="color:var(--red)">${failed}</div><div class="ss">${sent?Math.round(failed/sent*100):0}%</div></div>`;
+  const bo={responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:10,padding:7}}}};
+  const groups=['🔥 Hot','🌡 Warm','❄ Cold'];const contacts=getContacts();
+  const ratesByGroup=groups.map(g=>{const gc=contacts.filter(c=>c.temp===g);const gm=msgs.filter(m=>gc.find(c=>c.phone===m.phone)&&m.status==='replied');return gc.length?Math.round(gm.length/gc.length*100):0});
+  dc('cRA');charts.cRA=new Chart(document.getElementById('cRespAud'),{type:'bar',data:{labels:groups,datasets:[{label:'Reply rate %',data:ratesByGroup,backgroundColor:['#fee2e2','#fef3c7','#e0f2fe'],borderColor:['#b91c1c','#b45309','#0e7490'],borderWidth:1.5,borderRadius:4}]},options:{...bo,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,max:100,ticks:{callback:v=>v+'%',font:{size:9}}},x:{grid:{display:false},ticks:{font:{size:10}}}}}});
+  const hrs=['9am','10am','11am','12pm','2pm','3pm','4pm','5pm','6pm'],rates2=[15,28,45,38,22,52,48,35,18];
+  dc('cRT');charts.cRT=new Chart(document.getElementById('cRespTime'),{type:'line',data:{labels:hrs,datasets:[{label:'Read rate %',data:rates2,borderColor:'#25D366',backgroundColor:'rgba(37,211,102,.1)',fill:true,tension:.4,pointBackgroundColor:'#25D366',pointRadius:3}]},options:{...bo,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,max:100,ticks:{callback:v=>v+'%',font:{size:9}}},x:{grid:{display:false},ticks:{font:{size:9}}}}}});
+  renderRespTable();
+}
+function renderRespTable(){
+  const msgs=ld(SK.msgs);const f=document.getElementById('respFilter')?.value||'';
+  const filtered=f?msgs.filter(m=>m.status===f):msgs;
+  const statusBadge={sent:'b-sent',delivered:'b-delv',read:'b-read',replied:'b-rep',failed:'b-fail',blocked:'b-fail',queued:'b-skip'};
+  document.getElementById('respTable').innerHTML=filtered.length?`<thead><tr><th>Name</th><th>Phone</th><th>Status</th><th>Reply</th><th>Sent at</th><th>Actions</th></tr></thead><tbody>${filtered.slice(0,50).map(m=>`<tr><td style="font-weight:600">${m.name||'—'}</td><td>${m.phone}</td><td><span class="badge ${statusBadge[m.status]||'b-skip'}">${m.status}</span></td><td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px;color:var(--mu)">${m.replyText||'—'}</td><td style="font-size:11px">${m.sentAt?new Date(m.sentAt).toLocaleString('en-IN',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}):''}</td><td class="ra"><a href="tel:${m.phone}" class="ib grn"><i class="ti ti-phone"></i></a><button class="ib" onclick="sendFollowUp('${m.phone}','${m.name||''}')"><i class="ti ti-brand-whatsapp"></i></button></td></tr>`).join('')}</tbody>`:'<tr><td colspan="6" style="padding:1.5rem;text-align:center;color:var(--mu);font-size:12px">No messages yet — launch a campaign</td></tr>';
+}
+function bulkFollowUp(){const replied=ld(SK.msgs).filter(m=>m.status==='replied');if(!replied.length){toast('No replied contacts','err');return}replied.forEach((m,i)=>setTimeout(()=>sendFollowUp(m.phone,m.name||''),i*600));toast('Opening WhatsApp follow-up for '+replied.length+' contacts','ok')}
+function sendFollowUp(phone,name){const m='Hello '+name+'! 👋\n\nThank you for your interest in MoneyGroww! Our expert will call you very soon.\n\nFor immediate assistance:\n📞 +91 98765 43210\n\n_MoneyGroww — Your loan, your way!_ 💚';window.open('https://wa.me/91'+phone+'?text='+encodeURIComponent(m),'_blank');addWebhookLog('out','Follow-up opened for '+name+'('+phone+')')}
+
+function rfAudience(){
+  const contacts=getContacts(),msgs=ld(SK.msgs);
+  const replied=new Set(msgs.filter(m=>m.status==='replied').map(m=>m.phone));
+  const read=new Set(msgs.filter(m=>['read','replied'].includes(m.status)).map(m=>m.phone));
+  const delivered=new Set(msgs.filter(m=>['delivered','read','replied'].includes(m.status)).map(m=>m.phone));
+  const noResp=contacts.filter(c=>msgs.find(m=>m.phone===c.phone)&&!read.has(c.phone));
+  const segments=[{label:'Champions (replied)',count:replied.size,color:'var(--g)',tip:'Send exclusive offers — they convert'},
+    {label:'Engaged (read, no reply)',count:read.size-replied.size,color:'var(--wa)',tip:'Send strong CTA — they are interested'},
+    {label:'Reached (delivered)',count:delivered.size-read.size,color:'var(--blue)',tip:'Try different message or timing'},
+    {label:'Not reached',count:Math.max(0,contacts.length-delivered.size),color:'var(--gold)',tip:'Check number validity'},
+    {label:'At risk (no engagement)',count:noResp.length,color:'var(--red)',tip:'Remove from list to protect number'}];
+  document.getElementById('engSegments').innerHTML=segments.map(s=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bdr)"><div><div style="font-size:12px;font-weight:600">${s.label}</div><div style="font-size:11px;color:var(--mu)">${s.tip}</div></div><div style="text-align:right"><div style="font-size:16px;font-weight:700;color:${s.color}">${s.count}</div></div></div>`).join('');
+  const at=contacts.filter(c=>!msgs.find(m=>m.phone===c.phone)||(msgs.filter(m=>m.phone===c.phone).every(m=>m.status==='failed')));
+  document.getElementById('atRiskList').innerHTML=at.length?at.slice(0,8).map(c=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--bdr);font-size:12px"><div><strong>${c.name}</strong><div style="font-size:11px;color:var(--mu)">${c.phone} • ${c.stage||'New Lead'}</div></div><span class="badge b-fail">At risk</span></div>`).join(''):'<p style="font-size:12px;color:var(--mu);padding:8px 0">No at-risk contacts</p>';
+  const weeks=[{w:1,d:100,m:10},{w:2,d:250,m:10},{w:3,d:500,m:15},{w:4,d:1000,m:20},{w:8,d:2500,m:30},{w:12,d:5000,m:60}];
+  document.getElementById('warmupPlan').innerHTML=`<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px">${weeks.map((w,i)=>`<div style="background:${i===0?'var(--wal)':'var(--bg)'};border:1px solid ${i===0?'#86efac':'var(--bdr)'};border-radius:var(--r);padding:10px;text-align:center"><div style="font-size:10px;font-weight:700;color:var(--mu);margin-bottom:4px">WEEK ${w.w}</div><div style="font-size:18px;font-weight:800;color:${i===0?'var(--g)':'var(--tx)'}">${w.d}/day</div><div style="font-size:10px;color:var(--mu);margin-top:2px">Max ${w.m}/min</div></div>`).join('')}</div><p style="font-size:11px;color:var(--mu);margin-top:10px">⚠️ Never jump phases. Gradual warmup = safer number. Current recommendation: ${contacts.length<100?'Week 1 — stay at 100/day':contacts.length<500?'Week 2 — max 250/day':'Week 3+ — increase gradually'}</p>`;
+}
+function cleanList(){if(!confirm('Remove all at-risk contacts from future campaigns?'))return;const c=getContacts();c.forEach(x=>{const msgs=ld(SK.msgs);if(msgs.filter(m=>m.phone===x.phone).every(m=>m.status==='failed'))x.unsubscribed=true});sv(SK.contacts,c);toast('At-risk contacts marked — they will be skipped in future campaigns');rfAudience()}
+
+function simulateWebhook(){
+  const types=['incoming','delivered','read','replied','blocked'];
+  types.forEach((t,i)=>setTimeout(()=>runSimEvent(t,'98765'+Math.floor(43200+i)),i*800));
+}
+function runSimEvent(type,phone){
+  type=type||document.getElementById('simType')?.value;phone=phone||document.getElementById('simPhone')?.value||'9876543210';
+  const events={
+    incoming:{log:'in',msg:'Incoming message from +91'+phone+': "Mujhe home loan chahiye"',notif:['📱 New inbound message','Customer +91'+phone+' sent: "Mujhe home loan chahiye"','wa']},
+    delivered:{log:'out',msg:'Delivered ✓✓ to +91'+phone,notif:null},
+    read:{log:'in',msg:'Read ✓✓ (blue ticks) by +91'+phone,notif:null},
+    replied:{log:'in',msg:'Customer +91'+phone+' replied: "Yes please call me"',notif:['💬 Customer replied!','"+91'+phone+'" said: "Yes please call me"','resp']},
+    blocked:{log:'warn',msg:'⚠️ Contact +91'+phone+' blocked your number — removed from future campaigns',notif:['⚠️ Contact blocked',''+phone+' blocked you. Removed from campaigns.','warn']}
+  };
+  const ev=events[type]||events.incoming;
+  addWebhookLog(ev.log,'[SIM] '+ev.msg);
+  if(ev.notif)showNotif(ev.notif[0],ev.notif[1],ev.notif[2]);
+  const msgs=ld(SK.msgs);
+  if(type==='replied'){msgs.push({id:'m'+Date.now(),phone:phone,name:'Customer '+phone.slice(-4),text:'',status:'replied',replyText:'Yes please call me',repliedAt:new Date().toISOString(),sentAt:new Date().toISOString()});sv(SK.msgs,msgs)}
+}
+function clearLogs(){logLines=[];document.getElementById('webhookLog').innerHTML='<div class="wl-line"><span class="wl-time">Cleared</span><span class="wl-msg"> Log cleared.</span></div>';document.getElementById('logCount').textContent='0 events'}
+
+function loadSettings(){const cfg=ldO(SK.cfg);document.getElementById('s_biz').value=cfg.waBizName||'MoneyGroww Financial Consultant';document.getElementById('s_wa').value=cfg.waNumber||'919876543210'}
+function saveSettings(){const cfg=ldO(SK.cfg);cfg.waBizName=document.getElementById('s_biz').value;cfg.waNumber=document.getElementById('s_wa').value;localStorage.setItem(SK.cfg,JSON.stringify(cfg));toast('Settings saved!')}
+function testNotification(){showNotif('Test notification 🎉','Sound &amp; notification system is working perfectly!','resp')}
+
+function simLiveEvents(){
+  const contacts=getContacts();if(!contacts.length)return;
+  function schedNext(){setTimeout(()=>{if(Math.random()>0.3){const c=contacts[Math.floor(Math.random()*contacts.length)];const msgs2=['Interested in home loan','Please call me','What rates do you offer?','Mujhe loan chahiye','Business loan info?'];const m=msgs2[Math.floor(Math.random()*msgs2.length)];showNotif('📱 '+c.name+' messaged!','"'+m+'"','wa');addWebhookLog('in','Inbound from '+c.name+': "'+m+'"');if(!inboxChats[c.phone])inboxChats[c.phone]={name:c.name,phone:c.phone,msgs:[]};inboxChats[c.phone].msgs.push({from:'customer',text:m,time:new Date().toISOString()});const sb=document.getElementById('sbInbox');if(sb)sb.textContent=parseInt(sb.textContent||0)+1}schedNext()},30000+Math.random()*60000)}
+  schedNext();
+}
+
+function openMod(id){document.getElementById(id).classList.add('open')}
+function closeMod(id){document.getElementById(id).classList.remove('open')}
+document.querySelectorAll('.mbg').forEach(el=>el.addEventListener('click',function(e){if(e.target===this)this.classList.remove('open')}));
+</script>
+</body>
+</html>
